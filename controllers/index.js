@@ -1,3 +1,7 @@
 exports.getIndex = (req,res) =>{
-    res.send("index")
+    if(req.session.email==undefined){
+        res.redirect("./login")
+    }else{
+        res.render("index")
+    }
 }

@@ -5,6 +5,9 @@ const ejs = require("ejs")
 const session = require("express-session")
 
 const indexRoutes = require("./routes/index");
+const reportRoutes = require("./routes/report");
+const loginRoutes = require("./routes/login");
+const evidenceRoutes = require("./routes/evidence");
 
 global.baseurl = function(){
 	var url = "http://localhost:5000/";
@@ -21,9 +24,10 @@ app.use(session({
 }))
 
 app.use("/", indexRoutes)
-app.use("/login", (req,res)=> {
-    res.render("login")
-})
+app.use("/login", loginRoutes)
+
+app.use("/report", reportRoutes)
+app.use("/evidence", evidenceRoutes)
 
 app.listen(5000, (req,res) => {
     

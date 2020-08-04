@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="<%= baseurl() %>css/chart.css">
+	<style>
+		.canvasjs-chart-credit{
+			display: none;
+		}
+		table th{
+			position: sticky;
+			top: 0;
+			position: -webkit-sticky;
+			z-index: 99;
+		}
+		th.rotate {
+			/* Something you can count on */
+			width: 22px;
+			height: 270px;
+			white-space: nowrap;
+		}
+
+		th.rotate > div {
+			transform: 
+				/* Magic Numbers */
+				translate(-3px, 103px)
+				/* 45 is really 360 - 45 */
+				rotate(270deg);
+			width: 30px;
+		}
+		th.rotate > div > span {
+			border-bottom: 1px solid #ccc;
+			padding: 5px 0;
+			letter-spacing: .5px;
+		}
+		.square{
+			position: relative;
+			margin: auto;
+			width: 20px;
+			height: 20px !important;
+			margin: 3px 0;
+		}
+		.used{
+			background: #C6E48B;
+		}
+		.unused{
+			background: #e6e6e6;
+		}
+	</style>
+</head>
+<%- include ('./partials/header') %>
+<body>
+<div class="wrapper">
+	<div class="lSide">
+		<%- include ('./partials/sidebar') %>
+	</div>
+	<div class="rSide">
+		<div class="head gradientr desk">
+			<%- include ('./partials/topdesk') %>
+		</div>
+		<div class="mainbox size-std column" style="overflow: unset;">
+			<div class="title-content size-std">
+				<a href="<%= baseurl() %>">DASHBOARD</a> > Evidence
+			</div>
+			<div class="cols-12 column containt" style="margin: 10px 0; background-color: #ffffff;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad"> FIles</p>
+					<ul class="tab-image-setting nopad">
+						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="deliveryrecent"></li>
+						<li>
+							<a href="<%= baseurl() %>/upload">
+								<img src="<%= baseurl() %>images/icon/plus.png" class="btn-tab-toggle delay">
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="list-control">
+					<div class="list-control-box">
+						<button class="option-click btn-list-control size-std" href="#list-control-show">
+							Show :&nbsp; 20 
+							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+						</button>
+						<div class="option-box option-menu shadow half box-list-control" id="list-control-show">
+							<ul class="full-length nopad">
+								<a href=""><li class="pad-tb size-std">50</li></a>
+								<a href=""><li class="pad-tb size-std">100</li></a>
+								<a href=""><li class="pad-tb size-std">200</li></a>
+							</ul>
+						</div>
+					</div>	
+					<div class="list-control-box">
+						<button class="option-click btn-list-control size-std" href="#list-control-sort">
+							Sort By :&nbsp; ID 
+							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+						</button>
+						<div class="option-box option-menu shadow half box-list-control" id="list-control-sort">
+							<ul class="full-length nopad">
+								<a href=""><li class="pad-tb size-std">ID</li></a>
+								<a href=""><li class="pad-tb size-std">Updated</li></a>
+								<a href=""><li class="pad-tb size-std">Popular</li></a>
+								<a href=""><li class="pad-tb size-std">Most View</li></a>
+							</ul>
+						</div>
+					</div>				
+					<div class="list-control-box" style="float: right;">
+						<table>
+							<tr>
+								<td>
+									<label for="" class="right-icon">
+										<input type="search">
+										<img src="<%= baseurl() %>images/icon/search1.png" alt="">
+									</label>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="full-length" style="overflow-x: auto; padding-bottom: 40px;">
+					<form id="count-checked">
+						<table class="size-std full-tables">
+							<tr>
+								<th style="text-align: left; padding: 8px; width: 100px;">Branch</th>
+								<th style="text-align: left;">Nama File</th>
+								<th>Type</th>
+								<th>Tanggal Upload</th>
+								<th>Update</th>
+								<th style="width: 100px;">Action</th>
+                            </tr>
+                            <tr>
+								<td>10001</td>
+								<td>Nama File</td>
+								<td align="center">Type File</td>
+								<td align="center"><%= moment().format("DD-MMM-YYYY") %></td>
+								<td align="center"><%= moment().fromNow() %></td>
+								<td align="center"><a href="<%= baseurl() %>/detail/">View</a></td>
+							</tr>
+                        </table>
+					</form>
+					<div class="size-std numberofrows">
+                        <ul class="pagination nopad">
+                           
+                            <li class="active"><a href="<%= baseurl() %>/">1</a></li>
+                            <li class=""><a href="<%= baseurl() %>/">2</a></li>
+                            <li class=""><a href="<%= baseurl() %>/">3</a></li>
+                            <li class=""><a href="<%= baseurl() %>/">...</a></li>
+                            <li class=""><a href="<%= baseurl() %>/">8</a></li>
+                            <li class=""><a href="<%= baseurl() %>/">9</a></li>
+                        </ul>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<%- include ('./partials/footer') %>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script src="<% baseurl() %>js/chart.js" type="text/javascript"></script>
+</html>
