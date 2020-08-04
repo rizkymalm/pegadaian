@@ -28,6 +28,11 @@ app.use("/login", loginRoutes)
 
 app.use("/report", reportRoutes)
 app.use("/evidence", evidenceRoutes)
+app.get("/logout", function(req,res) {
+    var login = ({emailses: req.session.email, nameses: req.session.salesname, idses: req.session.idsales, typeses: req.session.type})
+        req.session.destroy();
+        res.redirect("/login")
+})
 
 app.listen(5000, (req,res) => {
     
