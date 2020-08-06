@@ -35,10 +35,44 @@ exports.getAcv = async function(req,res){
     }
 }
 
+function randomNumber(min, max) { 
+    return new Promise(resolve =>{ 
+        var random = Math.random() * (max - min) + min;
+        var number = Math.floor(random)
+        resolve(number)
+    })
+}  
 
-exports.getAcvAjax = (req,res) => {
-    res.render("partials/achievementajax", {
-        moment: moment
+exports.getAcvAjax = async function (req,res){
+    var kanwil = req.query.kanwil
+    var area = req.query.area
+    if(kanwil=="all" && area=="all"){
+        var sql = "SELECT * FROM region"
+        var typesql = "region"
+    }else if(kanwil!="all" && area=="all"){
+        var sql = "SELECT * FROM area WHERE id_region="+kanwil
+        var typesql = "area"
+    }else if(kanwil!="all" && area!="all"){
+        var sql = "SELECT * FROM sub_branch WHERE id_region="+kanwil+" AND id_area='"+area+"'"
+        var typesql = "subbranch"
+    }
+    var jsonres = []
+    db.query(sql, async function(err,result){
+        for(var i=0;i<result.length;i++){
+            var rand = await randomNumber(1, 100);
+            if(typesql=="region"){
+                jsonres.push({nama: result[i].region, label: "KANWIL", achievement: rand})
+            }else if(typesql=="area"){
+                jsonres.push({nama: result[i].area_name, label: "AREA", achievement: rand})
+            }else if(typesql=="subbranch"){
+                jsonres.push({nama: result[i].sub_branch_name, label: "SUB BRANCH", achievement: rand})
+            }
+        }
+        res.render("partials/achievementajax", {
+            moment: moment,
+            results: result,
+            json: jsonres
+        })
     })
 }
 

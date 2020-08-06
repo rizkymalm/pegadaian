@@ -171,7 +171,6 @@ $(document).ready(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var Date = $('#setDate').val()
-        var valEndDate = $("#endDate").val()
         if(Date==""){
             var startDate = "all"
             var endDate = "all"
@@ -180,17 +179,18 @@ $(document).ready(function(){
             var endDate = valEndDate
         }
         var data = "kanwil="+kanwil+"&date="+startDate+"&endDate="+endDate+"&area="+area
-        alert(data)
+
         $.ajax({
             url: "<%= baseurl() %>acv/content/",
             type: "GET",
             data: data,
             cache: false,
+            async: false,
             beforeSend: function(loading){
                 $('.loader').show()
-            },success: function(schedule){
+            },success: function(data){
                 $('.loader').hide()
-                $('.contentajax').html(schedule)
+                $('.contentajax').html(data)
             }
         })
         return false;
