@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="<%= baseurl() %>css/chart.css">
+	<style>
+		.canvasjs-chart-credit{
+			display: none;
+		}
+		table th{
+			position: sticky;
+			top: 0;
+			position: -webkit-sticky;
+			z-index: 99;
+		}
+		th.rotate {
+			/* Something you can count on */
+			width: 22px;
+			height: 270px;
+			white-space: nowrap;
+		}
+
+		th.rotate > div {
+			transform: 
+				/* Magic Numbers */
+				translate(-3px, 103px)
+				/* 45 is really 360 - 45 */
+				rotate(270deg);
+			width: 30px;
+		}
+		th.rotate > div > span {
+			border-bottom: 1px solid #ccc;
+			padding: 5px 0;
+			letter-spacing: .5px;
+		}
+		.square{
+			position: relative;
+			margin: auto;
+			width: 20px;
+			height: 20px !important;
+			margin: 3px 0;
+		}
+		.used{
+			background: #C6E48B;
+		}
+		.unused{
+			background: #e6e6e6;
+		}
+	</style>
+</head>
+<%- include ('./partials/header') %>
+<body>
+<div class="wrapper">
+	<div class="lSide">
+		<%- include ('./partials/sidebar') %>
+	</div>
+	<div class="rSide">
+		<div class="head gradientr desk">
+			<%- include ('./partials/topdesk') %>
+		</div>
+		<div class="mainbox size-std column" style="overflow: unset;">
+			<div class="title-content size-std">
+				ACHIEVEMENT
+			</div>
+			
+            
+            <div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
+                <div class="headtitle trans" style="margin-bottom: 0;">
+                    <p class="size-head4 nopad">Control</p>
+                </div>
+                <form class="control">
+                    <div class="list-control" style="border-bottom: none;">
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Region</span>
+                            <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
+                                <option value="all">-- Select Region --</option>
+                                <% for(var i=0; i < kanwil.length; i++){ %>
+                                    <option value="<%= kanwil[i].id_region %>"><%= kanwil[i].region %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Area</span>
+                            <select name="" id="area" class="size-std">
+                                <option value="all">-- All --</option>
+                                <% for(var i=0; i < area.length; i++){ %>
+                                    <option value="<%= area[i].id_area %>"><%= area[i].area_name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Skenario</span>
+                            <select name="" id="skenario" class="size-std">
+                                <option value="all">-- Select Skenario --</option>
+                                <option value="gadai">GADAI</option>
+                                <option value="gadai">TELEPON CS</option>
+                                <option value="gadai">PELUNASAN GADAI</option>
+                            </select>
+                        </div>
+                        <div class="list-control-box size-std spc-rl">
+                            <span class="size-std">Show By Date </span>
+                            <input type="date" name="" id="setDate" onchange="setEndDate()">
+                        </div>
+                        <div class="list-control-box size-std spc-rl endDate" style="display: none;">
+                            <span class="size-std">Set end date </span>
+                            <input type="date" name="" id="endDate">
+                        </div>
+                        <div class="list-control-box size-std spc-rl">
+                            <button type="submit" class="myButton-submit">Show</button>
+                            <button type="reset" class="myButton-submit">Clear</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="full-length" style="position: relative;">
+                <div class="loader" style="display: none;">
+                    <span class="loader-helper"></span><img src="<%= baseurl() %>images/icon/loader.gif" alt="">
+                </div>
+                <div class="full-length contentajax" style="overflow-x: auto; padding-bottom: 40px;">
+                            
+                </div>
+            </div>
+			<!-- <div class="cols-12 containt" style="margin: 20px 0;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad">Success Chart</p>
+					<p class="size-std nopad">Little title</p>
+					<ul class="tab-image-setting nopad">
+						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
+					</ul>
+                </div>
+                <div class="graph">
+                    <div class="graph__wrapper">
+                        <div class="container">
+                            <div class="graph__block" id="graph_03"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cols-12 containt" style="margin: 20px 0;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad">Success Chart</p>
+					<p class="size-std nopad">Little title</p>
+					<ul class="tab-image-setting nopad">
+						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
+					</ul>
+                </div>
+                <div style="width: 100%; height: 600px;" class="chartContainer"  id="chartContainer">
+				</div>
+			</div>-->
+		</div>
+	</div>
+</div>
+</body>
+<%- include ('./partials/footer') %>
+<script>
+function getAreaByKanwil(){
+    var kanwil = $('#kanwil').val()
+    $.ajax({
+        cache: true,
+        url: "<%= baseurl() %>acv/areabykanwil/"+kanwil,
+        success: function(select){
+            $('#area').html(select);
+        }
+    })
+}
+$(document).ready(function(){
+    $(".control").submit(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        var Date = $('#setDate').val()
+        var valEndDate = $("#endDate").val()
+        if(Date==""){
+            var startDate = "all"
+            var endDate = "all"
+        }else{
+            var startDate = Date
+            var endDate = valEndDate
+        }
+        var data = "kanwil="+kanwil+"&date="+startDate+"&endDate="+endDate+"&area="+area
+        alert(data)
+        $.ajax({
+            url: "<%= baseurl() %>acv/content/",
+            type: "GET",
+            data: data,
+            cache: false,
+            beforeSend: function(loading){
+                $('.loader').show()
+            },success: function(schedule){
+                $('.loader').hide()
+                $('.contentajax').html(schedule)
+            }
+        })
+        return false;
+    })
+})
+</script>
+</html>

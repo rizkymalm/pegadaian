@@ -8,6 +8,7 @@ const indexRoutes = require("./routes/index");
 const reportRoutes = require("./routes/report");
 const loginRoutes = require("./routes/login");
 const evidenceRoutes = require("./routes/evidence");
+const acvRoutes = require("./routes/achievement");
 
 global.baseurl = function(){
 	var url = "http://localhost:5000/";
@@ -25,7 +26,7 @@ app.use(session({
 
 app.use("/", indexRoutes)
 app.use("/login", loginRoutes)
-
+app.use("/acv", acvRoutes)
 app.use("/report", reportRoutes)
 app.use("/evidence", evidenceRoutes)
 app.get("/logout", function(req,res) {
