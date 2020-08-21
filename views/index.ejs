@@ -24,7 +24,7 @@
 					<div class="size-std icon-info"><img src="<%= baseurl() %>images/icon/service.png"></div>
 					<div class="field-info">
 						<p class="nopad size-head4"><b>Skenario Gadai</b></p>
-						<p class="size-head1 nopad">1</p>
+						<p class="size-head1 nopad"><%= ach[0].gadai  %></p>
 						<p class="size-std nopad">Data</p>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 					<div class="size-std icon-info"><img src="<%= baseurl() %>images/icon/delivery.png"></div>
 					<div class="field-info">
 						<p class="nopad size-head4"><b>Skenario Telepon CS</b></p>
-						<p class="size-head1 nopad">99</p>
+						<p class="size-head1 nopad"><%= ach[0].telepon  %></p>
 						<p class="size-std nopad">Data</p>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 					<div class="size-std icon-info"><img src="<%= baseurl() %>images/icon/visitors-white.png"></div>
 					<div class="field-info">
 						<p class="nopad size-head4"><b>Skenario Pelunasan Gadai</b></p>
-						<p class="size-head1 nopad">999</p>
+						<p class="size-head1 nopad"><%= ach[0].pelunasan  %></p>
 						<p class="size-std nopad">&nbsp;</p>
 					</div>
 				</div>
@@ -50,7 +50,7 @@
 					<div class="size-std icon-info"><img src="<%= baseurl() %>images/icon/visitors-white.png"></div>
 					<div class="field-info">
 						<p class="nopad size-head4"><b>Total</b></p>
-						<p class="size-head1 nopad">1099</p>
+						<p class="size-head1 nopad"><%= totalach %></p>
 						<p class="size-std nopad">&nbsp;</p>
 					</div>
 				</div>
@@ -63,6 +63,17 @@
 				<div style="width: 100%;">
 					<div class="chartbox">
 						<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+					</div>
+				</div>
+            </div>
+            <div class="cols-6 containt" style="margin: 20px 0;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad">Data Chart</p>
+					<p class="size-std nopad">Little title</p>
+				</div>
+				<div style="width: 100%;">
+					<div class="chartbox">
+						<div id="achievement_2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
 					</div>
 				</div>
 			</div>
@@ -90,108 +101,49 @@
 <script>
     window.onload = function () {
     
-    var options = {
+        var options = {
+	title: {
+		text: "Actual Achievement"              
+    },
+    exportEnabled: true,
+    animationEnabled: true,
+	data: [              
+	{
+		// Change type to "doughnut", "line", "splineArea", etc.
+        type: "column",
+		dataPoints: [
+			{ label: "Skenario Gadai",  y: <%= ach[0].gadai  %>  },
+			{ label: "Skenario Telepon", y: <%= ach[0].telepon  %>  },
+			{ label: "Skenario Pelunasan", y: <%= ach[0].pelunasan  %>  }
+		]
+	}
+	]
+};
+    $("#chartContainer").CanvasJSChart(options);
+
+    var achievement_2 = {
+        title: {
+            text: "Percentage Achievement"
+        },
+        exportEnabled: true,
         animationEnabled: true,
-        theme: "light2",
-        title:{
-            text: "Chart"
-        },
-        axisX:{
-            valueFormatString: "DD MMM"
-        },
-        axisY: {
-            title: "Number of Sales",
-            suffix: "K",
-            minimum: 30
-        },
-        toolTip:{
-            shared:true
-        },  
-        legend:{
-            cursor:"pointer",
-            verticalAlign: "bottom",
-            horizontalAlign: "left",
-            dockInsidePlotArea: true,
-            itemclick: toogleDataSeries
-        },
         data: [{
-            type: "line",
-            showInLegend: true,
-            name: "Skenario Gadai",
-            xValueFormatString: "DD MMM, YYYY",
-            color: "#68BAF9",
-            lineDashType: "dash",
-            yValueFormatString: "#,##0K",
+            type: "pie",
+            startAngle: 40,
+            toolTipContent: "<b>{label}</b>: {y}%",
+            showInLegend: "true",
+            legendText: "{label}",
+            indexLabelFontSize: 16,
+            indexLabel: "{label} - {y}%",
             dataPoints: [
-                { x: new Date(2020, 06, 1), y: 63 },
-                { x: new Date(2020, 06, 2), y: 50 },
-                { x: new Date(2020, 06, 3), y: 40 },
-                { x: new Date(2020, 06, 4), y: 70 },
-                { x: new Date(2020, 06, 5), y: 67 },
-                { x: new Date(2020, 06, 6), y: 80 },
-                { x: new Date(2020, 06, 7), y: 70 },
-                { x: new Date(2020, 06, 8), y: 87 },
-                { x: new Date(2020, 06, 9), y: 75 },
-                { x: new Date(2020, 06, 10), y: 90 },
-                { x: new Date(2020, 06, 11), y: 70 },
-                { x: new Date(2020, 06, 12), y: 70 },
-                { x: new Date(2020, 06, 13), y: 69 },
-                { x: new Date(2020, 06, 14), y: 70 },
-                { x: new Date(2020, 06, 15), y: 70 }
-            ]
-        },
-        {
-            type: "line",
-            showInLegend: true,
-            name: "Skenarion Telepon CS",
-            lineDashType: "dash",
-            color: "#FF6D74",
-            yValueFormatString: "#,##0K",
-            dataPoints: [
-                { x: new Date(2020, 06, 1), y: 60 },
-                { x: new Date(2020, 06, 2), y: 57 },
-                { x: new Date(2020, 06, 3), y: 51 },
-                { x: new Date(2020, 06, 4), y: 56 },
-                { x: new Date(2020, 06, 5), y: 54 },
-                { x: new Date(2020, 06, 6), y: 55 },
-                { x: new Date(2020, 06, 7), y: 54 },
-                { x: new Date(2020, 06, 8), y: 69 },
-                { x: new Date(2020, 06, 9), y: 65 },
-                { x: new Date(2020, 06, 10), y: 66 },
-                { x: new Date(2020, 06, 11), y: 63 },
-                { x: new Date(2020, 06, 12), y: 67 },
-                { x: new Date(2020, 06, 13), y: 66 },
-                { x: new Date(2020, 06, 14), y: 56 },
-                { x: new Date(2020, 06, 15), y: 64 }
-            ]
-        },
-        {
-            type: "line",
-            showInLegend: true,
-            name: "Skenarion Pelunasan Gadai",
-            lineDashType: "dash",
-            color: "#63D590",
-            yValueFormatString: "#,##0K",
-            dataPoints: [
-                { x: new Date(2020, 06, 1), y: 65 },
-                { x: new Date(2020, 06, 2), y: 63 },
-                { x: new Date(2020, 06, 3), y: 56 },
-                { x: new Date(2020, 06, 4), y: 61 },
-                { x: new Date(2020, 06, 5), y: 59 },
-                { x: new Date(2020, 06, 6), y: 60 },
-                { x: new Date(2020, 06, 7), y: 59 },
-                { x: new Date(2020, 06, 8), y: 74 },
-                { x: new Date(2020, 06, 9), y: 70 },
-                { x: new Date(2020, 06, 10), y: 71 },
-                { x: new Date(2020, 06, 11), y: 68 },
-                { x: new Date(2020, 06, 12), y: 73 },
-                { x: new Date(2020, 06, 13), y: 71 },
-                { x: new Date(2020, 06, 14), y: 61 },
-                { x: new Date(2020, 06, 15), y: 69 }
+                { y: <%= percentageach[0].gadai %>, label: "Skenario Gadai" },
+                { y: <%= percentageach[0].telepon %>, label: "Skenario Telepon" },
+                { y: <%= percentageach[0].pelunasan %>, label: "Skenario Pelunasan" }
             ]
         }]
     };
-    $("#chartContainer").CanvasJSChart(options);
+    $("#achievement_2").CanvasJSChart(achievement_2);
+
     
     function toogleDataSeries(e){
         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -206,5 +158,5 @@
     </script>
 <%- include ('./partials/footer') %>
 <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-<script src="<% baseurl() %>js/chart.js" type="text/javascript"></script>
+<!-- <script src="<% baseurl() %>js/chart.js" type="text/javascript"></script> -->
 </html>
