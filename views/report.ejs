@@ -4,6 +4,8 @@
 	<title>Dashboard</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="">
+	<script src="<%= baseurl() %>plugin/flexmonster/theme/green/flexmonster.css"></script>
 	<link rel="stylesheet" href="<%= baseurl() %>css/chart.css">
 	<style>
 		.canvasjs-chart-credit{
@@ -83,9 +85,9 @@
 						</button>
 						<div class="option-box option-menu shadow half box-list-control" id="list_skenario">
 							<ul class="full-length nopad">
-                                <a href="<%= baseurl() %>report/"><li class="pad-tb size-std">Gadai</li></a>
-                                <a href="<%= baseurl() %>report/"><li class="pad-tb size-std">Telpon CS</li></a>
-                                <a href="<%= baseurl() %>report/"><li class="pad-tb size-std">Pelunasan Gadai</li></a>
+                                <a href="<%= baseurl() %>report/?skenario=gadai"><li class="pad-tb size-std">Gadai</li></a>
+                                <a href="<%= baseurl() %>report/?skenario=telepon"><li class="pad-tb size-std">Telpon CS</li></a>
+                                <a href="<%= baseurl() %>report/?skenario=pelunasan"><li class="pad-tb size-std">Pelunasan Gadai</li></a>
 							</ul>
 						</div>
 					</div>
@@ -110,7 +112,7 @@
                     </div>
                 </div>
 			</div>
-			<div class="cols-6 containt" style="margin: 20px 0;">
+			<div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">Success Chart</p>
 					<p class="size-std nopad">Little title</p>
@@ -134,21 +136,19 @@
 				toolbar: true,
 				report: {
 					dataSource: {
-						filename: "https://cdn.flexmonster.com/data/data.csv"
+						filename: "<%= baseurl() %>rawdatacsv/<%= dir %>/<%= filecsv %>"
 					},
 					slice: {
 						rows: [
-							{ uniqueName: "Country" },
-							{ uniqueName: "Category" },
-							{ uniqueName: "[Measures]" }
+							{ uniqueName: "region" },
+							{ uniqueName: "area" }
 						],
 						columns: [
-							{ uniqueName: "Color" }
+							{ uniqueName: "[Measures]" }
 						],
 						measures: [
-							{ uniqueName: "Price", aggregation: "sum", format: "currency"}, 
-							{ uniqueName: "Discount", aggregation: "average"}
-						]	
+							{ uniqueName: "SbjNum", aggregation: "count"}
+						]
 					}
 				},
 				licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
