@@ -17,7 +17,7 @@
 		</div>
 		<div class="mainbox size-std column">
 			<div class="title-content size-std">
-				DASHBOARD - <%= login.nameses+" - "+subBranch[0].sub_branch_name %>
+				DASHBOARD - <%= login.nameses %>
 			</div>
 			<div class="top-info column">
 				<div class="containt top-info-box shadow half delay" style="background: #68baf9;">
@@ -56,10 +56,6 @@
 				</div>
 			</div>
 			<div class="cols-6 containt" style="margin: 20px 0;">
-				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Data Chart</p>
-					<p class="size-std nopad">Little title</p>
-				</div>
 				<div style="width: 100%;">
 					<div class="chartbox">
 						<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
@@ -67,10 +63,6 @@
 				</div>
             </div>
             <div class="cols-6 containt" style="margin: 20px 0;">
-				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Data Chart</p>
-					<p class="size-std nopad">Little title</p>
-				</div>
 				<div style="width: 100%;">
 					<div class="chartbox">
 						<div id="achievement_2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
@@ -128,11 +120,8 @@
         exportEnabled: true,
         animationEnabled: true,
         data: [{
-            type: "pie",
-            startAngle: 40,
-            toolTipContent: "<b>{label}</b>: {y}%",
-            showInLegend: "true",
-            legendText: "{label}",
+            type: "column",
+            legendText: "{label} %",
             indexLabelFontSize: 16,
             indexLabel: "{label} - {y}%",
             dataPoints: [
