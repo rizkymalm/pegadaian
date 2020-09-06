@@ -53,6 +53,48 @@ $(document).ready(function(){
             $('.valchecked').html(checkedbox+" Records Selected <button class='btn-list-control' onclick='deletecheck()' style='background-image:url(http://survey.kadence.co.id:8000/images/icon/delete-thrash.png); background-position:center; background-size:25px 25px; background-repeat:no-repeat;'>&nbsp;</button>");
         }
     });
+
+
+    $(window).resize(function(){
+        $('.selectorline').css({
+            "width" : $('.thistab').width()+50 +"px"
+        })
+        $('.gridcontent').css({
+            "width" : 100/$('.gridcontent').length +"%"
+        })
+        for(var i=1;i<=$('.gridcontent').length;i++){
+            $('.tabgridcontent div:nth-child('+i+')').css({
+                "transform" : 'translateX('+ i-1*100 +"%)"
+            })                
+        }
+        $('.tabgridcontent').css({
+            "width" : $('.gridcontent').length*100 +"%"
+        })
+    }).resize();
+
+    $(".tabgrid ul li").click(function(){
+        var clickID = $(this).attr('data'); //diambil dari data yang di klik
+        var target = $(this).data('target'); //diambil dari data-target yang di klik
+        var dataTarget = $('#'+clickID).attr("data");// dari class gridcontent data=""
+        var linewidth = $(this).width()+50
+        var position = 0;
+        var transform = "-"+target * 100
+
+        for(var i=0;i<$(this).data('target');i++){
+            var nth = i+1
+            var linewidth2 = $('.tabgrid ul li:nth-child('+ nth +')').width()+50
+            position += linewidth2
+        }
+
+        $('.selectorline').animate({
+            "left" : position +"px",
+            "width" : linewidth +"px"
+        })
+        
+        $('.gridcontent').css({
+           "transform" : "translateX("+transform+"%) translateY(0)"
+        })
+    })
 })
 
 function closePopup(){

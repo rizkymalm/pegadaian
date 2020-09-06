@@ -47,9 +47,9 @@ exports.getIndex = (req,res) =>{
                 })
             }
             ach.push({"gadai": num[0], "pelunasan": num[1], "telepon": num[2]})
-            var percentgadai = num[0] * 100 / totalach
-            var percentlunas = num[1] * 100 / totalach
-            var percenttelp = num[2] * 100 / totalach
+            var percentgadai = num[0] * 100 / 642
+            var percentlunas = num[1] * 100 / 642
+            var percenttelp = num[2] * 100 / 642
             percentageach.push({"gadai": percentgadai.toFixed(2) , "pelunasan": percentlunas.toFixed(2), "telepon": percenttelp.toFixed(2)})
             var rawdataFiles = ({"gadai": files[0], "pelunasan": files[1],"telepon": files[2]})
             fs.readdir(directoryPath, function(err,files){
@@ -68,3 +68,4 @@ exports.getIndex = (req,res) =>{
         })
     }
 }
+
