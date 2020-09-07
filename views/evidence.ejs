@@ -90,7 +90,7 @@
 							</ul>
 						</div>
 					</div>	
-					<div class="list-control-box">
+					<!-- <div class="list-control-box">
 						<button class="option-click btn-list-control size-std" onclick="clickToggle(status)">
 							Sort By :&nbsp; STATUS 
 							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
@@ -102,7 +102,7 @@
 								<a href="<%= baseurl() %>evidence/?state=VERIFIED"><li class="pad-tb size-std">VERIFIED</li></a>
 							</ul>
 						</div>
-					</div>				
+					</div>				 -->
 					<div class="list-control-box" style="float: right;">
 						<table>
 							<tr>
@@ -149,13 +149,52 @@
 					</form>
 					<div class="size-std numberofrows">
                         <ul class="pagination nopad">
-                           
-                            <li class="active"><a href="<%= baseurl() %>/">1</a></li>
-                            <li class=""><a href="<%= baseurl() %>/">2</a></li>
-                            <li class=""><a href="<%= baseurl() %>/">3</a></li>
-                            <li class=""><a href="<%= baseurl() %>/">...</a></li>
-                            <li class=""><a href="<%= baseurl() %>/">8</a></li>
-                            <li class=""><a href="<%= baseurl() %>/">9</a></li>
+                            <% 
+                            if(count>7){ 
+                                if(count==page){
+                                    var lastclass = "active"
+                                }else{
+                                    var lastclass = ""
+                                }
+                            } 
+                            %>
+                            <% if(page>=6){ %>
+                                <li class="<%= lastclass %>"><a href="<%= baseurl() %>evidence/?page=1"><%= 1 %></a></li>
+                                <li class="<%= classes %>"><a href="<%= baseurl() %>evidence/?page=<%= lastarray %>">...</a></li>
+                            <% } 
+                            if(count>7){
+                                var pagelength = 7
+                            }else{
+                                var pagelength = count
+                            }
+                            var len = arrpage.length
+                            var lastarray = arrpage[6]+1
+                            for(var i=0;i < arrpage.length;i++){ 
+                                if(page==arrpage[i]){
+                                    var classes = "active"
+                                }else{
+                                    var classes = ""
+                                }
+                                if(page==0){
+                                    if(arrpage[i]==1){
+                                        var classes = "active"
+                                    }
+                                }
+                            %>
+                                <li class="<%= classes %>"><a href="<%= baseurl() %>evidence/?page=<%= arrpage[i] %>"><%= arrpage[i] %></a></li>
+                            <% }
+                            if(page<=count-5 && count > 7){ %>
+                                <li class="<%= classes %>"><a href="<%= baseurl() %>evidence/?page=<%= lastarray %>">...</a></li>
+                            <% } 
+                            if(count>7){ 
+                                if(count==page){
+                                    var lastclass = "active"
+                                }else{
+                                    var lastclass = ""
+                                }
+                            %>
+                            <li class="<%= lastclass %>"><a href="<%= baseurl() %>evidence/?page=<%= count %>"><%= count %></a></li>
+                            <% } %>
                         </ul>
                     </div>
 				</div>
