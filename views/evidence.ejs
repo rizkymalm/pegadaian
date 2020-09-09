@@ -142,7 +142,7 @@
 								<td><%= showtask.filename %></td>
 								<td align="center"><%= status %></td>
 								<td align="center"><%= moment(showtask.uploadtime).format("DD-MMM-YYYY") %></td>
-								<td align="center"><a href="<%= baseurl() %>evidence/detail/<%= showtask.id %>">View</a></td>
+								<td align="center"><a href="<%= baseurl() %>evidence/detail/<%= showtask.idtask %>">View</a></td>
 							</tr>
 							<% } %>
                         </table>

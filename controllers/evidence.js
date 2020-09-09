@@ -19,7 +19,7 @@ exports.getEvidence = async function(req,res){
         }else{
             var page = req.query.page
         }
-        var sqlcount = "SELECT COUNT(*) AS countrec FROM task WHERE project=6 AND filename IS NOT NULL"
+        var sqlcount = "SELECT COUNT(*) AS countrec FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200"
 
         var count = await countrecord(sqlcount)
         console.log(count)
@@ -51,7 +51,8 @@ exports.getEvidence = async function(req,res){
             }
         }
         db.query("SELECT * FROM sub_branch WHERE id_sub_branch=?", login.subbranch, async function (err,sub_branch){
-            dbkepo.query("SELECT * FROM task WHERE project=6 AND filename IS NOT NULL ORDER BY uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
+            dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
+                console.log(task)
                 res.render("evidence", {
                     login: login,
                     moment: moment,
@@ -70,11 +71,15 @@ exports.getEvidence = async function(req,res){
 exports.getDetailEvidence = (req,res) => {
     var id = req.params.id;
     var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
-    dbkepo.query("SELECT * FROM task WHERE id=?", id, (err,task)=>{
-        res.render("detailevidence",{
-            task: task,
-            moment: moment,
-            login: login
+    dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.id=?", id, (err,task)=>{
+        dbkepo.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
+            console.log(errnote)
+            res.render("detailevidence",{
+                task: task,
+                moment: moment,
+                login: login,
+                notes: notess
+            })
         })
     })
 }
