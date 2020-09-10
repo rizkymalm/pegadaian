@@ -19,7 +19,23 @@ exports.getEvidence = async function(req,res){
         }else{
             var page = req.query.page
         }
-        var sqlcount = "SELECT COUNT(*) AS countrec FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200"
+        if(req.query.search){
+            var search = " AND task.deskripsi LIKE '%"+req.query.search+"%'"
+        }else{
+            var search = ""
+        }
+
+        if(req.query.region!=undefined){
+            var qregion = req.query.region
+        }else{
+            var qregion = ""
+        }
+        if(req.query.skenario!=undefined){
+            var qskenario = req.query.skenario
+        }else{
+            var qskenario = ""
+        }
+        var sqlcount = "SELECT COUNT(*) AS countrec FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+""
 
         var count = await countrecord(sqlcount)
         console.log(count)
@@ -50,16 +66,7 @@ exports.getEvidence = async function(req,res){
                 arrpage.push(i)
             }
         }
-        if(req.query.search){
-            var search = " AND task.deskripsi LIKE '%"+req.query.search+"%'"
-        }else{
-            var search = ""
-        }
-        if(req.query.region){
-            var qregion = req.query.region
-        }else{
-            var qregion = ""
-        }
+        
         db.query("SELECT * FROM sub_branch WHERE id_sub_branch=?", login.subbranch, async function (err,sub_branch){
             dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+" ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
                 db.query("SELECT * FROM region", login.subbranch, async function (errregion,region){
@@ -72,7 +79,8 @@ exports.getEvidence = async function(req,res){
                         page: page,
                         arrpage: arrpage,
                         region: region,
-                        qregion: qregion
+                        qregion: qregion,
+                        qskenario: qskenario
                     })
                 })
             })
