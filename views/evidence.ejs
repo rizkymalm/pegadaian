@@ -78,11 +78,11 @@
 				</div>
 				<div class="list-control">
 					<div class="list-control-box">
-						<button class="option-click btn-list-control size-std" href="#list-control-show">
+						<button class="option-click btn-list-control size-std" onclick="clickToggle(showcount)">
 							Show :&nbsp; 20 
 							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
 						</button>
-						<div class="option-box option-menu shadow half box-list-control" id="list-control-show">
+						<div class="option-box option-menu shadow half box-list-control" id="showcount">
 							<ul class="full-length nopad">
 								<a href=""><li class="pad-tb size-std">50</li></a>
 								<a href=""><li class="pad-tb size-std">100</li></a>
@@ -90,25 +90,32 @@
 							</ul>
 						</div>
 					</div>	
-					<!-- <div class="list-control-box">
-						<button class="option-click btn-list-control size-std" onclick="clickToggle(status)">
-							Sort By :&nbsp; STATUS 
+					<div class="list-control-box">
+						<button class="option-click btn-list-control size-std" onclick="clickToggle(region)">
+							Show By :&nbsp;  
+							<% if(qregion!=""){ %>
+								<%= qregion %>
+							<% }else{ %>
+								REGION
+							<% } %>
 							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
 						</button>
-						<div class="option-box option-menu shadow half box-list-control" id="status">
+						<div class="option-box option-menu shadow half box-list-control" id="region">
 							<ul class="full-length nopad">
-								<a href="<%= baseurl() %>evidence/?state=UPLOADED"><li class="pad-tb size-std">UPLOADED</li></a>
-								<a href="<%= baseurl() %>evidence/?state=CHECKED"><li class="pad-tb size-std">CHECKED</li></a>
-								<a href="<%= baseurl() %>evidence/?state=VERIFIED"><li class="pad-tb size-std">VERIFIED</li></a>
+								<% for(reg of region){ %>
+									<a href="<%= baseurl() %>evidence/?search=<%= reg.region %>&region=<%= reg.region %>"><li class="pad-tb size-std"><%= reg.region %></li></a>
+								<% } %>
 							</ul>
 						</div>
-					</div>				 -->
+					</div>
 					<div class="list-control-box" style="float: right;">
 						<table>
 							<tr>
 								<td>
 									<label for="" class="right-icon">
-										<input type="search">
+										<form action="<%= baseurl() %>evidence/" method="GET">
+											<input type="search" name="search">
+										</form>
 										<img src="<%= baseurl() %>images/icon/search1.png" alt="">
 									</label>
 								</td>
