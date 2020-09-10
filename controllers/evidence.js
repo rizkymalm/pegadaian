@@ -50,17 +50,30 @@ exports.getEvidence = async function(req,res){
                 arrpage.push(i)
             }
         }
+        if(req.query.search){
+            var search = " AND task.deskripsi LIKE '%"+req.query.search+"%'"
+        }else{
+            var search = ""
+        }
+        if(req.query.region){
+            var qregion = req.query.region
+        }else{
+            var qregion = ""
+        }
         db.query("SELECT * FROM sub_branch WHERE id_sub_branch=?", login.subbranch, async function (err,sub_branch){
-            dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
-                console.log(task)
-                res.render("evidence", {
-                    login: login,
-                    moment: moment,
-                    subBranch: sub_branch,
-                    task: task,
-                    count: math,
-                    page: page,
-                    arrpage: arrpage
+            dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+" ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
+                db.query("SELECT * FROM region", login.subbranch, async function (errregion,region){
+                    res.render("evidence", {
+                        login: login,
+                        moment: moment,
+                        subBranch: sub_branch,
+                        task: task,
+                        count: math,
+                        page: page,
+                        arrpage: arrpage,
+                        region: region,
+                        qregion: qregion
+                    })
                 })
             })
         })
