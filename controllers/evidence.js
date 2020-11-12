@@ -1,4 +1,5 @@
-const moment = require("moment")
+const moment = require("moment");
+const { resolve } = require("path");
 const db = require("../models/db");
 const dbkepo = require("../models/db_kepo");
 function countrecord(sql){
@@ -88,9 +89,21 @@ exports.getEvidence = async function(req,res){
     }
 }
 
+function random(limit){
+    return new Promise(resolve => {
+        var random = ''
+        var char = '1234567890abcdefghijklmnopqrstuvwxyz'
+        var charLength = char.length
+        for(var i=0;i<limit;i++){
+            random += char.charAt(Math.floor(Math.random() * charLength))
+        }
+        resolve(random)
+    })
+}
 
-exports.getDetailEvidence = (req,res) => {
+exports.getDetailEvidence = async function(req,res){
     var id = req.params.id;
+    var randomChar = await random(32)
     var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
     dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.id=?", id, (err,task)=>{
         dbkepo.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
@@ -99,7 +112,8 @@ exports.getDetailEvidence = (req,res) => {
                 task: task,
                 moment: moment,
                 login: login,
-                notes: notess
+                notes: notess,
+                randomChar: randomChar
             })
         })
     })

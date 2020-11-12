@@ -55,14 +55,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="cols-6 containt" style="margin: 20px 0;">
+			<div class="cols-12 containt" style="margin: 20px 0;">
 				<div style="width: 100%;">
 					<div class="chartbox">
 						<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
 					</div>
 				</div>
             </div>
-            <div class="cols-6 containt" style="margin: 20px 0;">
+            <div class="cols-12 containt" style="margin: 20px 0;">
 				<div style="width: 100%;">
 					<div class="chartbox">
 						<div id="achievement_2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
@@ -121,18 +121,19 @@
     
         var options = {
 	title: {
-		text: "Actual Achievement"              
+		text: "Overall Performance (2017-2020)"              
     },
     exportEnabled: true,
     animationEnabled: true,
 	data: [              
 	{
-		// Change type to "doughnut", "line", "splineArea", etc.
-        type: "column",
+		type: "column",
+		indexLabel: "{label} - {y}%",
 		dataPoints: [
-			{ label: "Skenario Gadai",  y: <%= ach[0].gadai  %>  },
-			{ label: "Skenario Telepon", y: <%= ach[0].telepon  %>  },
-			{ label: "Skenario Pelunasan", y: <%= ach[0].pelunasan  %>  }
+			{ label: "2017",  y: 64.26},
+			{ label: "2018", y: 54.51},
+			{ label: "2019", y: 65.58},
+			{ label: "2020", y: 80.37}
 		]
 	}
 	]
@@ -141,7 +142,7 @@
 
     var achievement_2 = {
         title: {
-            text: "Percentage Achievement"
+            text: "Touch Point Performance"
         },
         exportEnabled: true,
         animationEnabled: true,

@@ -101,7 +101,7 @@
 						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
 					</ul>
 				</div>
-				<div style="width: 100%; height: 600px;" class="chartContainer"  id="chartContainer">
+				<div style="width: 100%; height: 700px;" class="chartContainer"  id="chartContainer">
 					<div id="pivotContainer" style="padding-bottom: 30px;"></div>
 				</div>
 			</div>
@@ -115,22 +115,61 @@
 			var pivot = new Flexmonster({
 				container: "pivotContainer",
 				toolbar: true,
+				height: "100%",
 				report: {
 					dataSource: {
 						filename: "<%= baseurl() %>rawdatacsv/<%= dir %>/<%= filecsv %>"
 					},
-					slice: {
-						rows: [
-							{ uniqueName: "region" },
-							{ uniqueName: "area" }
+					"slice": {
+						"reportFilters": [
+							{
+								"uniqueName": "CABANG"
+							},
+							{
+								"uniqueName": "AREA"
+							}
 						],
-						columns: [
-							{ uniqueName: "[Measures]" }
+						"columns": [
+							{
+								"uniqueName": "[Measures]"
+							},
+							{
+								"uniqueName": "REGION"
+							}
 						],
-						measures: [
-							{ uniqueName: "Complete", aggregation: "count"}
+						"measures": [
+							{
+								"uniqueName": "Total Satpam (KONDISI 1)",
+								"aggregation": "average"
+							},
+							{
+								"uniqueName": "Total Penaksir (KONDISI 1)",
+								"aggregation": "average"
+							},
+							{
+								"uniqueName": "Total Kasir (KONDISI 1)",
+								"aggregation": "average"
+							}
 						]
-					}
+					},
+					"options": {
+						"viewType": "charts",
+						"grid": {
+							"showGrandTotals": "off"
+						},
+						"chart" : {
+							"type": "column",
+							"showDataLabels": true
+						}
+					},
+					"formats": [
+						{
+							"name": "",
+							"thousandsSeparator": "",
+							"decimalPlaces": 2,
+							"isPercent": false
+						}
+					],
 				},
 				licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
 			});

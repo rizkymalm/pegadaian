@@ -1,4 +1,4 @@
-<div class="cols-12 containt" style="margin: 20px 0;">
+<!-- <div class="cols-12 containt" style="margin: 20px 0;">
     <div class="headtitle trans" style="margin-bottom: 0;">
         <p class="size-head4 nopad">Success Chart</p>
         <p class="size-std nopad">Little title</p>
@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="cols-12 containt" style="margin: 20px 0;">
     <div class="headtitle trans" style="margin-bottom: 0;">
         <p class="size-head4 nopad">Success Chart</p>
@@ -26,42 +26,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://localhost:5000/js/jquery-3.4.1.min.js"></script>
 
-<script>
-    window.onload = function () {
-    var options = {
-        animationEnabled: true,
-        zoomEnabled: true,
-        title: {
-            text: "Achievement"
-        },
-        axisY: {
-            title: "Data",
-            includeZero: false
-        },
-        axisX: {
-            title: "Area"
-        },
-        data: [{
-            type: "column",
-            showInLegend: "true",
-            legendText: "Drag cursor to zoom",
-            indexLabelFontSize: 16,
-            dataPoints: [
-                { label: "PONTIANAK", y: 13 },	
-                { label: "BALIKPAPAN", y: 67 },	
-                { label: "SAMARINDA", y: 44 },
-                { label: "BANJARMASIN", y: 10 },	
-                { label: "TARAKAN", y: 67 }
-                
-            ]
-        }]
-    };
-    $("#chartContainer").CanvasJSChart(options);
-    }
-</script>
-<script src="http://localhost:5000/js/jquery.canvasjs.min.js"></script>
 
 
 
@@ -105,6 +70,17 @@
             ]
         });
     });
+
+    function getData(){
+        var jsondata = [
+                { label: "PONTIANAK", y: 13 },	
+                { label: "BALIKPAPAN", y: 67 },	
+                { label: "SAMARINDA", y: 44 },
+                { label: "BANJARMASIN", y: 10 },	
+                { label: "TARAKAN", y: 67 }
+            ];
+        return jsondata;
+    }
 </script>
 
     
