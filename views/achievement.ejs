@@ -91,15 +91,6 @@
                             </select>
                         </div>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Skenario</span>
-                            <select name="" id="skenario" class="size-std">
-                                <option value="all">-- Select Skenario --</option>
-                                <option value="gadai">GADAI</option>
-                                <option value="gadai">TELEPON CS</option>
-                                <option value="gadai">PELUNASAN GADAI</option>
-                            </select>
-                        </div>
-                        <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Year</span>
                             <select name="" id="year" class="size-std">
                                 <option value="all">-- Select Year --</option>
@@ -181,10 +172,17 @@ $(document).ready(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var Date = $('#year').val()
-        if(kanwil!="all"){
+        if(kanwil=="all"){
             $('#year').prop('disabled', false)
         }else{
             $('#year').prop('disabled', 'disabled')
+        }
+        if(Date=="all"){
+            $('#kanwil').prop('disabled', false)
+            $('#area').prop('disabled', false)
+        }else{
+            $('#kanwil').prop('disabled', 'disabled')
+            $('#area').prop('disabled', 'disabled')
         }
         // if(Date==""){
         //     var startDate = "all"
@@ -214,7 +212,7 @@ $(document).ready(function(){
                     animationEnabled: true,
                     zoomEnabled: true,
                     title: {
-                        text: "Achievement"
+                        text: "Overall Performance by Kanwil"
                     },
                     axisY: {
                         title: "Data",

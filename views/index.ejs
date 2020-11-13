@@ -65,7 +65,7 @@
             <div class="cols-12 containt" style="margin: 20px 0;">
 				<div style="width: 100%;">
 					<div class="chartbox">
-						<div id="achievement_2" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+						<div id="achievement_2" style="height: 370px; max-width: 100%; margin: 0px auto;"></div>
 					</div>
 				</div>
 			</div>
@@ -150,11 +150,16 @@
             type: "column",
             legendText: "{label} %",
             indexLabelFontSize: 16,
-            indexLabel: "{label} - {y}%",
+            indexLabel: "{y}%",
             dataPoints: [
-                { y: <%= percentageach[0].gadai %>, label: "Skenario Gadai" },
-                { y: <%= percentageach[0].telepon %>, label: "Skenario Telepon" },
-                { y: <%= percentageach[0].pelunasan %>, label: "Skenario Pelunasan" }
+                { y: 87.81, label: "Satpam" },
+                { y: 79.97, label: "Penaksir" },
+                { y: 78.17, label: "kasir" },
+				{ y: 53.58, label: "Telepon" },
+				{ y: 80.83, label: "Pengelola Agunan" },
+				{ y: 94.24, label: "Kebersihan" },
+				{ y: 71.4, label: "New Normal" },
+				{ y: 80.48, label: "RO" },
             ]
         }]
     };
