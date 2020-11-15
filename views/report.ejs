@@ -64,9 +64,9 @@
 		</div>
 		<div class="mainbox size-std column" style="overflow: unset;">
 			<div class="title-content size-std">
-				REPORT
+				DETAIL PERFORMANCE
 			</div>
-			<div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
+			<!-- <div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">Control</p>
 					<ul class="tab-image-setting nopad">
@@ -92,11 +92,10 @@
 						</div>
 					</div>
                 </div>
-			</div>
+			</div> -->
 			<div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Success Chart</p>
-					<p class="size-std nopad">Little title</p>
+					<p class="size-head4 nopad">Detail Attribute Performance</p>
 					<ul class="tab-image-setting nopad">
 						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
 					</ul>
@@ -118,15 +117,18 @@
 				height: "100%",
 				report: {
 					dataSource: {
-						filename: "<%= baseurl() %>rawdatacsv/<%= dir %>/<%= filecsv %>"
+						filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance4.csv"
 					},
 					"slice": {
 						"reportFilters": [
 							{
+								"uniqueName": "AREA"
+							},
+							{
 								"uniqueName": "CABANG"
 							},
 							{
-								"uniqueName": "AREA"
+								"uniqueName": "REGION"
 							}
 						],
 						"columns": [
@@ -134,20 +136,26 @@
 								"uniqueName": "[Measures]"
 							},
 							{
-								"uniqueName": "REGION"
+								"uniqueName": "Aspek"
+							},
+							{
+								"uniqueName": "Detail Aspek",
+								"filter": {
+									"exclude": [
+										"detail aspek.[total satpam (kondisi 1)]",
+										"detail aspek.[total penaksir (kondisi 1)]",
+										"detail aspek.[total kasir (kondisi 1)]",
+										"detail aspek.[total kebersihan (kondisi 1)]",
+										"detail aspek.[total frontliner (kondisi 1) negatif jadi dapat skor]",
+										"detail aspek.[total ro (kondisi 1)]",
+										"detail aspek.[total kegiatan ro (kondisi 1)]"
+									]
+								}
 							}
 						],
 						"measures": [
 							{
-								"uniqueName": "Total Satpam (KONDISI 1)",
-								"aggregation": "average"
-							},
-							{
-								"uniqueName": "Total Penaksir (KONDISI 1)",
-								"aggregation": "average"
-							},
-							{
-								"uniqueName": "Total Kasir (KONDISI 1)",
+								"uniqueName": "Total",
 								"aggregation": "average"
 							}
 						]
@@ -157,17 +165,14 @@
 						"grid": {
 							"showGrandTotals": "off"
 						},
-						"chart" : {
-							"type": "column",
+						"chart": {
 							"showDataLabels": true
 						}
 					},
 					"formats": [
 						{
 							"name": "",
-							"thousandsSeparator": "",
-							"decimalPlaces": 2,
-							"isPercent": false
+							"decimalPlaces": 2
 						}
 					],
 				},
