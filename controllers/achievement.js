@@ -75,6 +75,19 @@ function countSkenario(kanwil, type) {
     })
 }
 
+function avgSkenario(kanwil, type, skenario) { 
+    return new Promise(resolve =>{ 
+        if(type=="region"){
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_region="+kanwil
+        }else if(type=="area"){
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_area="+kanwil
+        }
+        db.query(sql, function(err,result){
+            resolve(result[0].avg)
+        })
+    })
+}
+
 exports.getAcvAjax = async function (req,res){
     var kanwil = req.query.kanwil
     var area = req.query.area
@@ -89,30 +102,32 @@ exports.getAcvAjax = async function (req,res){
     var jsonres = []
     for(var i=0;i<skenario.length;i++){
         var rand = await randomNumber(1, 100);
+        var arrskenario = ["Total_Satpam_KONDISI_1","Total_Penaksir_KONDISI_1","Total_Kasir_KONDISI_1","Total_Kebersihan_KONDISI_1","Total_New_Normal_KONDISI_1","Total_Pengelola_Agunan_KONDISI_1","Total_Frontliner"]
         if(typesql=="region"){
             var searchCount = await countSkenario(skenario[i].id_region, typesql)
             var count = 0
             var total = 0
-            for (let x = 0; x < searchCount.length; x++) {
-                if(searchCount[x].id_region==skenario[i].id_region){
-                    total = total+ searchCount[i].Total_Satpam_KONDISI_1
-                    count = count+1
-                }
+            for (let x = 0; x < arrskenario.length; x++) {
+                var searchAvg = await avgSkenario(skenario[i].id_region, typesql, arrskenario[x])
+                total = total + searchAvg
             }
-            var average = total / count
+            // for (let x = 0; x < searchCount.length; x++) {
+            //     if(searchCount[x].id_region==skenario[i].id_region){
+            //         total = total + searchCount[i].Total_Satpam_KONDISI_1
+            //         count = count+1
+            //     }
+            // }
+            var average = total / 7
             jsonres.push({nama: skenario[i].region, label: "KANWIL", achievement: average})
         }else if(typesql=="area"){
-            var searchCount = await countSkenario(skenario[i].id_area, typesql)
-            var count = 0
             var total = 0
-            for (let x = 0; x < searchCount.length; x++) {
-                if(searchCount[x].id_area==skenario[i].id_area){
-                    total = total+ searchCount[i].Total_Satpam_KONDISI_1
-                    count = count+1
-                }
+            for (let x = 0; x < arrskenario.length; x++) {
+                var searchAvg = await avgSkenario(skenario[i].id_area, typesql, arrskenario[x])
+                total = total + searchAvg
+                console.log(skenario[i].area_name+" = "+searchAvg)
             }
-            var average = total / count
-            jsonres.push({nama: skenario[i].area_name, label: "AREA", achievement: rand})
+            var average = total / 7
+            jsonres.push({nama: skenario[i].area_name, label: "AREA", achievement: average})
         }else if(typesql=="subbranch"){
             jsonres.push({nama: skenario[i].sub_branch_name, label: "SUB BRANCH", achievement: rand})
         }
