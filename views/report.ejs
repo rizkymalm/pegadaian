@@ -117,7 +117,7 @@
 				height: "100%",
 				report: {
 					dataSource: {
-						filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance4.csv"
+						filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
 					},
 					"slice": {
 						"reportFilters": [
@@ -136,26 +136,20 @@
 								"uniqueName": "[Measures]"
 							},
 							{
-								"uniqueName": "Aspek"
+								"uniqueName": "ASPEK"
 							},
 							{
-								"uniqueName": "Detail Aspek",
+								"uniqueName": "ELEMENT",
 								"filter": {
 									"exclude": [
-										"detail aspek.[total satpam (kondisi 1)]",
-										"detail aspek.[total penaksir (kondisi 1)]",
-										"detail aspek.[total kasir (kondisi 1)]",
-										"detail aspek.[total kebersihan (kondisi 1)]",
-										"detail aspek.[total frontliner (kondisi 1) negatif jadi dapat skor]",
-										"detail aspek.[total ro (kondisi 1)]",
-										"detail aspek.[total kegiatan ro (kondisi 1)]"
+										"ELEMENT.[Total Score]"
 									]
 								}
 							}
 						],
 						"measures": [
 							{
-								"uniqueName": "Total",
+								"uniqueName": "SCORE",
 								"aggregation": "average"
 							}
 						]

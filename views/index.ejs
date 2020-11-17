@@ -118,11 +118,24 @@
 </body>
 <script>
     window.onload = function () {
-    
-        var options = {
+	
+	CanvasJS.addColorSet("flexmonsterStyle",
+            [//colorSet Array
+            "#EE232C",
+            "#478EC8",
+            "#FF8F00",
+            "#4DBF5A",
+            "#E042A6",
+            "#59BBAB",
+            "#B96BDD",
+            "#EDC200"
+    ]);
+
+    var options = {
 	title: {
 		text: "Overall Performance (2017-2020)"              
-    },
+	},
+	colorSet: "flexmonsterStyle",
     exportEnabled: true,
     animationEnabled: true,
 	data: [              
@@ -143,7 +156,8 @@
     var achievement_2 = {
         title: {
             text: "Touch Point Performance"
-        },
+		},
+		colorSet: "flexmonsterStyle",
         exportEnabled: true,
         animationEnabled: true,
         data: [{

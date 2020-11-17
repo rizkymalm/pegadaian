@@ -208,8 +208,21 @@ $(document).ready(function(){
                     datanya.push({label: data[i].nama, y:data[i].achievement})
                 }
                 console.log(datanya)
+                CanvasJS.addColorSet("flexmonsterStyle",
+                [//colorSet Array
+
+                "#EE232C",
+                "#478EC8",
+                "#FF8F00",
+                "#4DBF5A",
+                "#E042A6",
+                "#59BBAB",
+                "#B96BDD",
+                "#EDC200"
+                ]);
                 var achievement_2 = {
                     animationEnabled: true,
+                    colorSet: "flexmonsterStyle",
                     title: {
                         text: "Overall Performance by Kanwil"
                     },
@@ -224,7 +237,7 @@ $(document).ready(function(){
                     data: [{
                         type: "column",
                         showInLegend: "true",
-                        legendText: "Drag cursor to zoom",
+                        legendText: "",
                         yValueFormatString:"#######.00",
                         indexLabel: "{y}",
                         dataPoints: datanya
