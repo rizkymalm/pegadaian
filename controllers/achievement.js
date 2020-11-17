@@ -1,6 +1,7 @@
 const db = require("../models/db");
 const moment = require("moment")
-const fs = require("fs")
+const fs = require("fs");
+const { type } = require("os");
 
 
 function getKanwil(){
@@ -44,17 +45,16 @@ function randomNumber(min, max) {
     })
 }  
 
-function getSkenario(kanwil, area) { 
+function getSkenario(kanwil, area, type) { 
     return new Promise(resolve =>{ 
-        if(kanwil=="all" && area=="all"){
+        if(type=="region"){
             var sql = "SELECT * FROM region"
-            var typesql = "region"
-        }else if(kanwil!="all" && area=="all"){
+        }else if(type=="area"){
             var sql = "SELECT * FROM area WHERE id_region="+kanwil
-            var typesql = "area"
-        }else if(kanwil!="all" && area!="all"){
+        }else if(type=="subbranch"){
             var sql = "SELECT * FROM sub_branch WHERE id_region="+kanwil+" AND id_area='"+area+"'"
-            var typesql = "subbranch"
+        }else if(type=="year"){
+            var sql = "SELECT * FROM region"
         }
         db.query(sql, async function(err,result){
             resolve(result)
@@ -81,6 +81,8 @@ function avgSkenario(kanwil, type, skenario) {
             var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_region="+kanwil
         }else if(type=="area"){
             var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_area="+kanwil
+        }else if(type=="year"){
+            var sql = "SELECT AVG(Total_Skor_) AS avg FROM skenario WHERE id_region="+kanwil+" AND tahun="+skenario
         }
         db.query(sql, function(err,result){
             resolve(result[0].avg)
@@ -91,14 +93,19 @@ function avgSkenario(kanwil, type, skenario) {
 exports.getAcvAjax = async function (req,res){
     var kanwil = req.query.kanwil
     var area = req.query.area
-    var skenario = await getSkenario(kanwil, area)
-    if(kanwil=="all" && area=="all"){
+    var date = req.query.date
+    if(kanwil=="all" && area=="all" && date=="all" && date!=2020){
         var typesql = "region"
     }else if(kanwil!="all" && area=="all"){
         var typesql = "area"
     }else if(kanwil!="all" && area!="all"){
         var typesql = "subbranch"
+    }else if(date!="all" && date!=2020){
+        var typesql = "year"
+    }else if(date==2020){
+        var typesql = "region"
     }
+    var skenario = await getSkenario(kanwil, area, typesql)
     var jsonres = []
     for(var i=0;i<skenario.length;i++){
         var rand = await randomNumber(1, 100);
@@ -111,12 +118,6 @@ exports.getAcvAjax = async function (req,res){
                 var searchAvg = await avgSkenario(skenario[i].id_region, typesql, arrskenario[x])
                 total = total + searchAvg
             }
-            // for (let x = 0; x < searchCount.length; x++) {
-            //     if(searchCount[x].id_region==skenario[i].id_region){
-            //         total = total + searchCount[i].Total_Satpam_KONDISI_1
-            //         count = count+1
-            //     }
-            // }
             var average = total / 7
             jsonres.push({nama: skenario[i].region, label: "KANWIL", achievement: average})
         }else if(typesql=="area"){
@@ -130,6 +131,11 @@ exports.getAcvAjax = async function (req,res){
             jsonres.push({nama: skenario[i].area_name, label: "AREA", achievement: average})
         }else if(typesql=="subbranch"){
             jsonres.push({nama: skenario[i].sub_branch_name, label: "SUB BRANCH", achievement: rand})
+        }else if(typesql=="year"){
+            var searchAvg = await avgSkenario(skenario[i].id_region, typesql, date)
+            console.log(date)
+            var average = searchAvg
+            jsonres.push({nama: skenario[i].region, label: "KANWIL", achievement: average})
         }
     }
     res.send(jsonres)

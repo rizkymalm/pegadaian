@@ -73,9 +73,9 @@
                 <form class="control">
                     <div class="list-control" style="border-bottom: none;">
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Region</span>
+                            <span class="size-std">Show By Kanwil</span>
                             <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
-                                <option value="all">-- Select Region --</option>
+                                <option value="all">-- Select Kanwil --</option>
                                 <% for(var i=0; i < kanwil.length; i++){ %>
                                     <option value="<%= kanwil[i].id_region %>"><%= kanwil[i].region %></option>
                                 <% } %>
@@ -210,7 +210,6 @@ $(document).ready(function(){
                 console.log(datanya)
                 var achievement_2 = {
                     animationEnabled: true,
-                    zoomEnabled: true,
                     title: {
                         text: "Overall Performance by Kanwil"
                     },
@@ -219,15 +218,15 @@ $(document).ready(function(){
                         includeZero: false
                     },
                     axisX: {
-                        title: "Area"
+                        title: "Area",
+                        labelFontSize: 12
                     },
                     data: [{
                         type: "column",
                         showInLegend: "true",
                         legendText: "Drag cursor to zoom",
-                        indexLabelFontSize: 16,
                         yValueFormatString:"#######.00",
-                        indexLabel: "{y}%",
+                        indexLabel: "{y}",
                         dataPoints: datanya
                     }]
                 };
@@ -280,6 +279,6 @@ $(document).ready(function(){
     })
 })
 </script>
-<script type="text/javascript" src="http://localhost:5000/js/jquery-3.4.1.min.js"></script>
-<script src="http://localhost:5000/js/jquery.canvasjs.min.js"></script>
+<script type="text/javascript" src="<%= baseurl() %>js/jquery-3.4.1.min.js"></script>
+<script src="<%= baseurl() %>js/jquery.canvasjs.min.js"></script>
 </html>
