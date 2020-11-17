@@ -81,6 +81,8 @@ function avgSkenario(kanwil, type, skenario) {
             var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_region="+kanwil
         }else if(type=="area"){
             var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_area="+kanwil
+        }else if(type=="subbranch"){
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_sub_branch="+kanwil
         }else if(type=="year"){
             var sql = "SELECT AVG(Total_Skor_) AS avg FROM skenario WHERE id_region="+kanwil+" AND tahun="+skenario
         }
@@ -130,7 +132,14 @@ exports.getAcvAjax = async function (req,res){
             var average = total / 7
             jsonres.push({nama: skenario[i].area_name, label: "AREA", achievement: average})
         }else if(typesql=="subbranch"){
-            jsonres.push({nama: skenario[i].sub_branch_name, label: "SUB BRANCH", achievement: rand})
+            var total = 0
+            for (let x = 0; x < arrskenario.length; x++) {
+                var searchAvg = await avgSkenario(skenario[i].id_sub_branch, typesql, arrskenario[x])
+                total = total + searchAvg
+                console.log(skenario[i].area_name+" = "+searchAvg)
+            }
+            var average = total / 7
+            jsonres.push({nama: skenario[i].sub_branch_name, label: "SUB BRANCH", achievement: average})
         }else if(typesql=="year"){
             var searchAvg = await avgSkenario(skenario[i].id_region, typesql, date)
             console.log(date)
