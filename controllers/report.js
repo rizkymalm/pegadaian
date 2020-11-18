@@ -151,6 +151,9 @@ exports.getReportAjax = async function (req,res){
     }else if(kanwil!="all" && area=="all"){
         var typesql = "area"
         var skenario = await getAreaByIdRegion(kanwil)
+    }else if(kanwil=="all" && area!="all"){
+        var typesql = "area"
+        var skenario = await getKanwilById(kanwil)
     }else if(kanwil!="all" && area!="all"){
         var typesql = "subbranch"
         var skenario = await getBranchByIdArea(area)
@@ -161,6 +164,9 @@ exports.getReportAjax = async function (req,res){
     }else if(aspek!="all" && element=="all"){
         var typeaspek = "ELEMENT"
         var skenarioAspek = await getElementByIdAspek(aspek)
+    }else if(aspek=="all" && element!="all"){
+        var typeaspek = "ASPEK"
+        var skenarioAspek = await getAspekById(aspek)
     }else if(aspek!="all" && element!="all"){
         var typeaspek = "ELEMENT"
         var skenarioAspek = await getElementByIdElement(aspek)
@@ -196,6 +202,8 @@ exports.getReportAjax = async function (req,res){
 exports.getElementByAspek = (req,res) => {
     if(req.params.aspek!="all"){
         var sql = "SELECT * FROM element WHERE id_aspek="+req.params.aspek
+    }else{
+        var sql = "SELECT * FROM element"
     }
     console.log(sql)
     db.query(sql, (err,results) => {
