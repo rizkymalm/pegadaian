@@ -50,6 +50,15 @@
 		.unused{
 			background: #e6e6e6;
 		}
+		#fm-pivot-view .fm-data-label{
+			font-size: 18px !important;
+		}
+		#fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
+			display: none !important;
+		}
+		#fm-pivot-view .fm-axis text{
+			font-size: 18px !important;
+		}
 	</style>
 </head>
 <%- include ('./partials/header') %>
@@ -85,12 +94,24 @@
                             <span class="size-std">Show By Area</span>
                             <select name="" id="area" class="size-std">
                                 <option value="all">-- All --</option>
-                                <% for(var i=0; i < area.length; i++){ %>
-                                    <option value="<%= area[i].id_area %>"><%= area[i].area_name %></option>
+                            </select>
+						</div>
+						<div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Aspek</span>
+                            <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
+                                <option value="all">-- All --</option>
+                                <% for(var i=0; i < aspek.length; i++){ %>
+                                    <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
                                 <% } %>
                             </select>
-                        </div>
-                        <div class="list-control-box spc-rl">
+						</div>
+						<div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Element</span>
+                            <select name="" id="element" class="size-std">
+                                <option value="all">-- All --</option>
+                            </select>
+						</div>
+                        <!-- <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Year</span>
                             <select name="" id="year" class="size-std">
                                 <option value="all">-- Select Year --</option>
@@ -99,7 +120,7 @@
                                 <option value="2019">2019</option>
                                 <option value="2020">2020</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="list-control-box size-std spc-rl">
                             <!-- <button type="submit" class="myButton-submit">Show</button> -->
                             <button type="reset" class="myButton-submit">Clear</button>
@@ -157,49 +178,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".control").change(function(){
-        var kanwil = $('#kanwil').val()
-        var area = $('#area').val()
-        var Date = $('#year').val()
-        if(kanwil=="all"){
-            $('#year').prop('disabled', false)
-        }else{
-            $('#year').prop('disabled', 'disabled')
-        }
-        if(Date=="all"){
-            $('#kanwil').prop('disabled', false)
-            $('#area').prop('disabled', false)
-        }else{
-            $('#kanwil').prop('disabled', 'disabled')
-            $('#area').prop('disabled', 'disabled')
-		}
-				
-		// alert('asdsd')
-		var data = "kanwil="+kanwil+"&date="+Date+"&area="+area
-		$.ajax({
-            url: "<%= baseurl() %>report/content/",
-            type: "GET",
-            data: data,
-            cache: false,
-            beforeSend: function(loading){
-                $('.loader').show()
-            },success: function(data){
-				$('.loader').hide()
-				var areaFilter = []
-				var branchFilter = []
-				for (let i = 0; i < data.length; i++) {
-					if(data[0].label=="AREA"){
-						areaFilter.push("AREA.["+data[i].nama+"]")
-					}
-					if(data[0].label=="BRANCH"){
-						branchFilter.push("CABANG.["+data[i].nama+"]")
-					}
-				}
-				console.log(areaFilter)
 				var pivot = new Flexmonster({
 					container: "pivotContainer",
 					toolbar: false,
-					filter: false,
 					height: "100%",
 					report: {
 						dataSource: {
@@ -208,16 +189,10 @@ $(document).ready(function(){
 						"slice": {
 							"reportFilters": [
 								{
-									"uniqueName": "AREA",
-									"filter": {
-										"members": areaFilter
-									}
+									"uniqueName": "AREA"
 								},
 								{
-									"uniqueName": "CABANG",
-									"filter": {
-										"members": branchFilter
-									}
+									"uniqueName": "CABANG"
 								}
 							],
 							"columns": [
@@ -248,6 +223,135 @@ $(document).ready(function(){
 									"aggregation": "average"
 								}
 							]
+						},
+						"options": {
+							"viewType": "charts",
+							"grid": {
+								"showGrandTotals": "off",
+								"showReportFiltersArea": false
+							},
+							"chart": {
+								"showDataLabels": true,
+								"showReportFiltersArea": false
+							}
+						},
+						"formats": [
+							{
+								"name": "",
+								"decimalPlaces": 2
+							}
+						],
+					},
+					licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
+				});
+	$(".control").change(function(){
+        var kanwil = $('#kanwil').val()
+		var area = $('#area').val()
+		var aspek = $('#aspek').val()
+		var element = $('#element').val()
+        if(kanwil=="all"){
+            $('#year').prop('disabled', false)
+        }else{
+            $('#year').prop('disabled', 'disabled')
+        }
+		var data = "kanwil="+kanwil+"&area="+area+"&aspek="+aspek+"&element="+element
+		$.ajax({
+            url: "<%= baseurl() %>report/content/",
+            type: "GET",
+            data: data,
+            cache: false,
+            beforeSend: function(loading){
+                $('.loader').show()
+            },success: function(data){
+				$('.loader').hide()
+				var areaFilter = []
+				var branchFilter = []
+				var aspekFilter = []
+				var elementFilter = []
+				for (let i = 0; i < data[0].length; i++) {
+					if(data[0][0].label=="AREA"){
+						areaFilter.push("AREA.["+data[0][i].nama+"]")
+					}
+					if(data[0][0].label=="BRANCH"){
+						branchFilter.push("CABANG.["+data[0][i].nama+"]")
+					}
+				}
+				if(data[0][0].label=="AREA"){
+					var rowss = [{"uniqueName": "AREA","filter": {"members": areaFilter}}]
+				}
+				if(data[0][0].label=="BRANCH"){
+					var rowss = [{"uniqueName": "CABANG","filter": {"members": branchFilter}}]
+				}
+
+
+				for (let x = 0; x < data[1].length; x++) {
+					if(data[1][0].label=="ASPEK"){
+						aspekFilter.push("ASPEK.["+data[1][x].nama+"]")
+					}
+					if(data[1][0].label=="ELEMENT"){
+						elementFilter.push("ELEMENT.["+data[1][x].nama+"]")
+					}
+				}
+				if(data[1][0].label=="ELEMENT") {
+					var expand = true
+				}else{
+					var expand = false
+				}
+				console.log(elementFilter)
+				// console.log(areaFilter)
+				var pivot = new Flexmonster({
+					container: "pivotContainer",
+					toolbar: false,
+					height: "100%",
+					report: {
+						dataSource: {
+							filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+						},
+						"slice": {
+							"reportFilters": [
+								{
+									"uniqueName": "AREA",
+									"filter": {
+										"members": areaFilter
+									}
+								},
+								{
+									"uniqueName": "CABANG",
+									"filter": {
+										"members": branchFilter
+									}
+								}
+							],
+							"columns": [
+								{
+									"uniqueName": "[Measures]"
+								},
+								{
+									"uniqueName": "ASPEK",
+									"filter": {
+										"members": aspekFilter
+									}
+								},
+								{
+									"uniqueName": "ELEMENT",
+									"filter": {
+										"members": elementFilter
+									},
+									"sortOrder": [
+										"FRONTLINER",
+										"Kegiatan Frontliner",
+										"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
+										"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
+									]
+								}
+							],
+							"measures": [
+								{
+									"uniqueName": "SCORE",
+									"aggregation": "average"
+								}
+							],
+							"expands": { "expandAll": expand },
 						},
 						"options": {
 							"viewType": "charts",

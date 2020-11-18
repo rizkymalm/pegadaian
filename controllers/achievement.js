@@ -150,8 +150,6 @@ exports.getAcvAjax = async function (req,res){
 exports.getAreaByKanwil = (req,res) => {
     if(req.params.kanwil!="all"){
         var sql = "SELECT * FROM area WHERE id_region="+req.params.kanwil
-    }else{
-        var sql = "SELECT * FROM area"
     }
     db.query(sql, (err,results) => {
         if(err){

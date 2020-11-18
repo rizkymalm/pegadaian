@@ -26,6 +26,17 @@ function getAreaByKanwil(){
         }
     })
 }
+
+function getElementByAspek(){
+    var aspek = $('#aspek').val()
+    $.ajax({
+        cache: true,
+        url: "<%= baseurl() %>report/elementbyaspek/"+aspek,
+        success: function(select){
+            $('#element').html(select);
+        }
+    })
+}
 </script>
 <script type="text/javascript" src="<%= baseurl() %>js/resize.window.js"></script>
 <script type="text/javascript" src="<%= baseurl() %>js/animate.js"></script>

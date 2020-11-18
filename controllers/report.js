@@ -17,20 +17,106 @@ function getArea(){
         })
     })
 }
+
+function getAspek(){
+    return new Promise(resolve =>{
+        db.query("SELECT * FROM aspek", function(err,result){
+            resolve(result)
+        })
+    })
+}
+
+
+function getKanwilById(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM region WHERE id_region="+id
+        }else{
+            var sql = "SELECT * FROM region"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+function getAreaByIdRegion(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM area WHERE id_region="+id
+        }else{
+            var sql = "SELECT * FROM area"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+
+function getBranchByIdArea(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM sub_branch WHERE id_area="+id
+        }else{
+            var sql = "SELECT * FROM sub_branch"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+function getAspekById(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM aspek WHERE id_aspek="+id
+        }else{
+            var sql = "SELECT * FROM aspek"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+function getElementByIdAspek(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM element WHERE id_aspek="+id
+        }else{
+            var sql = "SELECT * FROM element"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+
+
+function getElementByIdElement(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM element WHERE id_element="+id
+        }else{
+            var sql = "SELECT * FROM element"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+
 exports.getReport = async function(req,res){
     if(req.session.email==undefined){
         res.redirect("../login")
     }else{
         var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
         var kanwil = await getKanwil()
-        var area = await getArea()
+        var aspek = await getAspek()
         db.query("SELECT * FROM sub_branch WHERE id_sub_branch=?", login.subbranch, function(err,sub_branch){
             res.render("report", {
                 login: login,
                 moment: moment,
                 subBranch: sub_branch,
                 kanwil: kanwil,
-                area: area
+                aspek: aspek
             })
         })
     }
@@ -57,31 +143,69 @@ function getSkenario(kanwil, area, type) {
 exports.getReportAjax = async function (req,res){
     var kanwil = req.query.kanwil
     var area = req.query.area
-    var date = req.query.date
-    if(kanwil=="all" && area=="all" && date=="all" && date!=2020){
+    var aspek = req.query.aspek
+    var element = req.query.element
+    if(kanwil=="all" && area=="all"){
         var typesql = "region"
+        var skenario = await getKanwilById(kanwil)
     }else if(kanwil!="all" && area=="all"){
         var typesql = "area"
+        var skenario = await getAreaByIdRegion(kanwil)
     }else if(kanwil!="all" && area!="all"){
         var typesql = "subbranch"
-    }else if(date!="all" && date!=2020){
-        var typesql = "year"
-    }else if(date==2020){
-        var typesql = "region"
+        var skenario = await getBranchByIdArea(area)
     }
-    var skenario = await getSkenario(kanwil, area, typesql)
-    var jsonres = []
+    if(aspek=="all" && element=="all"){
+        var typeaspek = "ASPEK"
+        var skenarioAspek = await getAspekById(aspek)
+    }else if(aspek!="all" && element=="all"){
+        var typeaspek = "ELEMENT"
+        var skenarioAspek = await getElementByIdAspek(aspek)
+    }else if(aspek!="all" && element!="all"){
+        var typeaspek = "ELEMENT"
+        var skenarioAspek = await getElementByIdElement(aspek)
+    }
+    // var skenario = await getSkenario(kanwil, area, typesql)
+    var dataExport = []
+    var jsonkanwil = []
+    var jsonaspek = []
     for(var i=0;i<skenario.length;i++){
         if(typesql=="region"){
-            jsonres.push({nama: skenario[i].region, label: "KANWIL"})
+            jsonkanwil.push({nama: skenario[i].region, label: "KANWIL"})
         }else if(typesql=="area"){
-            jsonres.push({nama: skenario[i].area_name, label: "AREA"})
+            jsonkanwil.push({nama: skenario[i].area_name, label: "AREA"})
         }else if(typesql=="subbranch"){
-            jsonres.push({nama: skenario[i].sub_branch_name, label: "BRANCH"})
-        }else if(typesql=="year"){
-            jsonres.push({nama: skenario[i].region, label: "YEAR"})
+            jsonkanwil.push({nama: skenario[i].sub_branch_name, label: "BRANCH"})
         }
     }
-    console.log(skenario)
-    res.send(jsonres)
+    for(var i=0;i<skenarioAspek.length;i++){
+        if(typeaspek=="ASPEK"){
+            jsonaspek.push({nama: skenarioAspek[i].label_aspek, label: "ASPEK"})
+        }else if(typeaspek=="ELEMENT"){
+            jsonaspek.push({nama: skenarioAspek[i].label_element, label: "ELEMENT"})
+        }else if(typeaspek=="ELEMENT"){
+            jsonaspek.push({nama: skenarioAspek[i].label_element, label: "ELEMENT"})
+        }
+    }
+    dataExport.push(jsonkanwil)
+    dataExport.push(jsonaspek)
+    res.send(dataExport)
+}
+
+
+exports.getElementByAspek = (req,res) => {
+    if(req.params.aspek!="all"){
+        var sql = "SELECT * FROM element WHERE id_aspek="+req.params.aspek
+    }
+    console.log(sql)
+    db.query(sql, (err,results) => {
+        if(err){
+            res.send("error")
+        }else{
+            res.render("partials/elementbyaspek", {
+                result: results
+            })
+        }
+
+    })
 }
