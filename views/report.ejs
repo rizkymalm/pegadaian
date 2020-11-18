@@ -66,6 +66,48 @@
 			<div class="title-content size-std">
 				DETAIL PERFORMANCE
 			</div>
+			<div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
+                <div class="headtitle trans" style="margin-bottom: 0;">
+                    <p class="size-head4 nopad">Control</p>
+                </div>
+                <form class="control">
+                    <div class="list-control" style="border-bottom: none;">
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Kanwil</span>
+                            <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
+                                <option value="all">-- Select Kanwil --</option>
+                                <% for(var i=0; i < kanwil.length; i++){ %>
+                                    <option value="<%= kanwil[i].id_region %>"><%= kanwil[i].region %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Area</span>
+                            <select name="" id="area" class="size-std">
+                                <option value="all">-- All --</option>
+                                <% for(var i=0; i < area.length; i++){ %>
+                                    <option value="<%= area[i].id_area %>"><%= area[i].area_name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Year</span>
+                            <select name="" id="year" class="size-std">
+                                <option value="all">-- Select Year --</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </div>
+                        <div class="list-control-box size-std spc-rl">
+                            <!-- <button type="submit" class="myButton-submit">Show</button> -->
+                            <button type="reset" class="myButton-submit">Clear</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
 			<!-- <div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">Control</p>
@@ -100,6 +142,9 @@
 						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
 					</ul>
 				</div>
+				<div class="loader" style="display: none;">
+                    <span class="loader-helper"></span><img src="<%= baseurl() %>images/icon/loader.gif" alt="">
+                </div>
 				<div style="width: 100%; height: 700px;" class="chartContainer"  id="chartContainer">
 					<div id="pivotContainer" style="padding-bottom: 30px;"></div>
 				</div>
@@ -109,68 +154,127 @@
 </div>
 </body>
 <%- include ('./partials/footer') %>
-<script src="<%= baseurl() %>plugin/flexmonster/flexmonster.js"></script>
+
 <script type="text/javascript">
-			var pivot = new Flexmonster({
-				container: "pivotContainer",
-				toolbar: true,
-				height: "100%",
-				report: {
-					dataSource: {
-						filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
-					},
-					"slice": {
-						"reportFilters": [
-							{
-								"uniqueName": "KANWIL"
-							},
-							{
-								"uniqueName": "AREA"
-							},
-							{
-								"uniqueName": "CABANG"
-							}
-						],
-						"columns": [
-							{
-								"uniqueName": "[Measures]"
-							},
-							{
-								"uniqueName": "ASPEK"
-							},
-							{
-								"uniqueName": "ELEMENT",
-								"filter": {
-									"exclude": [
-										"ELEMENT.[Total Score]"
+$(document).ready(function(){
+	$(".control").change(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        var Date = $('#year').val()
+        if(kanwil=="all"){
+            $('#year').prop('disabled', false)
+        }else{
+            $('#year').prop('disabled', 'disabled')
+        }
+        if(Date=="all"){
+            $('#kanwil').prop('disabled', false)
+            $('#area').prop('disabled', false)
+        }else{
+            $('#kanwil').prop('disabled', 'disabled')
+            $('#area').prop('disabled', 'disabled')
+		}
+				
+		// alert('asdsd')
+		var data = "kanwil="+kanwil+"&date="+Date+"&area="+area
+		$.ajax({
+            url: "<%= baseurl() %>report/content/",
+            type: "GET",
+            data: data,
+            cache: false,
+            beforeSend: function(loading){
+                $('.loader').show()
+            },success: function(data){
+				$('.loader').hide()
+				var areaFilter = []
+				var branchFilter = []
+				for (let i = 0; i < data.length; i++) {
+					if(data[0].label=="AREA"){
+						areaFilter.push("AREA.["+data[i].nama+"]")
+					}
+					if(data[0].label=="BRANCH"){
+						branchFilter.push("CABANG.["+data[i].nama+"]")
+					}
+				}
+				console.log(areaFilter)
+				var pivot = new Flexmonster({
+					container: "pivotContainer",
+					toolbar: false,
+					filter: false,
+					height: "100%",
+					report: {
+						dataSource: {
+							filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+						},
+						"slice": {
+							"reportFilters": [
+								{
+									"uniqueName": "AREA",
+									"filter": {
+										"members": areaFilter
+									}
+								},
+								{
+									"uniqueName": "CABANG",
+									"filter": {
+										"members": branchFilter
+									}
+								}
+							],
+							"columns": [
+								{
+									"uniqueName": "[Measures]"
+								},
+								{
+									"uniqueName": "ASPEK"
+								},
+								{
+									"uniqueName": "ELEMENT",
+									"filter": {
+										"exclude": [
+											"ELEMENT.[Total Score]"
+										]
+									},
+									"sortOrder": [
+										"FRONTLINER",
+										"Kegiatan Frontliner",
+										"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
+										"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
 									]
 								}
+							],
+							"measures": [
+								{
+									"uniqueName": "SCORE",
+									"aggregation": "average"
+								}
+							]
+						},
+						"options": {
+							"viewType": "charts",
+							"grid": {
+								"showGrandTotals": "off",
+								"showReportFiltersArea": false
+							},
+							"chart": {
+								"showDataLabels": true,
+								"showReportFiltersArea": false
+							}
+						},
+						"formats": [
+							{
+								"name": "",
+								"decimalPlaces": 2
 							}
 						],
-						"measures": [
-							{
-								"uniqueName": "SCORE",
-								"aggregation": "average"
-							}
-						]
 					},
-					"options": {
-						"viewType": "charts",
-						"grid": {
-							"showGrandTotals": "off"
-						},
-						"chart": {
-							"showDataLabels": true
-						}
-					},
-					"formats": [
-						{
-							"name": "",
-							"decimalPlaces": 2
-						}
-					],
-				},
-				licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
-			});
+					licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
+				});
+            }
+        })
+		return false
+	})
+})
+			
 </script>
+<script src="<%= baseurl() %>plugin/flexmonster/flexmonster.js"></script>
 </html>

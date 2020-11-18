@@ -127,7 +127,6 @@ exports.getAcvAjax = async function (req,res){
             for (let x = 0; x < arrskenario.length; x++) {
                 var searchAvg = await avgSkenario(skenario[i].id_area, typesql, arrskenario[x])
                 total = total + searchAvg
-                console.log(skenario[i].area_name+" = "+searchAvg)
             }
             var average = total / 7
             jsonres.push({nama: skenario[i].area_name, label: "AREA", achievement: average})
@@ -136,15 +135,13 @@ exports.getAcvAjax = async function (req,res){
             for (let x = 0; x < arrskenario.length; x++) {
                 var searchAvg = await avgSkenario(skenario[i].id_sub_branch, typesql, arrskenario[x])
                 total = total + searchAvg
-                console.log(skenario[i].area_name+" = "+searchAvg)
             }
             var average = total / 7
-            jsonres.push({nama: skenario[i].sub_branch_name, label: "SUB BRANCH", achievement: average})
+            jsonres.push({nama: skenario[i].sub_branch_name, label: "BRANCH", achievement: average})
         }else if(typesql=="year"){
             var searchAvg = await avgSkenario(skenario[i].id_region, typesql, date)
-            console.log(date)
             var average = searchAvg
-            jsonres.push({nama: skenario[i].region, label: "KANWIL", achievement: average})
+            jsonres.push({nama: skenario[i].region, label: "YEAR", achievement: average})
         }
     }
     res.send(jsonres)
@@ -157,7 +154,6 @@ exports.getAreaByKanwil = (req,res) => {
         var sql = "SELECT * FROM area"
     }
     db.query(sql, (err,results) => {
-        console.log(sql)
         if(err){
             res.send("error")
         }else{

@@ -100,14 +100,6 @@
                                 <option value="2020">2020</option>
                             </select>
                         </div>
-                        <!-- <div class="list-control-box size-std spc-rl">
-                            <span class="size-std">Show By Date </span>
-                            <input type="date" name="" id="setDate" onchange="setEndDate()">
-                        </div>
-                        <div class="list-control-box size-std spc-rl endDate" style="display: none;">
-                            <span class="size-std">Set end date </span>
-                            <input type="date" name="" id="endDate">
-                        </div>-->
                         <div class="list-control-box size-std spc-rl">
                             <button type="submit" class="myButton-submit">Show</button>
                             <button type="reset" class="myButton-submit">Clear</button>
@@ -142,8 +134,8 @@
             </div> -->
             <div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Success Chart</p>
-					<p class="size-std nopad">Little title</p>
+					<p class="size-head4 nopad">&nbsp;</p>
+					<p class="size-std nopad">&nbsp;</p>
 					<ul class="tab-image-setting nopad">
 						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
 					</ul>
@@ -157,16 +149,6 @@
 </body>
 <%- include ('./partials/footer') %>
 <script>
-function getAreaByKanwil(){
-    var kanwil = $('#kanwil').val()
-    $.ajax({
-        cache: true,
-        url: "<%= baseurl() %>acv/areabykanwil/"+kanwil,
-        success: function(select){
-            $('#area').html(select);
-        }
-    })
-}
 $(document).ready(function(){
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
@@ -204,6 +186,7 @@ $(document).ready(function(){
             },success: function(data){
                 $('.loader').hide()
                 var datanya = []
+                var type = data[0].label
                 for (let i = 0; i < data.length; i++) {
                     datanya.push({label: data[i].nama, y:data[i].achievement})
                 }
@@ -224,68 +207,24 @@ $(document).ready(function(){
                     animationEnabled: true,
                     colorSet: "flexmonsterStyle",
                     title: {
-                        text: "Overall Performance by Kanwil"
+                        text: "Overall Performance by "+type
                     },
                     axisY: {
-                        title: "Data",
-                        includeZero: false
+                        title: " ",
+                        minimum: 0
                     },
                     axisX: {
-                        title: "Area",
+                        title: " ",
                         labelFontSize: 12
                     },
                     data: [{
                         type: "column",
-                        showInLegend: "true",
-                        legendText: "",
                         yValueFormatString:"#######.00",
                         indexLabel: "{y}",
                         dataPoints: datanya
                     }]
                 };
                 $("#chartContainer").CanvasJSChart(achievement_2);
-
-                // var chart = new CanvasJS.Chart("chartContainer",{
-                //     animationEnabled: true,
-                //     zoomEnabled: true,
-                //     title: {
-                //         text: "Achievement"
-                //     },
-                //     axisY: {
-                //         title: "Data",
-                //         includeZero: false,
-                //         maximum: 100
-                //     },
-                //     axisX: {
-                //         title: "Area"
-                //     },
-                //     data: [{
-                //         type: "column",
-                //         showInLegend: "true",
-                //         legendText: "Drag cursor to zoom",
-                //         indexLabelFontSize: 16,
-                //         yValueFormatString:"#######.00",
-                //         indexLabel: "{y}%",
-                //         dataPoints: datanya
-                //     }]
-                // });
-                // $.getJSON("<%= baseurl() %>js/achievementajax2.js", function(data){
-                //     var medan = 0
-                //     var kanwil = ["KANWIL MANADO","KANWIL BANDUNG","KANWIL JAKARTA 1","KANWIL PEKANBARU","KANWIL PALEMBANG","KANWIL SEMARANG","KANWIL JAKARTA 2","KANWIL BALIKPAPAN","KANWIL SURABAYA","KANWIL MAKASAR","KANWIL DENPASAR","KANWIL MEDAN"]
-                //     for (let x = 0; x < kanwil.length; x++) {
-                //         var count = 0
-                //         var total = 0
-                //         for (let i = 0; i < data.length; i++) {
-                //             if(data[i]["REGION"]==kanwil[x]){
-                //                 total = total+ data[i]["Total Satpam (KONDISI 1)"]
-                //                 count=count+1
-                //             }
-                //         }
-                //         var average = total / count
-                //         datanya.push({label: kanwil[x], y:average})
-                //     }
-                //     chart.render()
-                // })
             }
         })
         return false;

@@ -16,6 +16,16 @@ $(document).ready(function(){
         "height" : $('.square').width() +"px"
     })
 })
+function getAreaByKanwil(){
+    var kanwil = $('#kanwil').val()
+    $.ajax({
+        cache: true,
+        url: "<%= baseurl() %>acv/areabykanwil/"+kanwil,
+        success: function(select){
+            $('#area').html(select);
+        }
+    })
+}
 </script>
 <script type="text/javascript" src="<%= baseurl() %>js/resize.window.js"></script>
 <script type="text/javascript" src="<%= baseurl() %>js/animate.js"></script>
