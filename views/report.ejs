@@ -249,16 +249,16 @@ $(document).ready(function(){
 		var area = $('#area').val()
 		var aspek = $('#aspek').val()
 		var element = $('#element').val()
-        // if(kanwil!="all"){
-        //     $('#area').prop('disabled', false)
-        // }else{
-        //     $('#area').prop('disabled', 'disabled')
-		// }
-		// if(aspek!="all"){
-        //     $('#element').prop('disabled', false)
-        // }else{
-        //     $('#element').prop('disabled', 'disabled')
-		// }
+        if(kanwil!="all"){
+            $('#area').prop('disabled', false)
+        }else{
+            $('#area').prop('disabled', 'disabled')
+		}
+		if(aspek!="all"){
+            $('#element').prop('disabled', false)
+        }else{
+            $('#element').prop('disabled', 'disabled')
+		}
 		console.log(aspek+", "+element)
 		var data = "kanwil="+kanwil+"&area="+area+"&aspek="+aspek+"&element="+element
 		$.ajax({
