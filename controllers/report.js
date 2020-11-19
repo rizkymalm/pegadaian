@@ -20,7 +20,7 @@ function getArea(){
 
 function getAspek(){
     return new Promise(resolve =>{
-        db.query("SELECT * FROM aspek", function(err,result){
+        db.query("SELECT * FROM aspek WHERE id_aspek NOT IN(9)", function(err,result){
             resolve(result)
         })
     })
@@ -67,9 +67,9 @@ function getBranchByIdArea(id){
 function getAspekById(id){
     return new Promise(resolve =>{
         if(id!="all" && id!=""){
-            var sql = "SELECT * FROM aspek WHERE id_aspek="+id
+            var sql = "SELECT * FROM aspek WHERE id_aspek=9"
         }else{
-            var sql = "SELECT * FROM aspek"
+            var sql = "SELECT * FROM aspek WHERE id_aspek=9"
         }
         db.query(sql, function(err,result){
             resolve(result)
@@ -104,9 +104,9 @@ function getElementByIdElement(id){
 }
 
 exports.getReport = async function(req,res){
-    if(req.session.email==undefined){
-        res.redirect("../login")
-    }else{
+    // if(req.session.email==undefined){
+    //     res.redirect("../login")
+    // }else{
         var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
         var kanwil = await getKanwil()
         var aspek = await getAspek()
@@ -119,7 +119,7 @@ exports.getReport = async function(req,res){
                 aspek: aspek
             })
         })
-    }
+    // }
 }
 
 function getSkenario(kanwil, area, type) { 
@@ -158,16 +158,16 @@ exports.getReportAjax = async function (req,res){
         var typesql = "subbranch"
         var skenario = await getBranchByIdArea(area)
     }
-    if(aspek=="all" && element=="all"){
+    if(aspek==9 && element=="all"){
         var typeaspek = "ASPEK"
-        var skenarioAspek = await getAspekById(aspek)
-    }else if(aspek!="all" && element=="all"){
+        var skenarioAspek = await getElementByIdAspek(9)
+    }else if(aspek!=9 && element=="all"){
         var typeaspek = "ELEMENT"
         var skenarioAspek = await getElementByIdAspek(aspek)
-    }else if(aspek=="all" && element!="all"){
+    }else if(aspek==9 && element!="all"){
         var typeaspek = "ASPEK"
         var skenarioAspek = await getAspekById(aspek)
-    }else if(aspek!="all" && element!="all"){
+    }else if(aspek!=9 && element!="all"){
         var typeaspek = "ELEMENT"
         var skenarioAspek = await getElementByIdElement(element)
     }
@@ -186,7 +186,7 @@ exports.getReportAjax = async function (req,res){
     }
     for(var i=0;i<skenarioAspek.length;i++){
         if(typeaspek=="ASPEK"){
-            jsonaspek.push({nama: skenarioAspek[i].label_aspek, label: "ASPEK"})
+            jsonaspek.push({nama: skenarioAspek[i].label_element, label: "ASPEK"})
         }else if(typeaspek=="ELEMENT"){
             jsonaspek.push({nama: skenarioAspek[i].label_element, label: "ELEMENT"})
         }else if(typeaspek=="ELEMENT"){
@@ -201,12 +201,11 @@ exports.getReportAjax = async function (req,res){
 
 
 exports.getElementByAspek = (req,res) => {
-    if(req.params.aspek!="all"){
+    if(req.params.aspek!=9){
         var sql = "SELECT * FROM element WHERE id_aspek="+req.params.aspek
     }else{
-        var sql = "SELECT * FROM element"
+        var sql = "SELECT * FROM element WHERE id_aspek=10"
     }
-    console.log(sql)
     db.query(sql, (err,results) => {
         if(err){
             res.send("error")

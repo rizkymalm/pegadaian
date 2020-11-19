@@ -99,7 +99,7 @@
 						<div class="list-control-box spc-rl">
                             <span class="size-std">Show By Aspek</span>
                             <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
-                                <option value="all">-- All --</option>
+                                <option value="9">-- All --</option>
                                 <% for(var i=0; i < aspek.length; i++){ %>
                                     <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
                                 <% } %>
@@ -111,16 +111,6 @@
                                 <option value="all">-- All --</option>
                             </select>
 						</div>
-                        <!-- <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Year</span>
-                            <select name="" id="year" class="size-std">
-                                <option value="all">-- Select Year --</option>
-                                <option value="2017">2017</option>
-                                <option value="2018">2018</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
-                            </select>
-                        </div> -->
                         <div class="list-control-box size-std spc-rl">
                             <!-- <button type="submit" class="myButton-submit">Show</button> -->
                             <button type="reset" class="myButton-submit">Clear</button>
@@ -200,20 +190,37 @@ $(document).ready(function(){
 									"uniqueName": "[Measures]"
 								},
 								{
-									"uniqueName": "ASPEK"
+									"uniqueName": "ASPEK",
+									"sortOrder": [
+										"frontliner",
+										"kasir",
+										"kebersihan",
+										"new normal",
+										"penaksir",
+										"pengelola agunan",
+										"ro",
+										"satpam"
+									]
 								},
 								{
 									"uniqueName": "ELEMENT",
 									"filter": {
-										"exclude": [
-											"ELEMENT.[Total Score]"
+										"members": [
+											"element.[frontliner]",
+											"element.[kasir]",
+											"element.[kebersihan]",
+											"element.[new normal]",
+											"element.[penaksir]",
+											"element.[pengelola agunan]",
+											"element.[ro]",
+											"element.[satpam]"
 										]
 									},
 									"sortOrder": [
-										"FRONTLINER",
-										"Kegiatan Frontliner",
-										"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
-										"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
+										"frontliner",
+										"kegiatan frontliner lainnya",
+										"sikap frontliner/staff dalam menerima panggilan telepon",
+										"sikap frontliner/staff dalam mengakhiri panggilan telepon"
 									]
 								}
 							],
@@ -222,7 +229,10 @@ $(document).ready(function(){
 									"uniqueName": "SCORE",
 									"aggregation": "average"
 								}
-							]
+							],
+							"expands": {
+								"expandAll": true
+							}
 						},
 						"options": {
 							"viewType": "charts",
@@ -292,7 +302,7 @@ $(document).ready(function(){
 
 				for (let x = 0; x < data[1].length; x++) {
 					if(data[1][0].label=="ASPEK"){
-						aspekFilter.push("ASPEK.["+data[1][x].nama+"]")
+						elementFilter.push("ELEMENT.["+data[1][x].nama+"]")
 					}
 					if(data[1][0].label=="ELEMENT"){
 						elementFilter.push("ELEMENT.["+data[1][x].nama+"]")
@@ -300,85 +310,150 @@ $(document).ready(function(){
 				}
 				if(data[1][0].label=="ELEMENT") {
 					var expand = true
-				}else{
-					var expand = false
-				}
-				console.log(elementFilter)
-				// console.log(areaFilter)
-				var pivot = new Flexmonster({
-					container: "pivotContainer",
-					toolbar: true,
-					height: "100%",
-					report: {
-						dataSource: {
-							filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
-						},
-						"slice": {
-							"reportFilters": [
-								{
-									"uniqueName": "AREA",
-									"filter": {
-										"members": areaFilter
-									}
-								},
-								{
-									"uniqueName": "CABANG",
-									"filter": {
-										"members": branchFilter
-									}
-								}
-							],
-							"columns": [
-								{
-									"uniqueName": "[Measures]"
-								},
-								{
-									"uniqueName": "ASPEK",
-									"filter": {
-										"members": aspekFilter
-									}
-								},
-								{
-									"uniqueName": "ELEMENT",
-									"filter": {
-										"members": elementFilter
-									},
-									"sortOrder": [
-										"FRONTLINER",
-										"Kegiatan Frontliner",
-										"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
-										"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
-									]
-								}
-							],
-							"measures": [
-								{
-									"uniqueName": "SCORE",
-									"aggregation": "average"
-								}
-							],
-							"expands": { "expandAll": expand },
-						},
-						"options": {
-							"viewType": "charts",
-							"grid": {
-								"showGrandTotals": "off",
-								"showReportFiltersArea": false
+					var pivot = new Flexmonster({
+						container: "pivotContainer",
+						toolbar: true,
+						height: "100%",
+						report: {
+							dataSource: {
+								filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
 							},
-							"chart": {
-								"showDataLabels": true,
-								"showReportFiltersArea": false
-							}
+							"slice": {
+								"reportFilters": [
+									{
+										"uniqueName": "AREA",
+										"filter": {
+											"members": areaFilter
+										}
+									},
+									{
+										"uniqueName": "CABANG",
+										"filter": {
+											"members": branchFilter
+										}
+									}
+								],
+								"columns": [
+									{
+										"uniqueName": "[Measures]"
+									},
+									{
+										"uniqueName": "ELEMENT",
+										"filter": {
+											"members": elementFilter
+										},
+										"sortOrder": [
+											"FRONTLINER",
+											"Kegiatan Frontliner Lainnya",
+											"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
+											"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
+										]
+									}
+								],
+								"measures": [
+									{
+										"uniqueName": "SCORE",
+										"aggregation": "average"
+									}
+								],
+								"expands": { "expandAll": expand },
+							},
+							"options": {
+								"viewType": "charts",
+								"grid": {
+									"showGrandTotals": "off",
+									"showReportFiltersArea": false
+								},
+								"chart": {
+									"showDataLabels": true,
+									"showReportFiltersArea": false
+								}
+							},
+							"formats": [
+								{
+									"name": "",
+									"decimalPlaces": 2
+								}
+							],
 						},
-						"formats": [
-							{
-								"name": "",
-								"decimalPlaces": 2
-							}
-						],
-					},
-					licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
-				});
+						licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
+					});
+				}else{
+					var pivot = new Flexmonster({
+						container: "pivotContainer",
+						toolbar: true,
+						height: "100%",
+						report: {
+							dataSource: {
+								filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+							},
+							"slice": {
+								"reportFilters": [
+									{
+										"uniqueName": "AREA",
+										"filter": {
+											"members": areaFilter
+										}
+									},
+									{
+										"uniqueName": "CABANG",
+										"filter": {
+											"members": branchFilter
+										}
+									}
+								],
+								"columns": [
+									{
+										"uniqueName": "[Measures]"
+									},
+									{
+										"uniqueName": "ASPEK",
+										"filter": {
+											"members": aspekFilter
+										}
+									},
+									{
+										"uniqueName": "ELEMENT",
+										"filter": {
+											"members": elementFilter
+										},
+										"sortOrder": [
+											"FRONTLINER",
+											"Kegiatan Frontliner Lainnya",
+											"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
+											"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
+										]
+									}
+								],
+								"measures": [
+									{
+										"uniqueName": "SCORE",
+										"aggregation": "average"
+									}
+								],
+								"expands": { "expandAll": expand },
+							},
+							"options": {
+								"viewType": "charts",
+								"grid": {
+									"showGrandTotals": "off",
+									"showReportFiltersArea": false
+								},
+								"chart": {
+									"showDataLabels": true,
+									"showReportFiltersArea": false
+								}
+							},
+							"formats": [
+								{
+									"name": "",
+									"decimalPlaces": 2
+								}
+							],
+						},
+						licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
+					});
+				}
             }
         })
 		return false
