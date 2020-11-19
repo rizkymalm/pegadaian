@@ -1,4 +1,4 @@
-  .size-std{font-size: 12px;}
+  .size-std{font-size: 14px;}
   .size-cute{font-size: 10px; font-family: "MONTSERRATL";}
   .size-note{font-style: italic; font-size: 0.9em; font-family: "MONTSERRATL";}
   .size-head1{font-size: 3em; font-family: "MONTSERRATB"}
@@ -8,7 +8,7 @@
 
 
     @media screen and (max-width: 1600px){      
-    .size-std{font-size: 9px;}    
+    .size-std{font-size: 11px;}    
     .size-cute{font-size: 8px}
     .size-note{font-size: 7px}
     .size-head1{font-size: 32px;}

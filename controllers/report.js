@@ -169,7 +169,7 @@ exports.getReportAjax = async function (req,res){
         var skenarioAspek = await getAspekById(aspek)
     }else if(aspek!="all" && element!="all"){
         var typeaspek = "ELEMENT"
-        var skenarioAspek = await getElementByIdElement(aspek)
+        var skenarioAspek = await getElementByIdElement(element)
     }
     // var skenario = await getSkenario(kanwil, area, typesql)
     var dataExport = []
@@ -195,6 +195,7 @@ exports.getReportAjax = async function (req,res){
     }
     dataExport.push(jsonkanwil)
     dataExport.push(jsonaspek)
+    console.log(dataExport)
     res.send(dataExport)
 }
 
