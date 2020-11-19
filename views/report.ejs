@@ -54,7 +54,7 @@
 			font-size: 18px !important;
 		}
 		#fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
-			display: none !important;
+			/* display: none !important; */
 		}
 		#fm-pivot-view .fm-axis text{
 			font-size: 18px !important;
@@ -180,7 +180,7 @@
 $(document).ready(function(){
 				var pivot = new Flexmonster({
 					container: "pivotContainer",
-					toolbar: false,
+					toolbar: true,
 					height: "100%",
 					report: {
 						dataSource: {
@@ -307,7 +307,7 @@ $(document).ready(function(){
 				// console.log(areaFilter)
 				var pivot = new Flexmonster({
 					container: "pivotContainer",
-					toolbar: false,
+					toolbar: true,
 					height: "100%",
 					report: {
 						dataSource: {
