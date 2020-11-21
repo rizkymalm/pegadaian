@@ -54,10 +54,64 @@
 			font-size: 18px !important;
 		}
 		#fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
-			/* display: none !important; */
+			display: none !important;
 		}
 		#fm-pivot-view .fm-axis text{
 			font-size: 18px !important;
+		}
+		/* rect{
+			display: none !important;
+		} */
+		/* rect:nth-child(9){
+			display: none !important;
+		} */
+		#fm-pivot-view #fm-charts-view #fm-chart-legend{
+			display: none;
+		}
+		.fm-data-label:last-child{
+			display: none !important;
+		}
+		.legendtext li{
+			float: left;
+			position: relative;
+			padding: 0 18px;
+			max-width: 15%;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+		.legendtext li:nth-child(1) div{
+			background-color: red;
+		}
+		.legendtext li:nth-child(2) div{
+			background-color: #2E75AF;
+		}
+		.legendtext li:nth-child(3) div{
+			background-color: #E67600;
+		}
+		.legendtext li:nth-child(4) div{
+			background-color: #34A641;
+		}
+		.legendtext li:nth-child(5) div{
+			background-color: #C7298D;
+		}
+		.legendtext li:nth-child(6) div{
+			background-color: #40A292;
+		}
+		.legendtext li:nth-child(7) div{
+			background-color: #A052C4;
+		}
+		.legendtext li:nth-child(8) div{
+			background-color: #D4A900;
+		}
+		.legendtext li div{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			width: 14px;
+			height: 14px;
+			float: left;
+			border-radius: 50%;
 		}
 	</style>
 </head>
@@ -92,60 +146,38 @@
                         </div>
                         <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Area</span>
-                            <select name="" id="area" class="size-std">
+                            <select name="" id="area" class="size-std" onchange="getBranchByArea(this)">
+                                <option value="all">-- All --</option>
+                            </select>
+						</div>
+						<div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Cabang</span>
+                            <select name="" id="cabang" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
 						</div>
 						<div class="list-control-box spc-rl">
                             <span class="size-std">Show By Aspek</span>
-                            <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
+                            <select name="" id="aspek" class="size-std">
                                 <option value="9">-- All --</option>
                                 <% for(var i=0; i < aspek.length; i++){ %>
                                     <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
                                 <% } %>
                             </select>
 						</div>
-						<div class="list-control-box spc-rl">
+						<!-- <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Element</span>
                             <select name="" id="element" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
-						</div>
+						</div> -->
                         <div class="list-control-box size-std spc-rl">
-                            <!-- <button type="submit" class="myButton-submit">Show</button> -->
                             <button type="reset" class="myButton-submit">Clear</button>
                         </div>
                     </div>
 
                 </form>
             </div>
-			<!-- <div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
-				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Control</p>
-					<ul class="tab-image-setting nopad">
-						<li>
-							<a style="cursor: pointer;" onclick="clickToggle(downloadtoggle)">
-								<img src="<%= baseurl() %>images/icon/download-icon.png" class="btn-tab-toggle delay">
-							</a>
-						</li>
-					</ul>
-				</div>
-                <div class="list-control" style="border-bottom: none;">
-                    <div class="list-control-box">
-						<button class="option-click btn-list-control size-std" onclick="clickToggle(list_skenario)">
-							Show By :&nbsp; Skenario
-							<img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
-						</button>
-						<div class="option-box option-menu shadow half box-list-control" id="list_skenario">
-							<ul class="full-length nopad">
-                                <a href="<%= baseurl() %>report/?skenario=gadai"><li class="pad-tb size-std">Gadai</li></a>
-                                <a href="<%= baseurl() %>report/?skenario=telepon"><li class="pad-tb size-std">Telpon CS</li></a>
-                                <a href="<%= baseurl() %>report/?skenario=pelunasan"><li class="pad-tb size-std">Pelunasan Gadai</li></a>
-							</ul>
-						</div>
-					</div>
-                </div>
-			</div> -->
 			<div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">Detail Attribute Performance</p>
@@ -159,6 +191,18 @@
 				<div style="width: 100%; height: 700px;" class="chartContainer"  id="chartContainer">
 					<div id="pivotContainer" style="padding-bottom: 30px;"></div>
 				</div>
+				<div class="full-length">
+					<ul class="legendtext">
+						<li><div></div> FRONTLINER</li>
+						<li><div></div> KASIR</li>
+						<li><div></div> KEBERSIHAN</li>
+						<li><div></div> NEW NORMAL</li>
+						<li><div></div> PENAKSIR</li>
+						<li><div></div> PENGELOLA AGUNAN</li>
+						<li><div></div> RO</li>
+						<li><div></div> SATPAM</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -167,10 +211,11 @@
 <%- include ('./partials/footer') %>
 
 <script type="text/javascript">
+
 $(document).ready(function(){
 				var pivot = new Flexmonster({
 					container: "pivotContainer",
-					toolbar: true,
+					toolbar: false,
 					height: "100%",
 					report: {
 						dataSource: {
@@ -199,7 +244,8 @@ $(document).ready(function(){
 										"penaksir",
 										"pengelola agunan",
 										"ro",
-										"satpam"
+										"satpam",
+										"OTHER"
 									]
 								},
 								{
@@ -213,7 +259,8 @@ $(document).ready(function(){
 											"element.[penaksir]",
 											"element.[pengelola agunan]",
 											"element.[ro]",
-											"element.[satpam]"
+											"element.[satpam]",
+											"element.[other]"
 										]
 									},
 									"sortOrder": [
@@ -254,9 +301,17 @@ $(document).ready(function(){
 					},
 					licenseKey: "Z7V8-XD7I73-5A3R18-1G7126"
 				});
+				var html = ""
+				html +="<style>"
+				html += "rect:nth-child(9){"
+				html += "display: none !important;"
+				html += "}"
+				html +="</style>"
+				$("body").after(html)
 	$(".control").change(function(){
         var kanwil = $('#kanwil').val()
 		var area = $('#area').val()
+		var cabang = $('#cabang').val()
 		var aspek = $('#aspek').val()
 		var element = $('#element').val()
         if(kanwil!="all"){
@@ -264,13 +319,18 @@ $(document).ready(function(){
         }else{
             $('#area').prop('disabled', 'disabled')
 		}
+		if(area!="all"){
+            $('#cabang').prop('disabled', false)
+        }else{
+            $('#cabang').prop('disabled', 'disabled')
+		}
 		if(aspek!="all"){
             $('#element').prop('disabled', false)
         }else{
             $('#element').prop('disabled', 'disabled')
 		}
 		console.log(aspek+", "+element)
-		var data = "kanwil="+kanwil+"&area="+area+"&aspek="+aspek+"&element="+element
+		var data = "kanwil="+kanwil+"&area="+area+"&cabang="+cabang+"&aspek="+aspek+"&element="+element
 		$.ajax({
             url: "<%= baseurl() %>report/content/",
             type: "GET",
@@ -299,7 +359,8 @@ $(document).ready(function(){
 					var rowss = [{"uniqueName": "CABANG","filter": {"members": branchFilter}}]
 				}
 
-
+				var legendText = ""
+				var sortOrderElement = []
 				for (let x = 0; x < data[1].length; x++) {
 					if(data[1][0].label=="ASPEK"){
 						elementFilter.push("ELEMENT.["+data[1][x].nama+"]")
@@ -307,12 +368,27 @@ $(document).ready(function(){
 					if(data[1][0].label=="ELEMENT"){
 						elementFilter.push("ELEMENT.["+data[1][x].nama+"]")
 					}
+					if(data[1][x].nama!="OTHER"){
+						legendText += "<li><div></div> "+data[1][x].nama+"</li>"
+					}
+					sortOrderElement.push(data[1][x].nama)
 				}
+				console.log(sortOrderElement)
+				$(".legendtext").html(legendText)
+				var childlen = data[1].length
+				$("style:last-child").remove()
+				var html = ""
+				html +="<style>"
+				html += "rect:nth-child("+childlen+"){"
+				html += "display: none !important;"
+				html += "}"
+				html +="</style>"
+				$("body").after(html)
 				if(data[1][0].label=="ELEMENT") {
 					var expand = true
 					var pivot = new Flexmonster({
 						container: "pivotContainer",
-						toolbar: true,
+						toolbar: false,
 						height: "100%",
 						report: {
 							dataSource: {
@@ -342,12 +418,7 @@ $(document).ready(function(){
 										"filter": {
 											"members": elementFilter
 										},
-										"sortOrder": [
-											"FRONTLINER",
-											"Kegiatan Frontliner Lainnya",
-											"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
-											"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
-										]
+										"sortOrder" : sortOrderElement
 									}
 								],
 								"measures": [
@@ -381,7 +452,7 @@ $(document).ready(function(){
 				}else{
 					var pivot = new Flexmonster({
 						container: "pivotContainer",
-						toolbar: true,
+						toolbar: false,
 						height: "100%",
 						report: {
 							dataSource: {
@@ -410,19 +481,24 @@ $(document).ready(function(){
 										"uniqueName": "ASPEK",
 										"filter": {
 											"members": aspekFilter
-										}
+										},
+										"sortOrder": [
+											"FRONTLINER",
+											"KASIR",
+											"KEBERSIHAN",
+											"NEW NORMAL",
+											"PENAKSIR",
+											"PENGELOLA AGUNAN",
+											"RO",
+											"SATPAM",
+											"OTHER"
+										]
 									},
 									{
 										"uniqueName": "ELEMENT",
 										"filter": {
 											"members": elementFilter
-										},
-										"sortOrder": [
-											"FRONTLINER",
-											"Kegiatan Frontliner Lainnya",
-											"Sikap Frontliner/Staff Dalam Menerima Panggilan Telepon",
-											"Sikap Frontliner/Staff Dalam Mengakhiri Panggilan Telepon"
-										]
+										}
 									}
 								],
 								"measures": [

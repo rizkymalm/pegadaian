@@ -164,3 +164,21 @@ exports.getAreaByKanwil = (req,res) => {
 
     })
 }
+
+exports.getBranchByArea = (req,res) => {
+    if(req.params.area!="all"){
+        var sql = "SELECT * FROM sub_branch WHERE id_area="+req.params.area
+    }else{
+        var sql = "SELECT * FROM sub_branch"
+    }
+    db.query(sql, (err,results) => {
+        if(err){
+            res.send("error")
+        }else{
+            res.render("partials/branchbyarea", {
+                result: results
+            })
+        }
+
+    })
+}

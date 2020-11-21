@@ -64,6 +64,21 @@ function getBranchByIdArea(id){
         })
     })
 }
+
+function getBranchById(id){
+    return new Promise(resolve =>{
+        if(id!="all" && id!=""){
+            var sql = "SELECT * FROM sub_branch WHERE id_sub_branch="+id
+        }else{
+            var sql = "SELECT * FROM sub_branch"
+        }
+        db.query(sql, function(err,result){
+            resolve(result)
+        })
+    })
+}
+
+
 function getAspekById(id){
     return new Promise(resolve =>{
         if(id!="all" && id!=""){
@@ -143,35 +158,45 @@ function getSkenario(kanwil, area, type) {
 exports.getReportAjax = async function (req,res){
     var kanwil = req.query.kanwil
     var area = req.query.area
+    var cabang = req.query.cabang
     var aspek = req.query.aspek
-    var element = req.query.element
-    if(kanwil=="all" && area=="all"){
+    // var element = req.query.element
+    if(kanwil=="all" && area=="all" && cabang=="all"){
         var typesql = "region"
         var skenario = await getKanwilById(kanwil)
-    }else if(kanwil!="all" && area=="all"){
+    }else if(kanwil!="all" && area=="all" && cabang=="all"){
         var typesql = "area"
         var skenario = await getAreaByIdRegion(kanwil)
-    }else if(kanwil=="all" && area!="all"){
+    }else if(kanwil=="all" && area!="all" && cabang=="all"){
         var typesql = "area"
         var skenario = await getKanwilById(kanwil)
-    }else if(kanwil!="all" && area!="all"){
+    }else if(kanwil!="all" && area!="all" && cabang=="all"){
         var typesql = "subbranch"
         var skenario = await getBranchByIdArea(area)
+    }else if(kanwil!="all" && area!="all" && cabang!="all"){
+        var typesql = "subbranch"
+        var skenario = await getBranchById(cabang)
     }
-    if(aspek==9 && element=="all"){
+    if(aspek==9){
         var typeaspek = "ASPEK"
         var skenarioAspek = await getElementByIdAspek(9)
-    }else if(aspek!=9 && element=="all"){
+    }else{
         var typeaspek = "ELEMENT"
         var skenarioAspek = await getElementByIdAspek(aspek)
-    }else if(aspek==9 && element!="all"){
-        var typeaspek = "ASPEK"
-        var skenarioAspek = await getAspekById(aspek)
-    }else if(aspek!=9 && element!="all"){
-        var typeaspek = "ELEMENT"
-        var skenarioAspek = await getElementByIdElement(element)
     }
-    // var skenario = await getSkenario(kanwil, area, typesql)
+    // if(aspek==9 && element=="all"){
+    //     var typeaspek = "ASPEK"
+    //     var skenarioAspek = await getElementByIdAspek(9)
+    // }else if(aspek!=9 && element=="all"){
+    //     var typeaspek = "ELEMENT"
+    //     var skenarioAspek = await getElementByIdAspek(aspek)
+    // }else if(aspek==9 && element!="all"){
+    //     var typeaspek = "ASPEK"
+    //     var skenarioAspek = await getAspekById(aspek)
+    // }else if(aspek!=9 && element!="all"){
+    //     var typeaspek = "ELEMENT"
+    //     var skenarioAspek = await getElementByIdElement(element)
+    // }
     var dataExport = []
     var jsonkanwil = []
     var jsonaspek = []
@@ -193,9 +218,16 @@ exports.getReportAjax = async function (req,res){
             jsonaspek.push({nama: skenarioAspek[i].label_element, label: "ELEMENT"})
         }
     }
+    if(typeaspek=="ASPEK"){
+        jsonaspek.push({nama: "OTHER", label: "ASPEK"})
+    }else if(typeaspek=="ELEMENT"){
+        jsonaspek.push({nama: "OTHER", label: "ELEMENT"})
+    }else if(typeaspek=="ELEMENT"){
+        jsonaspek.push({nama: "OTHER", label: "ELEMENT"})
+    }
     dataExport.push(jsonkanwil)
     dataExport.push(jsonaspek)
-    console.log(dataExport)
+    console.log(dataExport[1].length)
     res.send(dataExport)
 }
 

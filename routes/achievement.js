@@ -4,6 +4,7 @@ const Router = express.Router();
 const db = require("../models/db");
 Router.get("/", acvController.getAcv)
 Router.get("/areabykanwil/:kanwil", acvController.getAreaByKanwil)
+Router.get("/branchbyarea/:area", acvController.getBranchByArea)
 Router.get("/content", acvController.getAcvAjax)
 
 module.exports = Router;

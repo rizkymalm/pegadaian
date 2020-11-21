@@ -27,6 +27,17 @@ function getAreaByKanwil(){
     })
 }
 
+function getBranchByArea(){
+    var area = $('#area').val()
+    $.ajax({
+        cache: true,
+        url: "<%= baseurl() %>acv/branchbyarea/"+area,
+        success: function(select){
+            $('#cabang').html(select);
+        }
+    })
+}
+
 function getElementByAspek(){
     var aspek = $('#aspek').val()
     $.ajax({

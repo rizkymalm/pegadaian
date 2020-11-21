@@ -1,0 +1,4 @@
+<option value="all">-- All --</option>
+<% for(let opt of result) { %>
+    <option value="<%= opt.id_sub_branch %>"><%= opt.sub_branch_name %></option>
+<% } %>
