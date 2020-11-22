@@ -105,9 +105,9 @@ exports.getDetailEvidence = async function(req,res){
     var id = req.params.id;
     var randomChar = await random(32)
     var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
-    dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.id=?", id, (err,task)=>{
+    dbkepo.query("SELECT * FROM task WHERE id=?", id, (err,task)=>{
         dbkepo.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
-            console.log(errnote)
+            console.log(task)
             res.render("detailevidence",{
                 task: task,
                 moment: moment,

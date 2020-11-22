@@ -62,7 +62,7 @@
 		</div>
 		<div class="mainbox size-std column" style="overflow: unset;">
 			<div class="title-content size-std">
-				OVERALL PERFORMANCE
+				Top 10 Performance
 			</div>
 			
             
@@ -89,17 +89,22 @@
                                     <option value="<%= area[i].id_area %>"><%= area[i].area_name %></option>
                                 <% } %>
                             </select>
-                        </div>
+                        </div><br><br><br><br>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Year</span>
-                            <select name="" id="year" class="size-std">
-                                <option value="all">-- Select Year --</option>
-                                <option value="2017">2017</option>
-                                <option value="2018">2018</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
+                            <span class="size-std">Show By Aspek</span>
+                            <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
+                                <option value="all">-- All --</option>
+                                <% for(var i=0; i < aspek.length; i++){ %>
+                                    <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
+                                <% } %>
                             </select>
                         </div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Element</span>
+                            <select name="" id="element" class="size-std">
+                                <option value="all">-- All --</option>
+                            </select>
+						</div>
                         <div class="list-control-box size-std spc-rl">
                             <button type="submit" class="myButton-submit">Show</button>
                             <button type="reset" class="myButton-submit">Clear</button>
@@ -113,6 +118,22 @@
                     <span class="loader-helper"></span><img src="<%= baseurl() %>images/icon/loader.gif" alt="">
                 </div>
             </div>
+			<!-- <div class="cols-12 containt" style="margin: 20px 0;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad">Success Chart</p>
+					<p class="size-std nopad">Little title</p>
+					<ul class="tab-image-setting nopad">
+						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
+					</ul>
+                </div>
+                <div class="graph">
+                    <div class="graph__wrapper">
+                        <div class="container">
+                            <div class="graph__block" id="graph_03"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
             <div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">&nbsp;</p>
@@ -134,30 +155,12 @@ $(document).ready(function(){
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
-        var Date = $('#year').val()
-        if(kanwil=="all"){
-            $('#year').prop('disabled', false)
-        }else{
-            $('#year').prop('disabled', 'disabled')
-        }
-        if(Date=="all"){
-            $('#kanwil').prop('disabled', false)
-            $('#area').prop('disabled', false)
-        }else{
-            $('#kanwil').prop('disabled', 'disabled')
-            $('#area').prop('disabled', 'disabled')
-        }
-        // if(Date==""){
-        //     var startDate = "all"
-        //     var endDate = "all"
-        // }else{
-        //     var startDate = Date
-        //     var endDate = valEndDate
-        // }
-        var data = "kanwil="+kanwil+"&date="+Date+"&area="+area
-
+        var aspek = $('#aspek').val()
+        var element = $('#element').val()
+        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element
+        console.log(data)
         $.ajax({
-            url: "<%= baseurl() %>acv/content/",
+            url: "<%= baseurl() %>acv/top/content/",
             type: "GET",
             data: data,
             cache: false,
@@ -166,6 +169,7 @@ $(document).ready(function(){
                 $('.loader').show()
             },success: function(data){
                 $('.loader').hide()
+                console.log(data)
                 var datanya = []
                 var type = data[0].label
                 for (let i = 0; i < data.length; i++) {
@@ -188,7 +192,7 @@ $(document).ready(function(){
                     animationEnabled: true,
                     colorSet: "flexmonsterStyle",
                     title: {
-                        text: "Overall Performance by "+type
+                        text: "Top 10 Performance by "+type
                     },
                     axisY: {
                         title: " ",
