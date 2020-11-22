@@ -1,7 +1,7 @@
 const db = require("../models/db");
 const moment = require("moment")
 const fs = require("fs");
-const { type } = require("os");
+const { type, setPriority } = require("os");
 const { resolve } = require("path");
 const { json } = require("body-parser");
 
@@ -211,6 +211,24 @@ exports.getTop = async function(req,res){
     }
 }
 
+exports.getBottom = async function(req,res){
+    if(req.session.email==undefined){
+        res.redirect("../login")
+    }else{
+        var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
+        var kanwil = await getKanwil()
+        var area = await getArea()
+        var aspek = await getAspek()
+        res.render("bottom",{
+            login: login,
+            moment: moment,
+            kanwil: kanwil,
+            area: area,
+            aspek: aspek
+        })
+    }
+}
+
 function getBranchByKanwil(id, type){
     return new Promise(resolve => {
         if(type=="kanwil"){
@@ -228,9 +246,9 @@ function getBranchByKanwil(id, type){
     })
 }
 
-function getTopSkenarioByArray(array, aspek){
+function getTopSkenarioByArray(array, aspek, sort){
     return new Promise(resolve =>{ 
-        var sql = "SELECT CABANG AS cabang, "+aspek+" AS total FROM skenario WHERE id_sub_branch IN("+array+") ORDER BY "+aspek+" DESC LIMIT 10"
+        var sql = "SELECT CABANG AS cabang, "+aspek+" AS total FROM skenario WHERE id_sub_branch IN("+array+") ORDER BY "+aspek+" "+sort+", id_skenario ASC LIMIT 10"
         db.query(sql, async function(err,result){
             resolve(result)
         })
@@ -242,6 +260,7 @@ exports.getTopContent = async function(req,res){
     var area = req.query.area
     var aspek = req.query.aspek
     var element = req.query.element
+    var sort = req.query.sortby
     if(kanwil=="all" && area=="all"){
         var typesql = "kanwil"
         var selectBranch = await getBranchByKanwil(kanwil, typesql)
@@ -319,10 +338,9 @@ exports.getTopContent = async function(req,res){
                         'Sikap_Satpam_Saat_Nasabah_Keluar']
                         var getAspek = arrelement[element-1]
     }
-    var skenario = await getTopSkenarioByArray(arrbranch, getAspek)
+    var skenario = await getTopSkenarioByArray(arrbranch, getAspek, sort)
     for (let x = 0; x < skenario.length; x++) {
         jsonres.push({nama: skenario[x].cabang, label: typesql, achievement: skenario[x].total})
     }
-    console.log(getAspek)
     res.send(jsonres)
 }

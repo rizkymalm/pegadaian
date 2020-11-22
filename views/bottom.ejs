@@ -157,7 +157,7 @@ $(document).ready(function(){
         var area = $('#area').val()
         var aspek = $('#aspek').val()
         var element = $('#element').val()
-        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC"
+        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=ASC"
         console.log(data)
         $.ajax({
             url: "<%= baseurl() %>acv/top/content/",
@@ -192,7 +192,7 @@ $(document).ready(function(){
                     animationEnabled: true,
                     colorSet: "flexmonsterStyle",
                     title: {
-                        text: "Top 10 Performance"
+                        text: "Bottom 10 Performance"
                     },
                     axisY: {
                         title: " ",
