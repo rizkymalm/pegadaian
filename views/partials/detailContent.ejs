@@ -1,4 +1,4 @@
-<form id="count-checked">
+<form id="count-checked" ng-app="myApp" ng-controller="PageCtrl">
     <table class="size-std full-tables">
         <tr>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil</th>
@@ -47,14 +47,15 @@
             <td align="center">{{req.totalNewNormal}}</td>
             <td align="center">{{req.totalPengelolaAgunan}}</td>
             <td align="center">{{req.totalRO}}</td>
-            <td align="center"><a href="">View</a></td>
-            <td align="center"><a href="">View</a></td>
-            <td align="center"><a href="">View</a></td>
+            <td align="center"><a href="gadai/{{req.id_cabang}}" target="_blank">View</a></td>
+            <td align="center"><a href="lunas/{{req.id_cabang}}" target="_blank">View</a></td>
+            <td align="center"><a href="telp/{{req.id_cabang}}" target="_blank">View</a></td>
         </tr>
     </table>
-    <dir-pagination-controls max-size="2" direction-links="true"boundary-links="true" class="size-std"></dir-pagination-controls>
+    <dir-pagination-controls direction-links="true" boundary-links="true" class="size-std"></dir-pagination-controls>
 </form>
 <script>
+    var app = angular.module('myApp',[]);
     var app = angular.module('myApp',['angularUtils.directives.dirPagination']);
     app.controller('PageCtrl',function ($scope, $http) {
         var jsoon = <%- JSON.stringify(jsonres) %>

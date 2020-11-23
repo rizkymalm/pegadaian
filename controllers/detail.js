@@ -54,6 +54,8 @@ function getBranchByKanwil(id, type){
             }
         }else if(type=="area"){
             var sql = "SELECT * FROM sub_branch WHERE id_area="+id
+        }else if(type=="cabang"){
+            var sql = "SELECT * FROM sub_branch WHERE id_sub_branch="+id
         }
         db.query(sql, async function(err,result){
             resolve(result)
@@ -94,10 +96,14 @@ exports.getDetailContent = async function(req,res){
     }else if(kanwil!="all" && area=="all"){
         var typesql = "kanwil"
         var selectBranch = await getBranchByKanwil(kanwil, typesql)
-    }else if(kanwil!="all" && area!="all"){
+    }else if(kanwil!="all" && area!="all" && cabang=="all"){
         var typesql = "area"
         var selectBranch = await getBranchByKanwil(area, typesql)
+    }else if(kanwil!="all" && area!="all" && cabang!="all"){
+        var typesql = "cabang"
+        var selectBranch = await getBranchByKanwil(cabang, typesql)
     }
+    console.log(cabang)
     var arrbranch = ""
     for (let i = 0; i < selectBranch.length; i++) {
         if(i==selectBranch.length-1){
@@ -112,6 +118,8 @@ exports.getDetailContent = async function(req,res){
         var kanwilbyid = await getKanwilById(skenario[i].id_region)
         var areabyid = await getAreaById(skenario[i].id_area)
         jsonres.push({
+            id_skenario: skenario[i].id_skenario,
+            id_cabang: skenario[i].id_sub_branch,
             region: kanwilbyid[0].region.replace("KANWIL ",""),
             area: areabyid[0].area_name.replace("AREA ",""),
             cabang: skenario[i].CABANG,
@@ -128,5 +136,22 @@ exports.getDetailContent = async function(req,res){
     }
     res.render("partials/detailContent",{
         jsonres: jsonres
+    })
+}
+
+exports.getDetailVideo = async function(req,res){
+    var id = req.params.idcabang;
+    var tipe = req.params.tipe;
+    // var randomChar = await random(32)
+    var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
+    db.query("SELECT * FROM task WHERE tipe=? AND id_sub_branch=?", [tipe,id], (err,task)=>{
+        db.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
+            res.render("detailevidence",{
+                task: task,
+                moment: moment,
+                login: login,
+                notes: notess
+            })
+        })
     })
 }
