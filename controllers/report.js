@@ -119,9 +119,9 @@ function getElementByIdElement(id){
 }
 
 exports.getReport = async function(req,res){
-    // if(req.session.email==undefined){
-    //     res.redirect("../login")
-    // }else{
+    if(req.session.email==undefined){
+        res.redirect("../login")
+    }else{
         var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
         var kanwil = await getKanwil()
         var aspek = await getAspek()
@@ -134,7 +134,7 @@ exports.getReport = async function(req,res){
                 aspek: aspek
             })
         })
-    // }
+    }
 }
 
 function getSkenario(kanwil, area, type) { 

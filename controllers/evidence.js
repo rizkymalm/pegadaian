@@ -1,10 +1,10 @@
 const moment = require("moment");
 const { resolve } = require("path");
 const db = require("../models/db");
-const dbkepo = require("../models/db_kepo");
+// const dbkepo = require("../models/db_kepo");
 function countrecord(sql){
     return new Promise(resolve => {
-        dbkepo.query(sql, function(err,result){
+        db.query(sql, function(err,result){
             resolve(result)
         })
     })
@@ -39,7 +39,6 @@ exports.getEvidence = async function(req,res){
         var sqlcount = "SELECT COUNT(*) AS countrec FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+""
 
         var count = await countrecord(sqlcount)
-        console.log(count)
         var math = Math.ceil(count[0].countrec/limit)
         if(page > 1){
             var start = page * limit - limit
@@ -69,7 +68,7 @@ exports.getEvidence = async function(req,res){
         }
         
         db.query("SELECT * FROM sub_branch WHERE id_sub_branch=?", login.subbranch, async function (err,sub_branch){
-            dbkepo.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+" ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
+            db.query("SELECT *, task.id AS idtask, taskstatus.id AS idtaskstatus FROM task JOIN taskstatus ON task.id=taskstatus.task WHERE task.project=6 AND task.filename IS NOT NULL AND taskstatus.state=200 "+search+" ORDER BY task.uploadtime DESC LIMIT ?,?",[start, limit], async function (errtask, task) {
                 db.query("SELECT * FROM region", login.subbranch, async function (errregion,region){
                     res.render("evidence", {
                         login: login,
@@ -105,9 +104,8 @@ exports.getDetailEvidence = async function(req,res){
     var id = req.params.id;
     var randomChar = await random(32)
     var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
-    dbkepo.query("SELECT * FROM task WHERE id=?", id, (err,task)=>{
-        dbkepo.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
-            console.log(task)
+    db.query("SELECT * FROM task WHERE id=?", id, (err,task)=>{
+        db.query("SELECT * FROM note WHERE task=?", id, (errnote,notess) => {
             res.render("detailevidence",{
                 task: task,
                 moment: moment,
