@@ -65,10 +65,14 @@
 				<a href="<%= baseurl() %>">DASHBOARD</a> > <a href="<%= baseurl() %>evidence/">Evidence</a> > <%= task[0].deskripsi %>
 			</div>
 			<div class="cols-12 column containt" style="margin: 10px 0; background-color: #ffffff;">
+				<% if(task[0].src!="gdrive"){ %>
 				<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
 					<source src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+task[0].filename %>" type="video/mp4">
                       Your browser does not support the video tag.
-                </video>
+				</video>
+				<% }else{ %>
+					<iframe src="<%= task[0].filename %>" width="100%" height="520"></iframe>
+				<% } %>
             </div>
             <div class="cols-12">
                 <!-- Tabgrid -->
