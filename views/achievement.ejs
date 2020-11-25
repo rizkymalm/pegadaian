@@ -91,6 +91,15 @@
                             </select>
                         </div>
                         <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Aspek</span>
+                            <select name="" id="aspek" class="size-std">
+                                <option value="9">-- All --</option>
+                                <% for(var i=0; i < aspek.length; i++){ %>
+                                    <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
+                                <% } %>
+                            </select>
+						</div>
+                        <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Year</span>
                             <select name="" id="year" class="size-std">
                                 <option value="all">-- Select Year --</option>
@@ -131,11 +140,12 @@
 <%- include ('./partials/footer') %>
 <script>
 $(document).ready(function(){
-    $(".control").submit(function(){
+    $('.control').change(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
+        var aspek = $('#aspek').val()
         var Date = $('#year').val()
-        if(kanwil=="all"){
+        if(kanwil=="all" && aspek=="all"){
             $('#year').prop('disabled', false)
         }else{
             $('#year').prop('disabled', 'disabled')
@@ -143,9 +153,31 @@ $(document).ready(function(){
         if(Date=="all"){
             $('#kanwil').prop('disabled', false)
             $('#area').prop('disabled', false)
+            $('#aspek').prop('disabled', false)
         }else{
             $('#kanwil').prop('disabled', 'disabled')
             $('#area').prop('disabled', 'disabled')
+            $('#aspek').prop('disabled', 'disabled')
+        }
+    })
+    $(".control").submit(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        var aspek = $('#aspek').val()
+        var Date = $('#year').val()
+        if(kanwil=="all" && kanwil=="all"){
+            $('#year').prop('disabled', false)
+        }else{
+            $('#year').prop('disabled', 'disabled')
+        }
+        if(Date=="all"){
+            $('#kanwil').prop('disabled', false)
+            $('#area').prop('disabled', false)
+            $('#aspek').prop('disabled', false)
+        }else{
+            $('#kanwil').prop('disabled', 'disabled')
+            $('#area').prop('disabled', 'disabled')
+            $('#aspek').prop('disabled', 'disabled')
         }
         // if(Date==""){
         //     var startDate = "all"
@@ -154,7 +186,7 @@ $(document).ready(function(){
         //     var startDate = Date
         //     var endDate = valEndDate
         // }
-        var data = "kanwil="+kanwil+"&date="+Date+"&area="+area
+        var data = "kanwil="+kanwil+"&date="+Date+"&area="+area+"&aspek="+aspek
 
         $.ajax({
             url: "<%= baseurl() %>acv/content/",
@@ -186,6 +218,7 @@ $(document).ready(function(){
                 ]);
                 var achievement_2 = {
                     animationEnabled: true,
+                    zoomEnabled: true,
                     colorSet: "flexmonsterStyle",
                     title: {
                         text: "Overall Performance by "+type
@@ -197,7 +230,9 @@ $(document).ready(function(){
                     },
                     axisX: {
                         title: " ",
-                        labelFontSize: 12
+                        labelFontSize: 16,
+                        labelWrap: true,
+                        labelMaxWidth: 120
                     },
                     data: [{
                         type: "column",

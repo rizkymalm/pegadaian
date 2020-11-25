@@ -51,13 +51,15 @@
 			background: #e6e6e6;
 		}
 		#fm-pivot-view .fm-data-label{
-			font-size: 18px !important;
+			font-size: 19px !important;
+			font-weight: bold !important;
 		}
 		#fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
 			display: none !important;
 		}
 		#fm-pivot-view .fm-axis text{
 			font-size: 18px !important;
+			font-weight: bold !important;
 		}
 		/* rect{
 			display: none !important;
@@ -78,6 +80,8 @@
 			max-width: 15%;
 			text-transform: uppercase;
 			font-weight: bold;
+			font-size: 16px;
+			display: inline-table;
 		}
 		.legendtext li:nth-child(1) div{
 			background-color: red;
@@ -191,7 +195,7 @@
 				<div style="width: 100%; height: 700px;" class="chartContainer"  id="chartContainer">
 					<div id="pivotContainer" style="padding-bottom: 30px;"></div>
 				</div>
-				<div class="full-length">
+				<div style="display: table; margin: 0 auto; max-width: 80%;">
 					<ul class="legendtext">
 						<li><div></div> FRONTLINER</li>
 						<li><div></div> KASIR</li>
@@ -373,8 +377,9 @@ $(document).ready(function(){
 					}
 					sortOrderElement.push(data[1][x].nama)
 				}
-				console.log(sortOrderElement)
 				$(".legendtext").html(legendText)
+				var lengthData = data[1].length-1
+				$(".legendtext li").css({"width": 100/lengthData +"%", "max-width" : 100/lengthData +"%"})
 				var childlen = data[1].length
 				$("style:last-child").remove()
 				var html = ""
