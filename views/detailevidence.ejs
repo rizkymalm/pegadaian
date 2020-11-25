@@ -62,20 +62,53 @@
 		</div>
 		<div class="mainbox size-std column" style="overflow: unset;">
 			<div class="title-content size-std">
-				<a href="<%= baseurl() %>">DASHBOARD</a> > <a href="<%= baseurl() %>evidence/">Evidence</a> > <%= task[0].deskripsi %>
+				<a href="<%= baseurl() %>">DASHBOARD</a> > <%= task[0].deskripsi %>
 			</div>
+			<% if(task[0].src!="gdrive"){ %>
 			<div class="cols-12 column containt" style="margin: 10px 0; background-color: #ffffff;">
-				<% if(task[0].src!="gdrive"){ %>
 				<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
 					<source src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+task[0].filename %>" type="video/mp4">
                       Your browser does not support the video tag.
 				</video>
-				<% }else{ %>
-					<iframe src="<%= task[0].filename %>" width="100%" height="520"></iframe>
-				<% } %>
-            </div>
-            <div class="cols-12">
+			</div>
+			<% }else{ %>
+			<div class="cols-12">
+				<!-- Tabgrid -->
+				<% 
+					var arrvids = task[0].filename.split(",") 
+				%>
+                <div class="full-length containt" style="margin-top: 20px;">
+                    <div class="tabgrid full-length">
+                        <ul>
+							<% for(var i=0;i < arrvids.length;i++){ %>
+								<% if(i == 0){ %>
+								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>">Video <%= i+1 %></li>
+								<% }else{ %>
+								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>">Video <%= i+1 %></li>
+								<% } %>
+							<% } %>
+                        </ul>
+                        <div class="selectorline"></div>
+                    </div>
+                    <div class="full-length tabgridwrap">
+                        <div class="tabgridcontent">
+							<% for(var v=0;v < arrvids.length;v++){ %>
+                            <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
+                                <div style="width: 100%; padding: 10px;">
+									<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
+										<source src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" type="video/mp4">
+										  Your browser does not support the video tag.
+									</video>
+                                </div>
+							</div>
+							<% } %>
+                        </div>
+                    </div>
+                </div>
                 <!-- Tabgrid -->
+			</div>
+			<% } %>
+            <!-- <div class="cols-12">
                 <div class="full-length containt" style="margin-top: 20px;">
                     <div class="tabgrid full-length">
                         <ul>
@@ -113,13 +146,12 @@
                                 </div>
                             </div>
                             <div class="gridcontent delay" id="attachment" data="3">
-                                    <p>http://apps.kadence.co.id/kepo/files/<%= task[0].idtask+'/'+task[0].filename %></p>
+                                    <p><% var arr = task[0].filename.split(",") %><%= arr.length %></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Tabgrid -->
-            </div>
+            </div> -->
 		</div>
 	</div>
 </div>

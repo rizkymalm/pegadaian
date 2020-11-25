@@ -117,6 +117,16 @@ exports.getDetailContent = async function(req,res){
     for (let i = 0; i < skenario.length; i++) {
         var kanwilbyid = await getKanwilById(skenario[i].id_region)
         var areabyid = await getAreaById(skenario[i].id_area)
+        if(skenario[i].Total_Kebersihan_KONDISI_1!=null){
+            var kebersihan = skenario[i].Total_Kebersihan_KONDISI_1.toFixed(2)
+        }else{
+            var kebersihan = "N/A"
+        }
+        if(skenario[i].Total_RO_KONDISI_1!=null){
+            var total_RO = skenario[i].Total_RO_KONDISI_1.toFixed(2)
+        }else{
+            var total_RO = "N/A"
+        }
         jsonres.push({
             id_skenario: skenario[i].id_skenario,
             id_cabang: skenario[i].id_sub_branch,
@@ -127,11 +137,11 @@ exports.getDetailContent = async function(req,res){
             totalSatpam: skenario[i].Total_Satpam_KONDISI_1.toFixed(2),
             totalPenaksir: skenario[i].Total_Penaksir_KONDISI_1.toFixed(2),
             totalKasir: skenario[i].Total_Kasir_KONDISI_1.toFixed(2),
-            totalKebersihan: skenario[i].Total_Kebersihan_KONDISI_1.toFixed(2),
+            totalKebersihan: kebersihan,
             totalNewNormal: skenario[i].Total_New_Normal_KONDISI_1.toFixed(2),
             totalPengelolaAgunan: skenario[i].Total_Pengelola_Agunan_KONDISI_1.toFixed(2),
             totalFrontliner: skenario[i].Total_Frontliner.toFixed(2),
-            totalRO: skenario[i].Total_RO_KONDISI_1.toFixed(2),
+            totalRO: total_RO,
         })
     }
     res.render("partials/detailContent",{
