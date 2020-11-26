@@ -172,7 +172,8 @@ exports.getAcvAjax = async function (req,res){
                 jsonres.push({nama: skenario[i].region, label: "YEAR", achievement: average})
             }
         }
-    }else{
+    }
+    else{
         var arraspek = [
             ["Total_Frontliner","Sikap_Frontliner_Dalam_Menerima_Panggilan_Telepon","Sikap_Saat_Melayani_di_Telepon_dan_Handling_Complaint","Sikap_Frontliner_Dalam_Mengakhiri_Panggilan_Telepon","Kegiatan_Frontliner_Lainnya"],
             ["Total_Kasir_KONDISI_1","Sikap_Kasir_Saat_Menyambut_Nasabah_Datang","Penampilan_Kasir","Sikap_Kasir_dalam_Melayani_Nasabah","Skill_Kasir","Sikap_Kasir_Saat_Mengakhiri_Pelayanan","Kegiatan_Kasir_Lainnya"],
@@ -183,44 +184,35 @@ exports.getAcvAjax = async function (req,res){
             ["Total_RO_KONDISI_1","Sikap_RO_Saat_Menyambut_Nasabah_Datang","Penampilan_RO","Sikap_RO_Saat_Melayani_Nasabah","Skill_RO","Sikap_yang_Dilakukan_RO_Saat_Mengakhiri_Layanan","Kegiatan_RO_Lainnya"],
             ["Total_Satpam_KONDISI_1","Total_Keberadaan_Satpam","Sikap_Satpam_Saat_Menyambut_Nasabah","Sikap_Satpam_Saat_Melayani_Nasabah","Sikap_Satpam_Saat_Nasabah_Keluar","Penampilan_Satpam","Kegiatan_Satpam_Lainnya"],
         ]
-        var aspekLabel = [
-            ["Total Frontliner","Sikap Frontliner Dalam Menerima Panggilan Telepon","Sikap Saat Melayani di Telepon dan Handling Complaint","Sikap Frontliner Dalam Mengakhiri Panggilan Telepon","Frontliner tidak melakukan kegiatan lainnya contoh buka HP dll"],
-            ["Total Kasir","Sikap Kasir Saat Menyambut Nasabah Datang","Penampilan Kasir","Sikap Kasir dalam Melayani Nasabah","Skill Kasir","Sikap Kasir Saat Mengakhiri Pelayanan","Kasir tidak melakukan kegiatan lainnya contoh buka HP dll"],
-            ["Total Keersihan","Eksterior Kantor Cabang","Interior Kantor Cabang"],
-            ["Total New Normal","Pelayanan dan Pencegahan oleh Satpam","Fasilitas, Prasarana, dan Sarana","Pelayanan dan Pencegahan oleh Karyawan"],
-            ["Total Penaksir","Sikap Penaksir Saat Menyambut Nasabah Datang","Penampilan Penaksir","Sikap Penaksir dalam Melayani Nasabah","Skill Penaksir","Sikap Penaksir Saat Mengakhiri Pelayanan","Penaksir tidak melakukan kegiatan lainnya contoh buka HP dll"],
-            ["Total Pengelola Agunan","Sikap Pengelola Agunan Saat Menyambut Nasabah Datang","Penampilan Pengelola Agunan","Sikap Pengelola Agunan dalam Melayani Nasabah","Skill Pengelola Agunan","Sikap yang Dilakukan Pengelola Agunan Saat Mengakhiri Layanan","Pengelola Agunan tidak melakukan kegiatan lainnya contoh buka HP dll"],
-            ["Total RO","Sikap RO Saat Menyambut Nasabah Datang","Penampilan RO","Sikap RO Saat Melayani Nasabah","Skill RO","Sikap yang Dilakukan RO Saat Mengakhiri Layanan","RO tidak melakukan kegiatan lainnya contoh buka HP dll"],
-            ["Total Satpam","Keberadaan Satpam","Sikap Satpam Saat Menyambut Nasabah","Sikap Satpam Saat Melayani Nasabah","Sikap Satpam Saat Nasabah Keluar","Penampilan Satpam","Satpam tidak melakukan kegiatan lainnya contoh buka HP dll"]
-        ]
-        for (let a = 0; a < arraspek[aspek-1].length; a++) {
+        for (let a = 0; a < skenario.length; a++) {
             if(typesql=="region"){
                 var total = 0
-                for(var i=0;i<skenario.length;i++){
-                    var searchAvg = await avgSkenario(skenario[i].id_region, typesql, arraspek[aspek-1][a])
+                for(var i=0;i<arraspek[aspek-1].length;i++){
+                    var searchAvg = await avgSkenario(skenario[a].id_region, typesql, arraspek[aspek-1][i])
                     total = total + searchAvg
                 }
-                var average = total / skenario.length
-                jsonres.push({nama: aspekLabel[aspek-1][a], label: "KANWIL", achievement: average})
+                var average = total / arraspek[aspek-1].length
+                jsonres.push({nama: skenario[a].region.replace("KANWIL ",""), label: "KANWIL", achievement: average})
             }else if(typesql=="area"){
                 var total = 0
-                for(var i=0;i<skenario.length;i++){
-                    var searchAvg = await avgSkenario(skenario[i].id_area, typesql, arraspek[aspek-1][a])
+                for(var i=0;i<arraspek[aspek-1].length;i++){
+                    var searchAvg = await avgSkenario(skenario[a].id_area, typesql, arraspek[aspek-1][i])
                     total = total + searchAvg
                 }
-                var average = total / skenario.length
-                jsonres.push({nama: aspekLabel[aspek-1][a], label: "AREA", achievement: average})
+                var average = total / arraspek[aspek-1].length
+                jsonres.push({nama: skenario[a].area_name.replace("AREA ",""), label: "AREA", achievement: average})
             }else if(typesql=="subbranch"){
                 var total = 0
-                for(var i=0;i<skenario.length;i++){
-                    var searchAvg = await avgSkenario(skenario[i].id_sub_branch, typesql, arraspek[aspek-1][a])
+                for(var i=0;i<arraspek[aspek-1].length;i++){
+                    var searchAvg = await avgSkenario(skenario[a].id_sub_branch, typesql, arraspek[aspek-1][i])
                     total = total + searchAvg
                 }
-                var average = total / skenario.length
-                jsonres.push({nama: aspekLabel[aspek-1][a], label: "AREA", achievement: average})
+                var average = total / arraspek[aspek-1].length
+                jsonres.push({nama: skenario[a].sub_branch_name, label: "BRANCH", achievement: average})
             }
         }
     }
+    console.log(jsonres)
     res.send(jsonres)
 }
 

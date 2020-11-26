@@ -147,6 +147,11 @@ $(document).ready(function(){
         }else{
             $('#year').prop('disabled', false)
         }
+        if(kanwil=="all"){
+            $('#area').prop('disabled', "disabled")
+        }else{
+            $('#area').prop('disabled', false)
+        }
         if(Date=="all"){
             $('#kanwil').prop('disabled', false)
             $('#area').prop('disabled', false)
@@ -213,9 +218,18 @@ $(document).ready(function(){
                 "#B96BDD",
                 "#EDC200"
                 ]);
-                var achievement_2 = {
+                function compareDataPointYAscend(dataPoint1, dataPoint2) {
+                    return dataPoint1.y - dataPoint2.y;
+                }
+
+                function compareDataPointYDescend(dataPoint1, dataPoint2) {
+                    return dataPoint2.y - dataPoint1.y;
+                }
+
+                var achievement_2 = new CanvasJS.Chart("chartContainer",{
                     animationEnabled: true,
                     zoomEnabled: true,
+                    exportEnabled: true,
                     colorSet: "flexmonsterStyle",
                     title: {
                         text: "Overall Performance by "+type
@@ -224,12 +238,14 @@ $(document).ready(function(){
                         title: " ",
                         minimum: 0,
                         maximum: 100,
+                        includeZero: true
                     },
                     axisX: {
                         title: " ",
                         labelFontSize: 16,
                         labelWrap: true,
-                        labelMaxWidth: 120
+                        labelMaxWidth: 120,
+                        includeZero: true
                     },
                     data: [{
                         type: "column",
@@ -237,8 +253,9 @@ $(document).ready(function(){
                         indexLabel: "{y}",
                         dataPoints: datanya
                     }]
-                };
-                $("#chartContainer").CanvasJSChart(achievement_2);
+                });
+                achievement_2.options.data[0].dataPoints.sort(compareDataPointYDescend);
+                achievement_2.render();
             }
         })
         return false;

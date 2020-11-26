@@ -149,6 +149,15 @@
 <%- include ('./partials/footer') %>
 <script>
 $(document).ready(function(){
+    $(".control").change(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        if(kanwil=="all"){
+            $('#area').prop('disabled', 'disabled')
+        }else{
+            $('#area').prop('disabled', false)
+        }
+    })
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()

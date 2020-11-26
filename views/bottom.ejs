@@ -115,22 +115,6 @@
                     <span class="loader-helper"></span><img src="<%= baseurl() %>images/icon/loader.gif" alt="">
                 </div>
             </div>
-			<!-- <div class="cols-12 containt" style="margin: 20px 0;">
-				<div class="headtitle trans" style="margin-bottom: 0;">
-					<p class="size-head4 nopad">Success Chart</p>
-					<p class="size-std nopad">Little title</p>
-					<ul class="tab-image-setting nopad">
-						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
-					</ul>
-                </div>
-                <div class="graph">
-                    <div class="graph__wrapper">
-                        <div class="container">
-                            <div class="graph__block" id="graph_03"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="cols-12 containt" style="margin: 20px 0;">
 				<div class="headtitle trans" style="margin-bottom: 0;">
 					<p class="size-head4 nopad">&nbsp;</p>
@@ -149,6 +133,15 @@
 <%- include ('./partials/footer') %>
 <script>
 $(document).ready(function(){
+    $(".control").change(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        if(kanwil=="all"){
+            $('#area').prop('disabled', 'disabled')
+        }else{
+            $('#area').prop('disabled', false)
+        }
+    })
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
