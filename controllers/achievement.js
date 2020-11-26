@@ -97,7 +97,6 @@ function avgSkenario(kanwil, type, skenario) {
         }else if(type=="year"){
             var sql = "SELECT AVG(Total_Skor_) AS avg FROM skenario WHERE id_region="+kanwil+" AND tahun="+skenario+" AND "+skenario+" IS NOT NULL"
         }
-        console.log(sql)
         db.query(sql, function(err,result){
             resolve(result[0].avg)
         })
@@ -222,7 +221,6 @@ exports.getAcvAjax = async function (req,res){
             }
         }
     }
-    console.log(aspek)
     res.send(jsonres)
 }
 
@@ -409,7 +407,7 @@ exports.getTopContent = async function(req,res){
                         var getAspek = arrelement[element-1]
     }
     var skenario = await getTopSkenarioByArray(arrbranch, getAspek, sort)
-    if(sort=="top"){
+    if(sort=="DESC"){
         for (let x = 0; x < skenario.length; x++) {
             jsonres.push({nama: skenario[x].cabang, label: typesql, achievement: skenario[x].total})
         }

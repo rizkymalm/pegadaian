@@ -1,17 +1,38 @@
+<style>
+    .sortUp{
+        height: 15px;
+        width: 15px;
+        vertical-align: middle;
+        background-image: url(<%= baseurl() %>images/icon/arrow-up.png);
+        background-size: 100%;
+        float: right;
+    }
+    .sortDown{
+        height: 15px;
+        width: 15px;
+        vertical-align: middle;
+        background-image: url(<%= baseurl() %>images/icon/arrow-up.png);
+        transform: rotate(180deg);
+        background-size: 100%;
+        float: right;
+    }
+</style>
 <form id="count-checked">
     <table class="size-std full-tables">
         <tr>
-            <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil</th>
-            <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area</th>
-            <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('total_skor')">Total Skor</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalPenaksir')">PENAKSIR</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalKasir')">KASIR</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalKebersihan')">KEBERSIHAN</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalNewNormal')">NEW NORMAL</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalPengelolaAgunan')">PENGELOLA AGUNAN</th>
-            <th style="width: 100px; cursor: pointer;" ng-click="sort('totalRO')">RO</th>
+            <th style="text-align: left; cursor: pointer;" ng-click="sort('id_cabang')">No Unit <div ng-class="sortClass('id_cabang')"></div></th>
+            <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil <div ng-class="sortClass('region')"></div></th>
+            <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
+            <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('total_skor')">Total Skor <div ng-class="sortClass('total_skor')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">FRONTLINER <div ng-class="sortClass('totalFrontliner')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM <div ng-class="sortClass('totalSatpam')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalPenaksir')">PENAKSIR <div ng-class="sortClass('totalPenaksir')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalKasir')">KASIR <div ng-class="sortClass('totalKasir')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalKebersihan')">KEBERSIHAN <div ng-class="sortClass('totalKebersihan')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalNewNormal')">NEW NORMAL <div ng-class="sortClass('totalNewNormal')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalPengelolaAgunan')">PENGELOLA AGUNAN <div ng-class="sortClass('totalPengelolaAgunan')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalRO')">RO <div ng-class="sortClass('totalRO')"></div></th>
             <th style="width: 100px;">GADAI</th>
             <th style="width: 100px;">LUNAS</th>
             <th style="width: 100px;">TELEPON</th>
@@ -36,10 +57,12 @@
         <% } %> -->
 
         <tr dir-paginate="req in skenario | orderBy:sortKey:reverse | filter: search | itemsPerPage:20">
+            <td>{{req.id_cabang}}</td>
             <td>{{req.region}}</td>
             <td>{{req.area}}</td>
             <td>{{req.cabang}}</td>
             <td align="center">{{req.total_skor}}</td>
+            <td align="center">{{req.totalFrontliner}}</td>
             <td align="center">{{req.totalSatpam}}</td>
             <td align="center">{{req.totalPenaksir}}</td>
             <td align="center">{{req.totalKasir}}</td>
@@ -60,10 +83,40 @@
     app.controller('PageCtrl',function ($scope, $http) {
         var jsoon = <%- JSON.stringify(jsonres) %>
         $scope.skenario = jsoon;
+        $scope.column = '';
+        $scope.sorttype = '';
         $scope.sort = function (keyname) {
             $scope.sortKey = keyname;
             $scope.reverse = !$scope.reverse
+            $scope.column = keyname
+            if($scope.reverse){
+                $scope.sorttype = true
+            }else{
+                $scope.sorttype = false
+            }
         }
+        // $scope.column = 'total_skor';
+        // $scope.sortColumn = function(col){
+        //     $scope.column = col;
+        //     if($scope.reverse){
+        //         $scope.reverse = false;
+        //         $scope.reverseclass = 'sortUp';
+        //     }else{
+        //         $scope.reverse = true;
+        //         $scope.reverseclass = 'sortDown';
+        //     }
+        // };
+        $scope.sortClass = function(col){
+            if($scope.column == col ){
+                if($scope.sorttype == true){
+                    return 'sortDown'; 
+                }else{
+                    return 'sortUp';
+                }
+            }else{
+                return '';
+            }
+        } 
     })
 </script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

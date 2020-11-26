@@ -85,9 +85,6 @@
                             <span class="size-std">Show By Area</span>
                             <select name="" id="area" class="size-std">
                                 <option value="all">-- All --</option>
-                                <% for(var i=0; i < area.length; i++){ %>
-                                    <option value="<%= area[i].id_area %>"><%= area[i].area_name %></option>
-                                <% } %>
                             </select>
                         </div><br><br><br><br>
                         <div class="list-control-box spc-rl">
@@ -202,7 +199,9 @@ $(document).ready(function(){
                     },
                     axisX: {
                         title: " ",
-                        labelFontSize: 16
+                        labelFontSize: 16,
+                        labelWrap: true,
+                        labelMaxWidth: 100
                     },
                     data: [{
                         type: "column",

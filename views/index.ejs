@@ -63,10 +63,16 @@
 		minimum: 0,
 		maximum: 100,
 	},
+	axisX: {
+        title: " ",
+        labelFontSize: 16,
+        labelWrap: true
+    },
 	data: [              
 	{
 		type: "column",
 		indexLabel: "{y}",
+		indexLabelFontSize: 18,
 		dataPoints: [
 			{ label: "2017",  y: 64.26},
 			{ label: "2018", y: 54.51},
@@ -86,13 +92,18 @@
 			minimum: 0,
 			maximum: 100,
 		},
+		axisX: {
+            title: " ",
+            labelFontSize: 16,
+            labelWrap: true
+        },
 		colorSet: "flexmonsterStyle",
         exportEnabled: true,
         animationEnabled: true,
         data: [{
             type: "column",
             legendText: "{label}",
-            indexLabelFontSize: 16,
+            indexLabelFontSize: 18,
             indexLabel: "{y}",
             dataPoints: [
                 { y: 87.81, label: "Satpam" },
