@@ -81,10 +81,19 @@
                     <div class="tabgrid full-length">
                         <ul>
 							<% for(var i=0;i < arrvids.length;i++){ %>
+								<% 
+									var splitfile = arrvids[i].split(".") 
+									var tipeFile = splitfile[splitfile.length-1]
+									if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){
+										var tabname = "Image"
+									}else{
+										var tabname = "Video"
+									}
+								%>
 								<% if(i == 0){ %>
-								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>">Video <%= i+1 %></li>
+								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
 								<% }else{ %>
-								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>">Video <%= i+1 %></li>
+								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
 								<% } %>
 							<% } %>
                         </ul>
@@ -93,12 +102,20 @@
                     <div class="full-length tabgridwrap">
                         <div class="tabgridcontent">
 							<% for(var v=0;v < arrvids.length;v++){ %>
+								<% 
+									var splitfile = arrvids[v].split(".") 
+									var tipeFile = splitfile[splitfile.length-1]
+								%>
                             <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
-                                <div style="width: 100%; padding: 10px;">
+								<div style="width: 100%; padding: 10px; text-align: center;">
+									<% if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){ %>
+										<img src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" alt="" style="height: 520px;">
+									<% }else{ %>
 									<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
 										<source src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" type="video/mp4">
 										  Your browser does not support the video tag.
 									</video>
+									<% } %>
                                 </div>
 							</div>
 							<% } %>

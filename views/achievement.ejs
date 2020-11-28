@@ -161,7 +161,7 @@ $(document).ready(function(){
             $('#area').prop('disabled', 'disabled')
             $('#aspek').prop('disabled', 'disabled')
         }
-    })
+    })    
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
@@ -199,6 +199,11 @@ $(document).ready(function(){
             beforeSend: function(loading){
                 $('.loader').show()
             },success: function(data){
+                if($(window).width() < 1600){
+                    var fontSize = 10
+                }else{
+                    var fontSize = 16
+                }
                 $('.loader').hide()
                 var datanya = []
                 var type = data[0].label
@@ -242,9 +247,9 @@ $(document).ready(function(){
                     },
                     axisX: {
                         title: " ",
-                        labelFontSize: 16,
+                        labelFontSize: fontSize,
                         labelWrap: true,
-                        labelMaxWidth: 120,
+                        labelMaxWidth: 100,
                         includeZero: true
                     },
                     data: [{
