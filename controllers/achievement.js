@@ -89,11 +89,11 @@ function countSkenario(kanwil, type) {
 function avgSkenario(kanwil, type, skenario) { 
     return new Promise(resolve =>{ 
         if(type=="region"){
-            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_region="+kanwil+" AND "+skenario+" IS NOT NULL"
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_region="+kanwil+" AND tahun=2020"
         }else if(type=="area"){
-            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_area="+kanwil+" AND "+skenario+" IS NOT NULL"
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_area="+kanwil+" AND tahun=2020"
         }else if(type=="subbranch"){
-            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_sub_branch="+kanwil+" AND "+skenario+" IS NOT NULL"
+            var sql = "SELECT AVG("+skenario+") AS avg FROM skenario WHERE id_sub_branch="+kanwil+" AND tahun=2020"
         }else if(type=="year"){
             var sql = "SELECT AVG(Total_Skor_) AS avg FROM skenario WHERE id_region="+kanwil+" AND tahun="+skenario+" AND "+skenario+" IS NOT NULL"
         }
@@ -141,22 +141,23 @@ exports.getAcvAjax = async function (req,res){
     if(aspek==9){
         for(var i=0;i<skenario.length;i++){
             var rand = await randomNumber(1, 100);
-            var arrskenario = ["Total_Satpam_KONDISI_1","Total_Penaksir_KONDISI_1","Total_Kasir_KONDISI_1","Total_Kebersihan_KONDISI_1","Total_New_Normal_KONDISI_1","Total_Pengelola_Agunan_KONDISI_1","Total_Frontliner"]
+            var arrskenario = ["Total_Skor_"]
             if(typesql=="region"){
                 var total = 0
                 for (let x = 0; x < arrskenario.length; x++) {
                     var searchAvg = await avgSkenario(skenario[i].id_region, typesql, arrskenario[x])
                     total = total + searchAvg
                 }
-                var average = total / 7
+                var average = total
                 jsonres.push({nama: skenario[i].region.replace("KANWIL ",""), label: "KANWIL", achievement: average})
+                console.log(skenario[i].region.replace("KANWIL ","")+" = "+average)
             }else if(typesql=="area"){
                 var total = 0
                 for (let x = 0; x < arrskenario.length; x++) {
                     var searchAvg = await avgSkenario(skenario[i].id_area, typesql, arrskenario[x])
                     total = total + searchAvg
                 }
-                var average = total / 7
+                var average = total
                 jsonres.push({nama: skenario[i].area_name.replace("AREA ",""), label: "AREA", achievement: average})
             }else if(typesql=="subbranch"){
                 var total = 0
@@ -164,7 +165,7 @@ exports.getAcvAjax = async function (req,res){
                     var searchAvg = await avgSkenario(skenario[i].id_sub_branch, typesql, arrskenario[x])
                     total = total + searchAvg
                 }
-                var average = total / 7
+                var average = total
                 jsonres.push({nama: skenario[i].sub_branch_name, label: "BRANCH", achievement: average})
             }else if(typesql=="year"){
                 var searchAvg = await avgSkenario(skenario[i].id_region, typesql, date)
@@ -212,7 +213,6 @@ exports.getAcvAjax = async function (req,res){
             }
         }
     }
-    console.log(jsonres)
     res.send(jsonres)
 }
 

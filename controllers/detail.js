@@ -133,7 +133,7 @@ exports.getDetailContent = async function(req,res){
             region: kanwilbyid[0].region.replace("KANWIL ",""),
             area: areabyid[0].area_name.replace("AREA ",""),
             cabang: skenario[i].CABANG,
-            total_skor: skenario[i].Total_Skor_,
+            total_skor: skenario[i].Total_Skor_2,
             totalSatpam: Math.round(skenario[i].Total_Satpam_KONDISI_1 * 100) / 100,
             totalPenaksir: Math.round(skenario[i].Total_Penaksir_KONDISI_1 * 100) / 100,
             totalKasir: Math.round(skenario[i].Total_Kasir_KONDISI_1 * 100) / 100,

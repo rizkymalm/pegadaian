@@ -25,7 +25,7 @@
             <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('total_skor')">Total Skor <div ng-class="sortClass('total_skor')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">FRONTLINER <div ng-class="sortClass('totalFrontliner')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">TELEPON <div ng-class="sortClass('totalFrontliner')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM <div ng-class="sortClass('totalSatpam')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalPenaksir')">PENAKSIR <div ng-class="sortClass('totalPenaksir')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalKasir')">KASIR <div ng-class="sortClass('totalKasir')"></div></th>
@@ -66,10 +66,10 @@
             <td align="center">{{req.totalSatpam}}</td>
             <td align="center">{{req.totalPenaksir}}</td>
             <td align="center">{{req.totalKasir}}</td>
-            <td align="center">{{req.totalKebersihan}}</td>
+            <td align="center" style="color: {{req.totalKebersihan === 'N/A' ? 'red' : '#73879C'}}">{{req.totalKebersihan}}</td>
             <td align="center">{{req.totalNewNormal}}</td>
             <td align="center">{{req.totalPengelolaAgunan}}</td>
-            <td align="center">{{req.totalRO}}</td>
+            <td align="center" style="color: {{req.totalRO === 'N/A' ? 'red' : '#73879C'}}">{{req.totalRO}}</td>
             <td align="center"><a href="gadai/{{req.id_cabang}}" target="_blank">View</a></td>
             <td align="center"><a href="lunas/{{req.id_cabang}}" target="_blank">View</a></td>
             <td align="center"><a href="telp/{{req.id_cabang}}" target="_blank">View</a></td>
