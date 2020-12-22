@@ -141,7 +141,7 @@ exports.getAcvAjax = async function (req,res){
     if(aspek==9){
         for(var i=0;i<skenario.length;i++){
             var rand = await randomNumber(1, 100);
-            var arrskenario = ["Total_Skor_"]
+            var arrskenario = ["Total_Skor_2"]
             if(typesql=="region"){
                 var total = 0
                 for (let x = 0; x < arrskenario.length; x++) {
@@ -176,14 +176,14 @@ exports.getAcvAjax = async function (req,res){
     }
     else{
         var arraspek = [
-            ["Total_Frontliner","Sikap_Frontliner_Dalam_Menerima_Panggilan_Telepon","Sikap_Saat_Melayani_di_Telepon_dan_Handling_Complaint","Sikap_Frontliner_Dalam_Mengakhiri_Panggilan_Telepon","Kegiatan_Frontliner_Lainnya"],
-            ["Total_Kasir_KONDISI_1","Sikap_Kasir_Saat_Menyambut_Nasabah_Datang","Penampilan_Kasir","Sikap_Kasir_dalam_Melayani_Nasabah","Skill_Kasir","Sikap_Kasir_Saat_Mengakhiri_Pelayanan","Kegiatan_Kasir_Lainnya"],
-            ["Total_Kebersihan_KONDISI_1","Eksterior_Kantor_Cabang","Interior_Kantor_Cabang"],
-            ["Total_New_Normal_KONDISI_1","Pelayanan_dan_Pencegahan_oleh_Satpam","Fasilitas_Prasarana_dan_Sarana","Pelayanan_dan_Pencegahan_oleh_Karyawan"],
-            ["Total_Penaksir_KONDISI_1","Sikap_Penaksir_Saat_Menyambut_Nasabah_Datang","Penampilan_Penaksir","Sikap_Penaksir_dalam_Melayani_Nasabah","Skill_Penaksir","Sikap_Penaksir_Saat_Mengakhiri_Pelayanan","Kegiatan_Penaksir_Lainnya"],
-            ["Total_Pengelola_Agunan_KONDISI_1","Sikap_Pengelola_Agunan_Saat_Menyambut_Nasabah_Datang","Penampilan_Pengelola_Agunan","Sikap_Pengelola_Agunan_dalam_Melayani_Nasabah","Skill_Pengelola_Agunan","Sikap_yang_Dilakukan_Pengelola_Agunan_Saat_Mengakhiri_Layanan","Kegiatan_Pegelola_Agunan_Lainnya"],
-            ["Total_RO_KONDISI_1","Sikap_RO_Saat_Menyambut_Nasabah_Datang","Penampilan_RO","Sikap_RO_Saat_Melayani_Nasabah","Skill_RO","Sikap_yang_Dilakukan_RO_Saat_Mengakhiri_Layanan","Kegiatan_RO_Lainnya"],
-            ["Total_Satpam_KONDISI_1","Total_Keberadaan_Satpam","Sikap_Satpam_Saat_Menyambut_Nasabah","Sikap_Satpam_Saat_Melayani_Nasabah","Sikap_Satpam_Saat_Nasabah_Keluar","Penampilan_Satpam","Kegiatan_Satpam_Lainnya"],
+            ["Total_Frontliner"],
+            ["Total_Kasir_KONDISI_1"],
+            ["Total_Kebersihan_KONDISI_1"],
+            ["Total_New_Normal_KONDISI_1"],
+            ["Total_Penaksir_KONDISI_1"],
+            ["Total_Pengelola_Agunan_KONDISI_1"],
+            ["Total_RO_KONDISI_1"],
+            ["Total_Satpam_KONDISI_1"],
         ]
         for (let a = 0; a < skenario.length; a++) {
             if(typesql=="region"){
