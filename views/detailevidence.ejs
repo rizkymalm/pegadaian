@@ -127,6 +127,11 @@
 			<% }else{ %>
 			<div class="cols-12">
 				<!-- Tabgrid -->
+				<% if(task[0].filename=="n"){ %>
+					<div class="full-length containt" style="margin-top: 20px;">
+						<p>Evidence Not Found</p>
+					</div>	
+				<% }else{ %>
 				<% 
 					var arrvids = task[0].filename.split(",") 
 				%>
@@ -174,7 +179,8 @@
 							<% } %>
                         </div>
                     </div>
-                </div>
+				</div>
+				<% } %>
                 <!-- Tabgrid -->
 			</div>
 			<% } %>
