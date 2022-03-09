@@ -356,6 +356,14 @@ bottom: 10px;
     background: transparent;
     color: #636161;
 }
+.myButton-submit-active{
+    padding: 8px 20px;
+    background: transparent;
+    border: 2px solid #70a143;
+    font-size: 1em;
+    color: #636161;
+    cursor: pointer;
+}
 /*end table list*/
 
 

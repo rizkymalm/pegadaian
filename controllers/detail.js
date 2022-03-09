@@ -5,6 +5,7 @@ const { type, setPriority } = require("os");
 const { resolve } = require("path");
 const { json } = require("body-parser");
 const { brotliDecompress } = require("zlib");
+require("../library");
 
 function getKanwil(){
     return new Promise(resolve =>{
@@ -103,7 +104,6 @@ exports.getDetailContent = async function(req,res){
         var typesql = "cabang"
         var selectBranch = await getBranchByKanwil(cabang, typesql)
     }
-    console.log(cabang)
     var arrbranch = ""
     for (let i = 0; i < selectBranch.length; i++) {
         if(i==selectBranch.length-1){
@@ -163,5 +163,81 @@ exports.getDetailVideo = async function(req,res){
                 notes: notess
             })
         })
+    })
+}
+
+exports.getDetailInternalPegadaian = async function(req,res){
+    var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
+    var kanwil = await getKanwil()
+    var aspek = await getAspek()
+    res.render("detailcabanginternal",{
+        moment: moment,
+        login: login,
+        kanwil: kanwil,
+        aspek: aspek
+    })
+}
+
+exports.getDetailContentInternal = async function(req,res){
+    var login = ({idses: req.session.id, nameses: req.session.name, emailses: req.session.email, subbranch: req.session.subbranch})
+    var kanwil = req.query.kanwil
+    var area = req.query.area
+    var cabang = req.query.cabang
+    var aspek = req.query.aspek
+    if(kanwil=="all" && area=="all"){
+        var typesql = "kanwil"
+        var selectBranch = await getBranchByKanwil(kanwil, typesql)
+    }else if(kanwil!="all" && area=="all"){
+        var typesql = "kanwil"
+        var selectBranch = await getBranchByKanwil(kanwil, typesql)
+    }else if(kanwil!="all" && area!="all" && cabang=="all"){
+        var typesql = "area"
+        var selectBranch = await getBranchByKanwil(area, typesql)
+    }else if(kanwil!="all" && area!="all" && cabang!="all"){
+        var typesql = "cabang"
+        var selectBranch = await getBranchByKanwil(cabang, typesql)
+    }
+    var arrbranch = ""
+    for (let i = 0; i < selectBranch.length; i++) {
+        if(i==selectBranch.length-1){
+            arrbranch += selectBranch[i].id_sub_branch
+        }else{
+            arrbranch += selectBranch[i].id_sub_branch+","
+        }
+    }
+    var jsonres = []
+    var skenario = await getTopSkenarioByArray(arrbranch)
+    for (let i = 0; i < skenario.length; i++) {
+        var kanwilbyid = await getKanwilById(skenario[i].id_region)
+        var areabyid = await getAreaById(skenario[i].id_area)
+        if(skenario[i].Total_Kebersihan_KONDISI_1!=null){
+            var kebersihan = randomIntFromInterval(0, 100)
+        }else{
+            var kebersihan = "N/A"
+        }
+        if(skenario[i].Total_RO_KONDISI_1!=null){
+            var total_RO = randomIntFromInterval(0, 100)
+        }else{
+            var total_RO = "N/A"
+        }
+        jsonres.push({
+            id_skenario: skenario[i].id_skenario,
+            id_cabang: skenario[i].id_sub_branch,
+            region: kanwilbyid[0].region.replace("KANWIL ",""),
+            area: areabyid[0].area_name.replace("AREA ",""),
+            cabang: skenario[i].CABANG,
+            total_skor: randomIntFromInterval(50, 100),
+            totalSatpam: randomIntFromInterval(40, 100),
+            totalPenaksir: randomIntFromInterval(20, 100),
+            totalKasir: randomIntFromInterval(30, 100),
+            totalKebersihan: kebersihan,
+            totalNewNormal: randomIntFromInterval(10, 100),
+            totalPengelolaAgunan: randomIntFromInterval(10, 100),
+            totalFrontliner: randomIntFromInterval(0, 100),
+            totalRO: total_RO,
+        })
+    }
+    res.render("partials/detailContent",{
+        jsonres: jsonres
     })
 }
