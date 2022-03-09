@@ -12,7 +12,7 @@ const acvRoutes = require("./routes/achievement");
 const detailRoutes = require("./routes/detail");
 
 global.baseurl = function(){
-	var url = "http://localhost:5001/";
+	var url = `${process.env.URL}:${process.env.PORT}/`;
     return url;
 }
 
@@ -38,6 +38,6 @@ app.get("/logout", function(req,res) {
         res.redirect("/login")
 })
 
-app.listen(5001, (req,res) => {
+app.listen(process.env.PORT, (req,res) => {
     
 })

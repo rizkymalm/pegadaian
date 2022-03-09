@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "pm2 start index.js --name pegadaian",
+    "stop": "pm2 stop index.js --name pegadaian",
+    "restart": "pm2 restart index.js --name pegadaian"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
     "path": "^0.12.7",
+    "pm2": "^5.2.0",
     "xlsx": "^0.18.3"
   }
 }
