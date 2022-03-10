@@ -333,7 +333,6 @@ $(document).ready(function(){
         }else{
             $('#element').prop('disabled', 'disabled')
 		}
-		console.log(aspek+", "+element)
 		var data = "kanwil="+kanwil+"&area="+area+"&cabang="+cabang+"&aspek="+aspek+"&element="+element
 		$.ajax({
             url: "<%= baseurl() %>report/content/",

@@ -8,7 +8,8 @@ const indexRoutes = require("./routes/index");
 const reportRoutes = require("./routes/report");
 const loginRoutes = require("./routes/login");
 const evidenceRoutes = require("./routes/evidence");
-const acvRoutes = require("./routes/achievement");
+const acvRoutes = require("./routes/acv");
+const achievementRoutes = require("./routes/achievement");
 const detailRoutes = require("./routes/detail");
 
 global.baseurl = function(){
@@ -29,6 +30,7 @@ app.use(session({
 app.use("/", indexRoutes)
 app.use("/login", loginRoutes)
 app.use("/acv", acvRoutes)
+app.use("/achievement", achievementRoutes)
 app.use("/report", reportRoutes)
 app.use("/evidence", evidenceRoutes)
 app.use("/detail", detailRoutes)

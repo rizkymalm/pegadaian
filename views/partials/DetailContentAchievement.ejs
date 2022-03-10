@@ -24,37 +24,26 @@
             <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil <div ng-class="sortClass('region')"></div></th>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('total_skor')">Total Skor <div ng-class="sortClass('total_skor')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">TELEPON <div ng-class="sortClass('totalFrontliner')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM <div ng-class="sortClass('totalSatpam')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalPenaksir')">PENAKSIR <div ng-class="sortClass('totalPenaksir')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalKasir')">KASIR <div ng-class="sortClass('totalKasir')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalKebersihan')">KEBERSIHAN <div ng-class="sortClass('totalKebersihan')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalNewNormal')">NEW NORMAL <div ng-class="sortClass('totalNewNormal')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalPengelolaAgunan')">PENGELOLA AGUNAN <div ng-class="sortClass('totalPengelolaAgunan')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalRO')">RO <div ng-class="sortClass('totalRO')"></div></th>
-            <th style="width: 100px;">GADAI</th>
-            <th style="width: 100px;">LUNAS</th>
-            <th style="width: 100px;">TELEPON</th>
+            <th style="cursor: pointer;" ng-click="sort('status')">Status <div ng-class="sortClass('status')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('acvGadai')">Achievement Gadai <div ng-class="sortClass('acvGadai')"></div></th>
+            <th style="width: 100px;">Video Gadai</th>
+            <th style="cursor: pointer;" ng-click="sort('acvCalling')">Achievement Calling <div ng-class="sortClass('acvCalling')"></div></th>
+            <th style="width: 100px;">Video Calling</th>
+            <th style="cursor: pointer;" ng-click="sort('acvCalling2')">Achievement Calling <div ng-class="sortClass('acvCalling2')"></div></th>
+            <th style="width: 100px;">Video Calling</th>
         </tr>
-
         <tr dir-paginate="req in skenario | orderBy:sortKey:reverse | filter: search | itemsPerPage:20">
             <td>{{req.id_cabang}}</td>
             <td>{{req.region}}</td>
             <td>{{req.area}}</td>
             <td>{{req.cabang}}</td>
-            <td align="center">{{req.total_skor}}</td>
-            <td align="center">{{req.totalFrontliner}}</td>
-            <td align="center">{{req.totalSatpam}}</td>
-            <td align="center">{{req.totalPenaksir}}</td>
-            <td align="center">{{req.totalKasir}}</td>
-            <td align="center" style="color: {{req.totalKebersihan === 'N/A' ? 'red' : '#73879C'}}">{{req.totalKebersihan}}</td>
-            <td align="center">{{req.totalNewNormal}}</td>
-            <td align="center">{{req.totalPengelolaAgunan}}</td>
-            <td align="center" style="color: {{req.totalRO === 'N/A' ? 'red' : '#73879C'}}">{{req.totalRO}}</td>
-            <td align="center"><a href="gadai/{{req.id_cabang}}" target="_blank">View</a></td>
-            <td align="center"><a href="lunas/{{req.id_cabang}}" target="_blank">View</a></td>
-            <td align="center"><a href="telp/{{req.id_cabang}}" target="_blank">View</a></td>
+            <td align="center">{{req.status}}</td>
+            <td align="center">{{req.acvGadai}}</td>
+            <td align="center"><a href="../detail/gadai/{{req.id_cabang}}" target="_blank" style="display: {{req.acvGadai == 'N' ? 'none' : 'block'}};">View</a></td>
+            <td align="center">{{req.acvCalling}}</td>
+            <td align="center"><a href="../detail/lunas/{{req.id_cabang}}" target="_blank" style="display: {{req.acvCalling == 'N' ? 'none' : 'block'}};">View</a></td>
+            <td align="center">{{req.acvCalling2}}</td>
+            <td align="center"><a href="../detail/telp/{{req.id_cabang}}" target="_blank" style="display: {{req.acvCalling2 == 'N' ? 'none' : 'block'}};">View</a></td>
         </tr>
     </table>
     <dir-pagination-controls direction-links="true" boundary-links="true" class="size-std"></dir-pagination-controls>

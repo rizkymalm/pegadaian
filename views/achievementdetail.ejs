@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="<%= baseurl() %>css/chart.css">
+	<style>
+		.canvasjs-chart-credit{
+			display: none;
+		}
+		table th{
+			position: sticky;
+			top: 0;
+			position: -webkit-sticky;
+			z-index: 99;
+		}
+		th.rotate {
+			/* Something you can count on */
+			width: 22px;
+			height: 270px;
+			white-space: nowrap;
+		}
+
+		th.rotate > div {
+			transform: 
+				/* Magic Numbers */
+				translate(-3px, 103px)
+				/* 45 is really 360 - 45 */
+				rotate(270deg);
+			width: 30px;
+		}
+		th.rotate > div > span {
+			border-bottom: 1px solid #ccc;
+			padding: 5px 0;
+			letter-spacing: .5px;
+		}
+		.square{
+			position: relative;
+			margin: auto;
+			width: 20px;
+			height: 20px !important;
+			margin: 3px 0;
+		}
+		.used{
+			background: #C6E48B;
+		}
+		.unused{
+			background: #e6e6e6;
+		}
+	</style>
+</head>
+<%- include ('./partials/header') %>
+<body>
+<div class="wrapper" ng-app="myApp" ng-controller="PageCtrl">
+	<div class="lSide">
+		<%- include ('./partials/sidebar') %>
+	</div>
+	<div class="rSide">
+		<div class="head gradientr desk">
+			<%- include ('./partials/topdesk') %>
+		</div>
+		<div class="mainbox size-std column" style="overflow: unset;">
+			<div class="title-content size-std clickVideo">
+				<a href="<%= baseurl() %>">DASHBOARD</a> > ACHIEVEMENT DETAIL
+			</div>
+			<div class="cols-12 column containt" style="margin: 10px 0; background-color: #ffffff;">
+				<div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
+                    <form class="control">
+                        <div class="list-control" style="border-bottom: none;">
+                            <div class="list-control-box spc-rl">
+                                <span class="size-std">Show By Kanwil</span>
+                                <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
+                                    <option value="all">-- Select Kanwil --</option>
+                                    <% for(var i=0; i < kanwil.length; i++){ %>
+                                        <option value="<%= kanwil[i].id_region %>"><%= kanwil[i].region %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl">
+                                <span class="size-std">Show By Area</span>
+                                <select name="" id="area" class="size-std" onchange="getBranchByArea(this)">
+                                    <option value="all">-- All --</option>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl">
+                                <span class="size-std">Show By Cabang</span>
+                                <select name="" id="cabang" class="size-std">
+                                    <option value="all">-- All --</option>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl" style="display: none;">
+                                <span class="size-std">Show By Aspek</span>
+                                <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
+                                    <option value="all">-- All --</option>
+                                    <% for(var i=0; i < aspek.length; i++){ %>
+                                        <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl" style="display: none;">
+                                <span class="size-std">Show By Element</span>
+                                <select name="" id="element" class="size-std">
+                                    <option value="all">-- All --</option>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl">
+                                <input type="search" name="search" ng-model="search" placeholder="Search">
+                            </div>
+                            <div class="list-control-box size-std spc-rl">
+                                <button type="submit" class="myButton-submit">Show</button>
+                                <button type="reset" class="myButton-submit">Clear</button>
+                            </div>
+                        </div>
+    
+                    </form>
+                </div>
+                <div class="full-length" style="position: relative;">
+                    <div class="loader" style="display: none;">
+                        <span class="loader-helper"></span><img src="<%= baseurl() %>images/icon/loader.gif" alt="">
+                    </div>
+                </div>
+				<div class="full-length" id="contentDetail" style="overflow-x: auto; padding-bottom: 40px;">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<%- include ('./partials/footer') %>
+
+<script>
+$(document).ready(function(){
+    $(".control").submit(function(){
+        var kanwil = $('#kanwil').val()
+        var area = $('#area').val()
+        var cabang = $('#cabang').val()
+        var aspek = $('#aspek').val()
+        var element = $('#element').val()
+        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC&cabang="+cabang
+        $.ajax({
+            url: "detail/content/",
+            type: "GET",
+            data: data,
+            cache: false,
+            beforeSend: function(loading){
+                $('.loader').show()
+                $("#contentDetail").unbind()
+            },success: function(data){
+                $('.loader').hide()
+                $("#contentDetail").html(data)
+            }
+        })
+        return false;
+    })
+})
+</script>
+</html>
