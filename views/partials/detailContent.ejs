@@ -24,13 +24,14 @@
             <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil <div ng-class="sortClass('region')"></div></th>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
+            <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Status <div ng-class="sortClass('cabang')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('total_skor')">Total Skor <div ng-class="sortClass('total_skor')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">TELEPON <div ng-class="sortClass('totalFrontliner')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM <div ng-class="sortClass('totalSatpam')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalPenaksir')">PENAKSIR <div ng-class="sortClass('totalPenaksir')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalKasir')">KASIR <div ng-class="sortClass('totalKasir')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalKebersihan')">KEBERSIHAN <div ng-class="sortClass('totalKebersihan')"></div></th>
-            <th style="cursor: pointer;" ng-click="sort('totalNewNormal')">NEW NORMAL <div ng-class="sortClass('totalNewNormal')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('totalNewNormal')">PROTOKOL KESEHATAN <div ng-class="sortClass('totalNewNormal')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalPengelolaAgunan')">PENGELOLA AGUNAN <div ng-class="sortClass('totalPengelolaAgunan')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalRO')">RO <div ng-class="sortClass('totalRO')"></div></th>
             <th style="width: 100px;">GADAI</th>
@@ -43,6 +44,7 @@
             <td>{{req.region}}</td>
             <td>{{req.area}}</td>
             <td>{{req.cabang}}</td>
+            <td>{{req.status}}</td>
             <td align="center">{{req.total_skor}}</td>
             <td align="center">{{req.totalFrontliner}}</td>
             <td align="center">{{req.totalSatpam}}</td>

@@ -64,7 +64,18 @@
 			<div class="title-content size-std">
 				Top 10 Performance
 			</div>
-			
+			<div class="full-length" style="overflow: hidden; padding: 10px;">
+                <div class="list-control-box spc-rl">
+                    <div class="radiotype1">
+                        <input type="radio" id="radio01" name="type" value="po" checked="">
+                        <label for="radio01" id="chartline"><span></span>Mystery Shopping Kadence</label>
+                    </div>
+                    <div class="radiotype1">
+                        <input type="radio" id="radio02" name="type" value="re" onclick="window.location='/acv/top/pegadaian-internal'" >
+                        <label for="radio02" id="chartline"><span></span>Internal MS Pegadaian</label>
+                    </div>
+                </div>
+            </div>
             
             <div class="cols-12 containt" style="margin: 0; overflow: auto; overflow: unset;">
                 <div class="headtitle trans" style="margin-bottom: 0;">
@@ -100,6 +111,15 @@
                             <span class="size-std">Show By Element</span>
                             <select name="" id="element" class="size-std">
                                 <option value="all">-- All --</option>
+                            </select>
+						</div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Status</span>
+                            <select name="" id="status" class="size-std">
+                                <option value="all">-- All --</option>
+                                <option value="all">Cabang</option>
+                                <option value="all">UPC</option>
+                                <option value="all">Colocation</option>
                             </select>
 						</div>
                         <div class="list-control-box size-std spc-rl">

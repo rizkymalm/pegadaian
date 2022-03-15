@@ -62,16 +62,16 @@
 		</div>
 		<div class="mainbox size-std column" style="overflow: unset;">
 			<div class="title-content size-std">
-				Bottom 10 Performance
+				OVERALL PERFORMANCE - Internal MS Pegadaian
 			</div>
 			<div class="full-length" style="overflow: hidden; padding: 10px;">
                 <div class="list-control-box spc-rl">
                     <div class="radiotype1">
-                        <input type="radio" id="radio01" name="type" value="po" checked="">
+                        <input type="radio" id="radio01" name="type" value="po" onclick="window.location='../acv'">
                         <label for="radio01" id="chartline"><span></span>Mystery Shopping Kadence</label>
                     </div>
                     <div class="radiotype1">
-                        <input type="radio" id="radio02" name="type" value="re" onclick="window.location='/acv/bottom/pegadaian-internal'" >
+                        <input type="radio" id="radio02" name="type" value="re" checked="">
                         <label for="radio02" id="chartline"><span></span>Internal MS Pegadaian</label>
                     </div>
                 </div>
@@ -97,22 +97,26 @@
                             <select name="" id="area" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
-                        </div><br><br><br><br>
+                        </div>
                         <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Aspek</span>
-                            <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
-                                <option value="all">-- All --</option>
+                            <select name="" id="aspek" class="size-std">
+                                <option value="9">-- All --</option>
                                 <% for(var i=0; i < aspek.length; i++){ %>
                                     <option value="<%= aspek[i].id_aspek %>"><%= aspek[i].label_aspek %></option>
                                 <% } %>
                             </select>
-                        </div>
-                        <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Element</span>
-                            <select name="" id="element" class="size-std">
-                                <option value="all">-- All --</option>
-                            </select>
 						</div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Year</span>
+                            <select name="" id="year" class="size-std">
+                                <option value="all">-- Select Year --</option>
+                                <option value="2017">2019</option>
+                                <option value="2018">2020</option>
+                                <option value="2019">2021</option>
+                                <option value="2020">2022</option>
+                            </select>
+                        </div>
                         <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Status</span>
                             <select name="" id="status" class="size-std">
@@ -127,7 +131,7 @@
                             <button type="reset" class="myButton-submit">Clear</button>
                         </div>
                     </div>
-                    
+
                 </form>
             </div>
             <div class="full-length" style="position: relative;">
@@ -153,24 +157,61 @@
 <%- include ('./partials/footer') %>
 <script>
 $(document).ready(function(){
-    $(".control").change(function(){
+    $('.control').change(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
+        var aspek = $('#aspek').val()
+        var Date = 2022
+        if(kanwil!="all" || aspek!=9){
+            $('#year').prop('disabled', 'disabled')
+        }else{
+            $('#year').prop('disabled', false)
+        }
         if(kanwil=="all"){
-            $('#area').prop('disabled', 'disabled')
+            $('#area').prop('disabled', "disabled")
         }else{
             $('#area').prop('disabled', false)
         }
-    })
+        if(Date=="all"){
+            $('#kanwil').prop('disabled', false)
+            $('#area').prop('disabled', false)
+            $('#aspek').prop('disabled', false)
+        }else{
+            $('#kanwil').prop('disabled', 'disabled')
+            $('#area').prop('disabled', 'disabled')
+            $('#aspek').prop('disabled', 'disabled')
+        }
+    })    
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var aspek = $('#aspek').val()
-        var element = $('#element').val()
-        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=ASC"
-        console.log(data)
+        var Date = $('#year').val()
+        if(kanwil!="all" || aspek!=9){
+            $('#year').prop('disabled', 'disabled')
+        }else{
+            $('#year').prop('disabled', false)
+        }
+        if(Date=="all"){
+            $('#kanwil').prop('disabled', false)
+            $('#area').prop('disabled', false)
+            $('#aspek').prop('disabled', false)
+        }else{
+            $('#kanwil').prop('disabled', 'disabled')
+            $('#area').prop('disabled', 'disabled')
+            $('#aspek').prop('disabled', 'disabled')
+        }
+        // if(Date==""){
+        //     var startDate = "all"
+        //     var endDate = "all"
+        // }else{
+        //     var startDate = Date
+        //     var endDate = valEndDate
+        // }
+        var data = "kanwil="+kanwil+"&date="+Date+"&area="+area+"&aspek="+aspek
+
         $.ajax({
-            url: "<%= baseurl() %>acv/top/content/",
+            url: "<%= baseurl() %>acv/content/",
             type: "GET",
             data: data,
             cache: false,
@@ -178,8 +219,12 @@ $(document).ready(function(){
             beforeSend: function(loading){
                 $('.loader').show()
             },success: function(data){
+                if($(window).width() < 1600){
+                    var fontSize = 10
+                }else{
+                    var fontSize = 16
+                }
                 $('.loader').hide()
-                console.log(data)
                 var datanya = []
                 var type = data[0].label
                 for (let i = 0; i < data.length; i++) {
@@ -198,23 +243,34 @@ $(document).ready(function(){
                 "#B96BDD",
                 "#EDC200"
                 ]);
-                var achievement_2 = {
+                function compareDataPointYAscend(dataPoint1, dataPoint2) {
+                    return dataPoint1.y - dataPoint2.y;
+                }
+
+                function compareDataPointYDescend(dataPoint1, dataPoint2) {
+                    return dataPoint2.y - dataPoint1.y;
+                }
+
+                var achievement_2 = new CanvasJS.Chart("chartContainer",{
                     animationEnabled: true,
-                    colorSet: "flexmonsterStyle",
                     zoomEnabled: true,
+                    exportEnabled: true,
+                    colorSet: "flexmonsterStyle",
                     title: {
-                        text: "Bottom 10 Performance"
+                        text: "Overall Performance by "+type
                     },
                     axisY: {
                         title: " ",
                         minimum: 0,
                         maximum: 100,
+                        includeZero: true
                     },
                     axisX: {
                         title: " ",
-                        labelFontSize: 16,
+                        labelFontSize: fontSize,
                         labelWrap: true,
-                        labelMaxWidth: 100
+                        labelMaxWidth: 100,
+                        includeZero: true
                     },
                     data: [{
                         type: "column",
@@ -222,8 +278,9 @@ $(document).ready(function(){
                         indexLabel: "{y}",
                         dataPoints: datanya
                     }]
-                };
-                $("#chartContainer").CanvasJSChart(achievement_2);
+                });
+                achievement_2.options.data[0].dataPoints.sort(compareDataPointYDescend);
+                achievement_2.render();
             }
         })
         return false;

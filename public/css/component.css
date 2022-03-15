@@ -581,7 +581,7 @@ textarea,.frm-std{
 
 .radiotype1 input[type="radio"]:checked + label span{
 	background-color: transparent;
-	background-image: url('http://localhost:8000/images/icon/list-style-type-1.png');
+	background-image: url('http://localhost:5001/images/icon/list-style-type-1.png');
 	width: 25px;
 	height: 28px;
 	background-size: 100%;

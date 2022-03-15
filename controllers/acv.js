@@ -36,6 +36,36 @@ exports.getAcv = async function (req, res) {
   }
 };
 
+exports.getAcvPegadaian = async function (req, res) {
+  if (req.session.email == undefined) {
+    res.redirect("../login");
+  } else {
+    var login = {
+      idses: req.session.id,
+      nameses: req.session.name,
+      emailses: req.session.email,
+      subbranch: req.session.subbranch,
+    };
+    var kanwil = await getKanwil();
+    var area = await getArea();
+    var aspek = await getAspek();
+    db.query(
+      "SELECT * FROM sub_branch WHERE id_sub_branch=?",
+      login.subbranch,
+      (err, sub_branch) => {
+        res.render("acvPegadaian", {
+          login: login,
+          moment: moment,
+          subBranch: sub_branch,
+          kanwil: kanwil,
+          area: area,
+          aspek: aspek,
+        });
+      }
+    );
+  }
+};
+
 function randomNumber(min, max) {
   return new Promise((resolve) => {
     var random = Math.random() * (max - min) + min;
@@ -357,6 +387,29 @@ exports.getTop = async function (req, res) {
   }
 };
 
+exports.getTopPegadaian = async function (req, res) {
+  if (req.session.email == undefined) {
+    res.redirect("../../login");
+  } else {
+    var login = {
+      idses: req.session.id,
+      nameses: req.session.name,
+      emailses: req.session.email,
+      subbranch: req.session.subbranch,
+    };
+    var kanwil = await getKanwil();
+    var area = await getArea();
+    var aspek = await getAspek();
+    res.render("topPegadaian", {
+      login: login,
+      moment: moment,
+      kanwil: kanwil,
+      area: area,
+      aspek: aspek,
+    });
+  }
+};
+
 exports.getBottom = async function (req, res) {
   if (req.session.email == undefined) {
     res.redirect("../login");
@@ -371,6 +424,28 @@ exports.getBottom = async function (req, res) {
     var area = await getArea();
     var aspek = await getAspek();
     res.render("bottom", {
+      login: login,
+      moment: moment,
+      kanwil: kanwil,
+      area: area,
+      aspek: aspek,
+    });
+  }
+};
+exports.getBottomPegadaian = async function (req, res) {
+  if (req.session.email == undefined) {
+    res.redirect("../../login");
+  } else {
+    var login = {
+      idses: req.session.id,
+      nameses: req.session.name,
+      emailses: req.session.email,
+      subbranch: req.session.subbranch,
+    };
+    var kanwil = await getKanwil();
+    var area = await getArea();
+    var aspek = await getAspek();
+    res.render("bottomPegadaian", {
       login: login,
       moment: moment,
       kanwil: kanwil,
@@ -418,6 +493,122 @@ function getTopSkenarioByArray(array, aspek, sort) {
 }
 
 exports.getTopContent = async function (req, res) {
+  var kanwil = req.query.kanwil;
+  var area = req.query.area;
+  var aspek = req.query.aspek;
+  var element = req.query.element;
+  var sort = req.query.sortby;
+  if (kanwil == "all" && area == "all") {
+    var typesql = "kanwil";
+    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+  } else if (kanwil != "all" && area == "all") {
+    var typesql = "kanwil";
+    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+  } else if (kanwil != "all" && area != "all") {
+    var typesql = "area";
+    var selectBranch = await getBranchByKanwil(area, typesql);
+  }
+  var jsonres = [];
+  var arrbranch = "";
+  for (let i = 0; i < selectBranch.length; i++) {
+    if (i == selectBranch.length - 1) {
+      arrbranch += selectBranch[i].id_sub_branch;
+    } else {
+      arrbranch += selectBranch[i].id_sub_branch + ",";
+    }
+  }
+  if (aspek == "all") {
+    var typeaspek = "ASPEK";
+    var getAspek = "Total_Skor_";
+  } else if (aspek != "all" && element == "all") {
+    var typeaspek = "ELEMENT";
+    var arraspek = [
+      "Total_Frontliner",
+      "Total_Kasir_KONDISI_1",
+      "Total_Kebersihan_KONDISI_1",
+      "Total_New_Normal_KONDISI_1",
+      "Total_Penaksir_KONDISI_1",
+      "Total_Pengelola_Agunan_KONDISI_1",
+      "Total_RO_KONDISI_1",
+      "Total_Satpam_KONDISI_1",
+    ];
+    var getAspek = arraspek[aspek - 1];
+  } else if (aspek != "all" && element != "all") {
+    var typeaspek = "ELEMENT";
+    var arrelement = [
+      "Total_Frontliner",
+      "Kegiatan_Frontliner_Lainnya",
+      "Sikap_Frontliner_Dalam_Menerima_Panggilan_Telepon",
+      "Sikap_Frontliner_Dalam_Mengakhiri_Panggilan_Telepon",
+      "Total_Kasir_KONDISI_1",
+      "Kegiatan_Kasir_Lainnya",
+      "Penampilan_Kasir",
+      "Sikap_Kasir_dalam_Melayani_Nasabah",
+      "Sikap_Kasir_Saat_Mengakhiri_Pelayanan",
+      "Sikap_Kasir_Saat_Menyambut_Nasabah_Datang",
+      "Skill_Kasir",
+      "Total_Kebersihan_KONDISI_1",
+      "Eksterior_Kantor_Cabang",
+      "Interior_Kantor_Cabang",
+      "Total_New_Normal_KONDISI_1",
+      "Fasilitas_Prasarana_dan_Sarana",
+      "Total_Penaksir_KONDISI_1",
+      "Penampilan_Penaksir",
+      "Kegiatan_Penaksir_Lainnya",
+      "Sikap_Penaksir_dalam_Melayani_Nasabah",
+      "Sikap_Penaksir_Saat_Mengakhiri_Pelayanan",
+      "Sikap_Penaksir_Saat_Menyambut_Nasabah_Datang",
+      "Sikap_Saat_Melayani_di_Telepon_dan_Handling_Complaint",
+      "Skill_Penaksir",
+      "Total_Pengelola_Agunan_KONDISI_1",
+      "Kegiatan_Pegelola_Agunan_Lainnya",
+      "Penampilan_Pengelola_Agunan",
+      "Sikap_Pengelola_Agunan_dalam_Melayani_Nasabah",
+      "Sikap_Pengelola_Agunan_Saat_Menyambut_Nasabah_Datang",
+      "Sikap_yang_Dilakukan_Pengelola_Agunan_Saat_Mengakhiri_Layanan",
+      "Skill_Pengelola_Agunan",
+      "Total_RO_KONDISI_1",
+      "Penampilan_RO",
+      "Kegiatan_RO_Lainnya",
+      "Sikap_RO_Saat_Melayani_Nasabah",
+      "Sikap_RO_Saat_Menyambut_Nasabah_Datang",
+      "Sikap_yang_Dilakukan_RO_Saat_Mengakhiri_Layanan",
+      "Skill_RO",
+      "Total_Satpam_KONDISI_1",
+      "Total_Keberadaan_Satpam",
+      "Kegiatan_Satpam_Lainnya",
+      "Pelayanan_dan_Pencegahan_oleh_Satpam",
+      "Pelayanan_dan_Pencegahan_oleh_Karyawan",
+      "Penampilan_Satpam",
+      "Sikap_Satpam_Saat_Melayani_Nasabah",
+      "Sikap_Satpam_Saat_Melayani_Nasabah",
+      "Sikap_Satpam_Saat_Nasabah_Keluar",
+    ];
+    var getAspek = arrelement[element - 1];
+  }
+  var skenario = await getTopSkenarioByArray(arrbranch, getAspek, sort);
+  if (sort == "DESC") {
+    for (let x = 0; x < skenario.length; x++) {
+      jsonres.push({
+        nama: skenario[x].cabang,
+        label: typesql,
+        achievement: skenario[x].total,
+      });
+    }
+  } else {
+    for (let x = skenario.length - 1; x >= 0; x--) {
+      jsonres.push({
+        nama: skenario[x].cabang,
+        label: typesql,
+        achievement: skenario[x].total,
+      });
+    }
+  }
+  res.send(jsonres);
+};
+
+
+exports.getTopPegadaianContent = async function (req, res) {
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var aspek = req.query.aspek;

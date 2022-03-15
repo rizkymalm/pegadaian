@@ -6,6 +6,7 @@ const session = require("express-session")
 
 const indexRoutes = require("./routes/index");
 const reportRoutes = require("./routes/report");
+const findingRoutes = require("./routes/finding");
 const loginRoutes = require("./routes/login");
 const evidenceRoutes = require("./routes/evidence");
 const acvRoutes = require("./routes/acv");
@@ -29,6 +30,7 @@ app.use(session({
 
 app.use("/", indexRoutes)
 app.use("/login", loginRoutes)
+app.use("/findings", findingRoutes)
 app.use("/acv", acvRoutes)
 app.use("/achievement", achievementRoutes)
 app.use("/report", reportRoutes)

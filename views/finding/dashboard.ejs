@@ -4,12 +4,12 @@
 	<!-- <title>Dashboard</title> -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <%- include ('./partials/header') %>
+    <%- include ('../partials/header') %>
 </head>
 <body>
 <div class="wrapper">
 	<div class="lSide">
-		<%- include ('./partials/sidebar') %>
+		<%- include ('../partials/sidebar') %>
 	</div>
 	<div class="rSide">
 		<div class="head gradientr desk">
@@ -54,7 +54,7 @@
 
     var options = {
 	title: {
-		text: "Overall Performance (2019-2022)"              
+		text: "Overall Performance (2017-2020)"              
 	},
 	colorSet: "flexmonsterStyle",
     exportEnabled: true,
@@ -74,10 +74,10 @@
 		indexLabel: "{y}",
 		indexLabelFontSize: 18,
 		dataPoints: [
-			{ label: "2019",  y: 64.26},
-			{ label: "2020", y: 54.51},
-			{ label: "2021", y: 65.58},
-			{ label: "2022", y: 80.37}
+			{ label: "2017",  y: 64.26},
+			{ label: "2018", y: 54.51},
+			{ label: "2019", y: 65.58},
+			{ label: "2020", y: 80.37}
 		]
 	}
 	]

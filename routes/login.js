@@ -23,7 +23,7 @@ Router.post("/auth", (req,res) => {
             req.session.name = result[0].admin_name;
             req.session.type = result[0].admin_type;
             req.session.subbranch = result[0].id_sub_branch;
-            res.redirect("../")
+            res.redirect("../landingpage")
         }else{
             res.redirect("../login/")
         }
