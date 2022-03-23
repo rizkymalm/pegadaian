@@ -173,7 +173,7 @@ exports.getAchievementAjax = async function (req, res) {
     },
   ];
   var achievement = gadai + lunas + telepon;
-  var shortfall = 1221 - achievement
+  var shortfall = 1221 - achievement;
   var overview = [
     {
       label: "TARGET",
@@ -193,4 +193,51 @@ exports.getAchievementAjax = async function (req, res) {
   ];
 
   res.send([skenario, category, overview]);
+};
+
+exports.getAchievementPegadaian = async function (req, res) {
+  if (req.session.email == undefined) {
+    res.redirect("../../login");
+  } else {
+    var login = {
+      idses: req.session.id,
+      nameses: req.session.name,
+      emailses: req.session.email,
+      subbranch: req.session.subbranch,
+    };
+    var kanwil = await getKanwil();
+    var area = await getArea();
+    var aspek = await getAspek();
+    db.query(
+      "SELECT * FROM sub_branch WHERE id_sub_branch=?",
+      login.subbranch,
+      (err, sub_branch) => {
+        res.render("achievementPegadaian", {
+          login: login,
+          moment: moment,
+          subBranch: sub_branch,
+          kanwil: kanwil,
+          area: area,
+          aspek: aspek,
+        });
+      }
+    );
+  }
+};
+
+exports.getAchievementDetailPegadaian = async function (req, res) {
+  var login = {
+    idses: req.session.id,
+    nameses: req.session.name,
+    emailses: req.session.email,
+    subbranch: req.session.subbranch,
+  };
+  var kanwil = await getKanwil();
+  var aspek = await getAspek();
+  res.render("achievementdetailPegadaian", {
+    moment: moment,
+    login: login,
+    kanwil: kanwil,
+    aspek: aspek,
+  });
 };
