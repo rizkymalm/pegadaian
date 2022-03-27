@@ -142,6 +142,17 @@
                 <div style="width: 100%; height: 400px;" class="chartContainer2"  id="chartContainer2">
 				</div>
 			</div>
+            <div class="cols-12 containt" style="margin: 20px 0;">
+				<div class="headtitle trans" style="margin-bottom: 0;">
+					<p class="size-head4 nopad">&nbsp;</p>
+					<p class="size-std nopad">&nbsp;</p>
+					<ul class="tab-image-setting nopad">
+						<li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="chartContainer"></li>
+					</ul>
+                </div>
+                <div style="width: 100%; height: 400px;" class="chartContainer3"  id="chartContainer3">
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -152,6 +163,7 @@ $(document).ready(function(){
     $('.control').change(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
+        var cabang = $('#cabang').val()
         if(kanwil!="all"){
             $('#area').prop('disabled', false)
         }else{
@@ -166,10 +178,10 @@ $(document).ready(function(){
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
-        var data = "kanwil="+kanwil+"&area="+area
-
+        var cabang = $('#cabang').val()
+        var data = "kanwil="+kanwil+"&area="+area+"&cabang="+cabang
         $.ajax({
-            url: "<%= baseurl() %>achievement/content/",
+            url: "<%= baseurl() %>achievement/content-internal/",
             type: "GET",
             data: data,
             cache: false,
@@ -227,7 +239,7 @@ $(document).ready(function(){
                     axisY: {
                         title: " ",
                         minimum: 0,
-                        maximum: 100,
+                        // maximum: 100,
                         includeZero: true
                     },
                     axisX: {
@@ -239,12 +251,12 @@ $(document).ready(function(){
                         margin: 10
                     },
                     toolTip:{   
-                        content: "{label}: {y}% ({count})"      
+                        content: "{label}: {y}"      
                     },
                     data: [{
                         type: "column",
-                        yValueFormatString:"#######.00",
-                        indexLabel: "{y}%",
+                        yValueFormatString:"#######",
+                        indexLabel: "{y}",
                         dataPoints: data[0]
                     }]
                 });
@@ -262,7 +274,7 @@ $(document).ready(function(){
                     axisY: {
                         title: " ",
                         minimum: 0,
-                        maximum: 100,
+                        // maximum: 100,
                         includeZero: true
                     },
                     axisX: {
@@ -274,17 +286,52 @@ $(document).ready(function(){
                         margin: 10
                     },
                     toolTip:{   
-                        content: "{label}: {y}% ({count})"      
+                        content: "{label}: {y}"      
                     },
                     data: [{
                         type: "column",
-                        yValueFormatString:"#######.00",
-                        indexLabel: "{y}%",
+                        yValueFormatString:"#######",
+                        indexLabel: "{y}",
                         dataPoints: data[1]
                     }]
                 });
                 // achievement_2.options.data[0].dataPoints.sort(compareDataPointYDescend);
                 achievement_2.render();
+
+                var achievement_3 = new CanvasJS.Chart("chartContainer3",{
+                    animationEnabled: true,
+                    zoomEnabled: true,
+                    exportEnabled: true,
+                    title: {
+                        text: "TOUCHPOINT"
+                    },
+                    dataPointWidth: 150,
+                    axisY: {
+                        title: " ",
+                        minimum: 0,
+                        // maximum: 100,
+                        includeZero: true
+                    },
+                    axisX: {
+                        title: " ",
+                        labelFontSize: fontSize,
+                        labelWrap: true,
+                        labelMaxWidth: 100,
+                        includeZero: true,
+                        margin: 10
+                    },
+                    toolTip:{   
+                        content: "{label}: {y}"      
+                    },
+                    data: [{
+                        type: "column",
+                        yValueFormatString:"#######",
+                        indexLabel: "{y}",
+                        dataPoints: data[3]
+                    }]
+                });
+                achievement_3.options.data[0].dataPoints.sort(compareDataPointYDescend);
+                achievement_3.render();
             }
         })
         return false;

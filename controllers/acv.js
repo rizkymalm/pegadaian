@@ -219,9 +219,6 @@ exports.getAcvAjax = async function (req, res) {
           label: "KANWIL",
           achievement: average,
         });
-        console.log(
-          skenario[i].region.replace("KANWIL ", "") + " = " + average
-        );
       } else if (typesql == "area") {
         var total = 0;
         for (let x = 0; x < arrskenario.length; x++) {

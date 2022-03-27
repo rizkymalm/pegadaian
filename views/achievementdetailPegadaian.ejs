@@ -152,7 +152,7 @@ $(document).ready(function(){
         var element = $('#element').val()
         var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC&cabang="+cabang
         $.ajax({
-            url: "../detail/content/",
+            url: "../detail/content-internal/",
             type: "GET",
             data: data,
             cache: false,

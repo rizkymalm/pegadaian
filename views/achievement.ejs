@@ -152,6 +152,7 @@ $(document).ready(function(){
     $('.control').change(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
+        var cabang = $('#cabang').val()
         if(kanwil!="all"){
             $('#area').prop('disabled', false)
         }else{
@@ -166,8 +167,9 @@ $(document).ready(function(){
     $(".control").submit(function(){
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
-        var data = "kanwil="+kanwil+"&area="+area
-
+        var cabang = $('#cabang').val()
+        var data = "kanwil="+kanwil+"&area="+area+"&cabang="+cabang
+        console.log(data)
         $.ajax({
             url: "<%= baseurl() %>achievement/content/",
             type: "GET",

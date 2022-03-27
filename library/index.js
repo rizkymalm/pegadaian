@@ -85,3 +85,21 @@ global.getTopSkenarioByArray = async function (array) {
       })
   })
 }
+
+global.getTouchpointByArray = async function (array) {
+  return new Promise(resolve =>{ 
+      var sql = "SELECT * FROM touchpoint WHERE id_sub_branch IN("+array+")"
+      db.query(sql, async function(err,result){
+          resolve(result)
+      })
+  })
+}
+
+global.getSkenarioByArray = async function (array) {
+  return new Promise(resolve =>{ 
+      var sql = "SELECT * FROM skenario2 WHERE id_sub_branch IN("+array+")"
+      db.query(sql, async function(err,result){
+          resolve(result)
+      })
+  })
+}
