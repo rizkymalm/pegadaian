@@ -24,6 +24,9 @@
             <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil <div ng-class="sortClass('region')"></div></th>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('gadai')">GADAI <div ng-class="sortClass('gadai')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('pelunasan')">PELUNASAN <div ng-class="sortClass('pelunasan')"></div></th>
+            <th style="cursor: pointer;" ng-click="sort('telepon')">TELEPON <div ng-class="sortClass('telepon')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('satpam')">SATPAM <div ng-class="sortClass('satpam')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('penaksir')">PENAKSIR <div ng-class="sortClass('penaksir')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('kasir')">KASIR <div ng-class="sortClass('kasir')"></div></th>
@@ -37,6 +40,9 @@
             <td>{{req.region}}</td>
             <td>{{req.area}}</td>
             <td>{{req.cabang}}</td>
+            <td align="center">{{req.gadai}}</td>
+            <td align="center">{{req.pelunasan}}</td>
+            <td align="center">{{req.telepon}}</td>
             <td align="center">{{req.satpam}}</td>
             <td align="center">{{req.penaksir}}</td>
             <td align="center">{{req.kasir}}</td>
