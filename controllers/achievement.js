@@ -6,29 +6,29 @@ exports.getAchievement = async function (req, res) {
   // if (req.session.email == undefined) {
   //   res.redirect("../login");
   // } else {
-    var login = {
-      idses: req.session.id,
-      nameses: req.session.name,
-      emailses: req.session.email,
-      subbranch: req.session.subbranch,
-    };
-    var kanwil = await getKanwil();
-    var area = await getArea();
-    var aspek = await getAspek();
-    db.query(
-      "SELECT * FROM sub_branch WHERE id_sub_branch=?",
-      login.subbranch,
-      (err, sub_branch) => {
-        res.render("achievement", {
-          login: login,
-          moment: moment,
-          subBranch: sub_branch,
-          kanwil: kanwil,
-          area: area,
-          aspek: aspek,
-        });
-      }
-    );
+  var login = {
+    idses: req.session.id,
+    nameses: req.session.name,
+    emailses: req.session.email,
+    subbranch: req.session.subbranch,
+  };
+  var kanwil = await getKanwil();
+  var area = await getArea();
+  var aspek = await getAspek();
+  db.query(
+    "SELECT * FROM sub_branch WHERE id_sub_branch=?",
+    login.subbranch,
+    (err, sub_branch) => {
+      res.render("achievement", {
+        login: login,
+        moment: moment,
+        subBranch: sub_branch,
+        kanwil: kanwil,
+        area: area,
+        aspek: aspek,
+      });
+    }
+  );
   // }
 };
 
@@ -106,10 +106,14 @@ exports.getAchievementDetailConent = async function (req, res) {
       area: areabyid[0].area_name.replace("AREA ", ""),
       cabang: skenario[i].sub_branch_name,
       status:
-      skenario[i].gadai === 1 && skenario[i].pelunasan === 1 && skenario[i].telepon === 1 ? "Y" : "N",
-      acvGadai: skenario[i].gadai > 0 ? 'Y' : 'N',
-      acvPelunasan: skenario[i].pelunasan > 0 ? 'Y' : 'N',
-      acvTelepon: skenario[i].telepon > 0 ? 'Y' : 'N',
+        skenario[i].gadai === 1 &&
+        skenario[i].pelunasan === 1 &&
+        skenario[i].telepon === 1
+          ? "Y"
+          : "N",
+      acvGadai: skenario[i].gadai > 0 ? "Y" : "N",
+      acvPelunasan: skenario[i].pelunasan > 0 ? "Y" : "N",
+      acvTelepon: skenario[i].telepon > 0 ? "Y" : "N",
     });
   }
   res.render("partials/DetailContentAchievement", {
@@ -144,14 +148,35 @@ exports.getAchievementAjax = async function (req, res) {
       arrbranch += selectBranch[i].id_sub_branch + ",";
     }
   }
-  const skenarioData = await getSkenarioByArray(arrbranch)
+  const skenarioData = await getTaskByArray(arrbranch);
+  // var codeverified = [];
+
   var gadai = 0;
   var telepon = 0;
   var lunas = 0;
+  var cabang = 0; //randomIntFromInterval(0, 321);
+  var upc = 0; //randomIntFromInterval(0, 61);
+  var collocation = 0; //randomIntFromInterval(0, 25);
   for (let i = 0; i < skenarioData.length; i++) {
-    gadai = gadai + skenarioData[i].gadai
-    telepon = telepon + skenarioData[i].telepon
-    lunas = lunas + skenarioData[i].pelunasan
+    const taskStatus = await getTaskStatusByArray(skenarioData[i].id);
+    if (skenarioData[i].skenario === "gadai" && taskStatus[0].state === 200) {
+      gadai++;
+    }
+    if (skenarioData[i].skenario === "phone" && taskStatus[0].state === 200) {
+      telepon++;
+    }
+    if (skenarioData[i].skenario === "lunas" && taskStatus[0].state === 200) {
+      lunas++;
+    }
+    if (skenarioData[i].status === "cabang" && taskStatus[0].state === 200) {
+      cabang++;
+    }
+    if (skenarioData[i].status === "collocation" && taskStatus[0].state === 200) {
+      collocation++;
+    }
+    if (skenarioData[i].status === "upc" && taskStatus[0].state === 200) {
+      upc++;
+    }
   }
   var skenario = [
     {
@@ -170,9 +195,6 @@ exports.getAchievementAjax = async function (req, res) {
       count: lunas,
     },
   ];
-  var cabang = 0 //randomIntFromInterval(0, 321);
-  var upc = 0 //randomIntFromInterval(0, 61);
-  var collocation = 0 //randomIntFromInterval(0, 25);
   var category = [
     {
       label: "CABANG",
@@ -386,23 +408,23 @@ exports.getAchievementDetailConentInternal = async function (req, res) {
   for (let i = 0; i < touchpoint.length; i++) {
     var kanwilbyid = await getKanwilById(touchpoint[i].id_region);
     var areabyid = await getAreaById(touchpoint[i].id_area);
-    
+
     jsonres.push({
       id_skenario: touchpoint[i].id_skenario,
       id_cabang: touchpoint[i].id_sub_branch,
       region: kanwilbyid[0].region.replace("KANWIL ", ""),
       area: areabyid[0].area_name.replace("AREA ", ""),
       cabang: touchpoint[i].sub_branch_name,
-      gadai: touchpoint[i].satpam > 0 ? 'Y' : 'N',
-      pelunasan: touchpoint[i].satpam > 0 ? 'Y' : 'N',
-      telepon: touchpoint[i].satpam > 0 ? 'Y' : 'N',
-      satpam: touchpoint[i].satpam > 0 ? 'Y' : 'N',
-      penaksir: touchpoint[i].penaksir > 0 ? 'Y' : 'N',
-      kasir: touchpoint[i].kasir > 0 ? 'Y' : 'N',
-      pengelolaagunan: touchpoint[i].pengelolaagunan > 0 ? 'Y' : 'N',
-      ro: touchpoint[i].ro > 0 ? 'Y' : 'N',
-      protokolkesehatan: touchpoint[i].protokolkesehatan > 0 ? 'Y' : 'N',
-      kebersihan: touchpoint[i].kebersihan > 0 ? 'Y' : 'N',
+      gadai: touchpoint[i].satpam > 0 ? "Y" : "N",
+      pelunasan: touchpoint[i].satpam > 0 ? "Y" : "N",
+      telepon: touchpoint[i].satpam > 0 ? "Y" : "N",
+      satpam: touchpoint[i].satpam > 0 ? "Y" : "N",
+      penaksir: touchpoint[i].penaksir > 0 ? "Y" : "N",
+      kasir: touchpoint[i].kasir > 0 ? "Y" : "N",
+      pengelolaagunan: touchpoint[i].pengelolaagunan > 0 ? "Y" : "N",
+      ro: touchpoint[i].ro > 0 ? "Y" : "N",
+      protokolkesehatan: touchpoint[i].protokolkesehatan > 0 ? "Y" : "N",
+      kebersihan: touchpoint[i].kebersihan > 0 ? "Y" : "N",
     });
   }
   res.render("partials/DetailContentAchievementInternal", {

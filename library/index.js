@@ -55,7 +55,7 @@ global.getCabang = async function () {
       }
     );
   });
-}
+};
 
 global.getBranchByKanwil = async function (id, type) {
   return new Promise((resolve) => {
@@ -76,30 +76,49 @@ global.getBranchByKanwil = async function (id, type) {
   });
 };
 
-
 global.getTopSkenarioByArray = async function (array) {
-  return new Promise(resolve =>{ 
-      var sql = "SELECT * FROM skenario WHERE id_sub_branch IN("+array+")"
-      db.query(sql, async function(err,result){
-          resolve(result)
-      })
-  })
-}
+  return new Promise((resolve) => {
+    var sql = "SELECT * FROM skenario WHERE id_sub_branch IN(" + array + ")";
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
 
 global.getTouchpointByArray = async function (array) {
-  return new Promise(resolve =>{ 
-      var sql = "SELECT * FROM touchpoint WHERE id_sub_branch IN("+array+")"
-      db.query(sql, async function(err,result){
-          resolve(result)
-      })
-  })
-}
+  return new Promise((resolve) => {
+    var sql = "SELECT * FROM touchpoint WHERE id_sub_branch IN(" + array + ")";
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
 
 global.getSkenarioByArray = async function (array) {
-  return new Promise(resolve =>{ 
-      var sql = "SELECT * FROM skenario2 WHERE id_sub_branch IN("+array+")"
-      db.query(sql, async function(err,result){
-          resolve(result)
-      })
-  })
-}
+  return new Promise((resolve) => {
+    var sql = "SELECT * FROM skenario2 WHERE id_sub_branch IN(" + array + ")";
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
+
+global.getTaskByArray = async function (array) {
+  return new Promise((resolve) => {
+    var sql =
+      "SELECT * FROM task WHERE codecabang IN(" + array + ") AND state = 100";
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
+
+global.getTaskStatusByArray = async function (array) {
+  return new Promise((resolve) => {
+    var sql =
+      "SELECT * FROM taskstatus WHERE task IN(" + array + ")";
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
