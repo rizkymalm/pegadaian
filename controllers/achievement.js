@@ -84,21 +84,24 @@ exports.getAchievementDetailConent = async function (req, res) {
   var skenario = await getSkenarioByArray(arrbranch);
   var arrYN = ["N", "Y"]; // nanti hapus
   for (let i = 0; i < skenario.length; i++) {
+    var linkGadai = 0;
+    var getTaskGadai = await getTaskByIdCabang(skenario[i].id_sub_branch, 'gadai');
+    if(getTaskGadai.length > 0){
+      linkGadai = getTaskGadai[0].id;
+    }
+    var linkLunas = 0;
+    var getTaskLunas = await getTaskByIdCabang(skenario[i].id_sub_branch, 'lunas');
+    if(getTaskLunas.length > 0){
+      linkLunas = getTaskLunas[0].id;
+    }
+    var linkPhone = 0
+    var getTaskPhone = await getTaskByIdCabang(skenario[i].id_sub_branch, 'phone');
+    if(getTaskPhone.length > 0){
+      linkPhone = getTaskPhone[0].id;
+    }
     var kanwilbyid = await getKanwilById(skenario[i].id_region);
     var areabyid = await getAreaById(skenario[i].id_area);
-    if (skenario[i].Total_Kebersihan_KONDISI_1 != null) {
-      var kebersihan = skenario[i].Total_Kebersihan_KONDISI_1.toFixed(2);
-    } else {
-      var kebersihan = "N/A";
-    }
-    if (skenario[i].Total_RO_KONDISI_1 != null) {
-      var total_RO = skenario[i].Total_RO_KONDISI_1.toFixed(2);
-    } else {
-      var total_RO = "N/A";
-    }
-    var acvGadai = randomIntFromInterval(0, 1);
-    var acvCalling = randomIntFromInterval(0, 1);
-    var acvCalling2 = randomIntFromInterval(0, 1);
+    
     jsonres.push({
       id_skenario: skenario[i].id_skenario,
       id_cabang: skenario[i].id_sub_branch,
@@ -107,13 +110,16 @@ exports.getAchievementDetailConent = async function (req, res) {
       cabang: skenario[i].sub_branch_name,
       status:
         skenario[i].gadai === 1 &&
-        skenario[i].pelunasan === 1 &&
-        skenario[i].telepon === 1
+        skenario[i].lunas === 1 &&
+        skenario[i].phone === 1
           ? "Y"
           : "N",
       acvGadai: skenario[i].gadai > 0 ? "Y" : "N",
-      acvPelunasan: skenario[i].pelunasan > 0 ? "Y" : "N",
-      acvTelepon: skenario[i].telepon > 0 ? "Y" : "N",
+      acvPelunasan: skenario[i].lunas > 0 ? "Y" : "N",
+      acvTelepon: skenario[i].phone > 0 ? "Y" : "N",
+      linkGadai: linkGadai,
+      linkLunas: linkLunas,
+      linkPhone: linkPhone
     });
   }
   res.render("partials/DetailContentAchievement", {

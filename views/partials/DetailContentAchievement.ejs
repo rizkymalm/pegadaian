@@ -28,7 +28,7 @@
             <th style="cursor: pointer;" ng-click="sort('acvGadai')">Achievement Gadai <div ng-class="sortClass('acvGadai')"></div></th>
             <th style="width: 100px;">Video Gadai</th>
             <th style="cursor: pointer;" ng-click="sort('acvPelunasan')">Achievement Pelunasan <div ng-class="sortClass('acvPelunasan')"></div></th>
-            <th style="width: 100px;">Video Calling</th>
+            <th style="width: 100px;">Video Pelunasan</th>
             <th style="cursor: pointer;" ng-click="sort('acvTelepon')">Achievement Telepon <div ng-class="sortClass('acvTelepon')"></div></th>
             <th style="width: 100px;">Video Calling</th>
         </tr>
@@ -39,11 +39,11 @@
             <td>{{req.cabang}}</td>
             <td align="center">{{req.status}}</td>
             <td align="center">{{req.acvGadai}}</td>
-            <td align="center"><a href="../detail/gadai/{{req.id_cabang}}" target="_blank" style="display: {{req.acvGadai == 'N' ? 'none' : 'block'}};">View</a></td>
+            <td align="center"><a href="../detail/gadai/{{req.linkGadai}}" target="_blank" style="display: {{req.acvGadai == 'N' ? 'none' : 'block'}};">View</a></td>
             <td align="center">{{req.acvPelunasan}}</td>
-            <td align="center"><a href="../detail/lunas/{{req.id_cabang}}" target="_blank" style="display: {{req.acvPelunasan == 'N' ? 'none' : 'block'}};">View</a></td>
+            <td align="center"><a href="../detail/lunas/{{req.linkLunas}}" target="_blank" style="display: {{req.acvPelunasan == 'N' ? 'none' : 'block'}};">View</a></td>
             <td align="center">{{req.acvTelepon}}</td>
-            <td align="center"><a href="../detail/telp/{{req.id_cabang}}" target="_blank" style="display: {{req.acvTelepon == 'N' ? 'none' : 'block'}};">View</a></td>
+            <td align="center"><a href="../detail/telp/{{req.linkPhone}}" target="_blank" style="display: {{req.acvTelepon == 'N' ? 'none' : 'block'}};">View</a></td>
         </tr>
     </table>
     <dir-pagination-controls direction-links="true" boundary-links="true" class="size-std"></dir-pagination-controls>

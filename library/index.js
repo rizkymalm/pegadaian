@@ -122,3 +122,12 @@ global.getTaskStatusByArray = async function (array) {
     });
   });
 };
+
+global.getTaskByIdCabang = async function (id, skenario) {
+  return new Promise((resolve) => {
+    var sql = `SELECT * FROM task WHERE codecabang=${id} AND skenario='${skenario}'`;
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
