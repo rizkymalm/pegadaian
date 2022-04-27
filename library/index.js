@@ -131,3 +131,20 @@ global.getTaskByIdCabang = async function (id, skenario) {
     });
   });
 };
+
+global.getTaskFilter = async function (kanwil, area, cabang) {
+  return new Promise((resolve) => {
+    if (kanwil == "all" && area == "all") {
+      var sql = `SELECT * FROM task`;
+    } else if (kanwil != "all" && area == "all") {
+      var sql = `SELECT * FROM task WHERE codekanwil=${kanwil}`;
+    } else if (kanwil != "all" && area != "all" && cabang == "all") {
+      var sql = `SELECT * FROM task WHERE codekanwil=${kanwil} AND codearea=${area}`;
+    } else if (kanwil != "all" && area != "all" && cabang != "all") {
+      var sql = `SELECT * FROM task WHERE codekanwil=${kanwil} AND codearea=${area} AND codecabang=${cabang}`;
+    }
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};

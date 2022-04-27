@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name pegadaian",
+    "start": "pm2 start index.js --name ide3081_fireflies",
     "stop": "pm2 stop index.js --name pegadaian",
     "restart": "pm2 restart index.js --name pegadaian"
   },
@@ -27,12 +27,13 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "flexmonster": "^2.9.20",
+    "fs": "^0.0.1-security",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-xlsx": "^0.21.0",
     "nodemon": "^2.0.15",
     "path": "^0.12.7",
     "pm2": "^5.2.0",
-    "xlsx": "^0.18.3"
+    "xlsx": "^0.18.5"
   }
 }

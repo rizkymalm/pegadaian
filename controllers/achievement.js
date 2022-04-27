@@ -80,6 +80,7 @@ exports.getAchievementDetailConent = async function (req, res) {
       arrbranch += selectBranch[i].id_sub_branch + ",";
     }
   }
+  var taskFilter = await getTaskFilter(kanwil, area, cabang);
   var jsonres = [];
   var skenario = await getSkenarioByArray(arrbranch);
   var arrYN = ["N", "Y"]; // nanti hapus
@@ -101,19 +102,13 @@ exports.getAchievementDetailConent = async function (req, res) {
     }
     var kanwilbyid = await getKanwilById(skenario[i].id_region);
     var areabyid = await getAreaById(skenario[i].id_area);
-    
     jsonres.push({
       id_skenario: skenario[i].id_skenario,
       id_cabang: skenario[i].id_sub_branch,
       region: kanwilbyid[0].region.replace("KANWIL ", ""),
       area: areabyid[0].area_name.replace("AREA ", ""),
       cabang: skenario[i].sub_branch_name,
-      status:
-        skenario[i].gadai === 1 &&
-        skenario[i].lunas === 1 &&
-        skenario[i].phone === 1
-          ? "Y"
-          : "N",
+      status: skenario[i].status,
       acvGadai: skenario[i].gadai > 0 ? "Y" : "N",
       acvPelunasan: skenario[i].lunas > 0 ? "Y" : "N",
       acvTelepon: skenario[i].phone > 0 ? "Y" : "N",
@@ -122,6 +117,22 @@ exports.getAchievementDetailConent = async function (req, res) {
       linkPhone: linkPhone
     });
   }
+  // for (let i = 0; i < taskFilter.length; i++) {
+  //   jsonres.push({
+  //     id_skenario: taskFilter[i].id,
+  //     id_cabang: taskFilter[i].codecabang,
+  //     region: taskFilter[0].kanwil.replace("KANWIL ", ""),
+  //     area: taskFilter[0].area.replace("AREA ", ""),
+  //     cabang: taskFilter[i].cabang,
+  //     status: taskFilter[i].status,
+  //     acvGadai: skenario[i].gadai > 0 ? "Y" : "N",
+  //     acvPelunasan: skenario[i].lunas > 0 ? "Y" : "N",
+  //     acvTelepon: skenario[i].phone > 0 ? "Y" : "N",
+  //     linkGadai: "",
+  //     linkLunas: "",
+  //     linkPhone: ""
+  //   });
+  // }
   res.render("partials/DetailContentAchievement", {
     jsonres: jsonres,
   });

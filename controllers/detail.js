@@ -111,7 +111,7 @@ exports.getDetailContent = async function (req, res) {
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var cabang = req.query.cabang;
-  var aspek = req.query.aspek;
+  // var aspek = req.query.aspek;
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
     var selectBranch = await getBranchByKanwil(kanwil, typesql);
