@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name ide3081_fireflies",
+    "start": "pm2 start index.js --name pegadaian",
     "stop": "pm2 stop index.js --name pegadaian",
     "restart": "pm2 restart index.js --name pegadaian"
   },
