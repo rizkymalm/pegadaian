@@ -44,7 +44,6 @@ global.selectAllSkenario = async function () {
     return new Promise((resolve) => {
       var sql =
         `UPDATE skenario2 SET ${skenario}=1 WHERE id_sub_branch=${id} AND status='${status}'`;
-        console.log(sql)
       db.query(sql, async function (err, result) {
         resolve(result);
       });

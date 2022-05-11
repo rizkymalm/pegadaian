@@ -109,7 +109,7 @@
                             <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
 								<div style="width: 100%; padding: 10px; text-align: center;">
 									<% if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){ %>
-										<img src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" alt="" style="height: 520px;">
+										<img src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+arrvids[v] %>" alt="" style="height: 520px;">
 									<% }else{ %>
 									<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
 										<source src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+arrvids[v] %>" type="video/mp4">

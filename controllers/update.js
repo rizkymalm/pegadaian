@@ -5,9 +5,10 @@ exports.updateSkenarioByTask = async function(req,res){
     var task = await selectAllTaskNotNull();
     var count = 0;
     var updated = []
+    // console.log(task)
     for (let i = 0; i < task.length; i++) {
-        var taskStatus = await checkStatus(task[i].id);
-        if(taskStatus.length > 0){
+        var taskstatus = await getTaskStatusByArray(task[i].id)
+        if(taskstatus[0].state === 200){
             var update = await updateSkenarioByidCabang(task[i].codecabang, task[i].skenario, task[i].status);
             if(update){
                 count++;
@@ -45,7 +46,6 @@ exports.updateSkenarioByTask = async function(req,res){
         //     }
         // }
     // }
-    console.log(count)
     res.send(updated);
 }
 
