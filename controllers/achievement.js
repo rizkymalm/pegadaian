@@ -86,17 +86,17 @@ exports.getAchievementDetailConent = async function (req, res) {
   var arrYN = ["N", "Y"]; // nanti hapus
   for (let i = 0; i < skenario.length; i++) {
     var linkGadai = 0;
-    var getTaskGadai = await getTaskByIdCabang(skenario[i].id_sub_branch, 'gadai');
+    var getTaskGadai = await getTaskByIdCabang(skenario[i].id_sub_branch, 'gadai', skenario[i].status);
     if(getTaskGadai.length > 0){
       linkGadai = getTaskGadai[0].id;
     }
     var linkLunas = 0;
-    var getTaskLunas = await getTaskByIdCabang(skenario[i].id_sub_branch, 'lunas');
+    var getTaskLunas = await getTaskByIdCabang(skenario[i].id_sub_branch, 'lunas', skenario[i].status);
     if(getTaskLunas.length > 0){
       linkLunas = getTaskLunas[0].id;
     }
     var linkPhone = 0
-    var getTaskPhone = await getTaskByIdCabang(skenario[i].id_sub_branch, 'phone');
+    var getTaskPhone = await getTaskByIdCabang(skenario[i].id_sub_branch, 'phone', skenario[i].status);
     if(getTaskPhone.length > 0){
       linkPhone = getTaskPhone[0].id;
     }
