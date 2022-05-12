@@ -215,17 +215,17 @@ exports.getAchievementAjax = async function (req, res) {
   var category = [
     {
       label: "CABANG",
-      y: (cabang * 100) / 321,
+      y: (cabang * 100) / 963,
       count: cabang,
     },
     {
       label: "UPC",
-      y: (upc * 100) / 61,
+      y: (upc * 100) / 183,
       count: upc,
     },
     {
       label: "COLLOCATION",
-      y: (collocation * 100) / 25,
+      y: (collocation * 100) / 75,
       count: collocation,
     },
   ];
