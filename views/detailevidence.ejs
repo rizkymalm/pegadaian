@@ -54,7 +54,7 @@
 <body>
 <div class="wrapper">
 	<div class="lSide">
-		<%- include ('./partials/sidebar') %>
+		<%- include ('./partials/sidebarAchv') %>
 	</div>
 	<div class="rSide">
 		<div class="head gradientr desk">
@@ -64,7 +64,6 @@
 			<div class="title-content size-std">
 				<a href="<%= baseurl() %>">DASHBOARD</a> > <%= task[0].deskripsi %>
 			</div>
-			<% if(task[0].src!="gdrive"){ %>
 			<!-- <div class="cols-12 column containt" style="margin: 10px 0; background-color: #ffffff;">
 				<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
 					<source src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+task[0].filename %>" type="video/mp4">
@@ -74,15 +73,14 @@
 			 -->
 			<div class="cols-12">
 				<!-- Tabgrid -->
-				<% 
-					var arrvids = task[0].filename.split(",") 
-				%>
                 <div class="full-length containt" style="margin-top: 20px;">
                     <div class="tabgrid full-length">
                         <ul>
-							<% for(var i=0;i < arrvids.length;i++){ %>
+							<% for(var i=0;i < task.length;i++){
+								if(task[i].state == 200){
+							%>
 								<% 
-									var splitfile = arrvids[i].split(".") 
+									var splitfile = task[i].filename.split(".") 
 									var tipeFile = splitfile[splitfile.length-1]
 									if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){
 										var tabname = "Image"
@@ -91,99 +89,49 @@
 									}
 								%>
 								<% if(i == 0){ %>
-								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
+								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= task[i].id %></li>
 								<% }else{ %>
-								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
+								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= task[i].id %></li>
 								<% } %>
-							<% } %>
+							<% } } %>
                         </ul>
                         <div class="selectorline"></div>
                     </div>
                     <div class="full-length tabgridwrap">
                         <div class="tabgridcontent">
-							<% for(var v=0;v < arrvids.length;v++){ %>
+							<% 
+							for(var v=0;v < task.length;v++){
+								if(task[v].state == 200){
+							%>
 								<% 
-									var splitfile = arrvids[v].split(".") 
+									var splitfile = task[v].filename.split(".") 
 									var tipeFile = splitfile[splitfile.length-1]
+									var showfilename;
+									if(v > 0){
+										showfilename = `archive/${task[v].filename}`;
+									}else{
+										showfilename = `${task[v].filename}`;
+									}
 								%>
                             <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
 								<div style="width: 100%; padding: 10px; text-align: center;">
 									<% if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){ %>
-										<img src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+arrvids[v] %>" alt="" style="height: 520px;">
+										<img src="http://apps.kadence.co.id/kepo/files/<%= task[v].task+'/'+showfilename %>" alt="" style="height: 520px;">
 									<% }else{ %>
 									<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
-										<source src="http://apps.kadence.co.id/kepo/files/<%= task[0].id+'/'+arrvids[v] %>" type="video/mp4">
+										<source src="http://apps.kadence.co.id/kepo/files/<%= task[v].task+'/'+showfilename %>" type="video/mp4">
 										  Your browser does not support the video tag.
 									</video>
 									<% } %>
                                 </div>
 							</div>
-							<% } %>
+							<% }} %>
                         </div>
                     </div>
                 </div>
                 <!-- Tabgrid -->
 			</div>
-			<% }else{ %>
-			<div class="cols-12">
-				<!-- Tabgrid -->
-				<% if(task[0].filename=="n"){ %>
-					<div class="full-length containt" style="margin-top: 20px;">
-						<p>Evidence Not Found</p>
-					</div>	
-				<% }else{ %>
-				<% 
-					var arrvids = task[0].filename.split(",") 
-				%>
-                <div class="full-length containt" style="margin-top: 20px;">
-                    <div class="tabgrid full-length">
-                        <ul>
-							<% for(var i=0;i < arrvids.length;i++){ %>
-								<% 
-									var splitfile = arrvids[i].split(".") 
-									var tipeFile = splitfile[splitfile.length-1]
-									if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){
-										var tabname = "Image"
-									}else{
-										var tabname = "Video"
-									}
-								%>
-								<% if(i == 0){ %>
-								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
-								<% }else{ %>
-								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= i+1 %></li>
-								<% } %>
-							<% } %>
-                        </ul>
-                        <div class="selectorline"></div>
-                    </div>
-                    <div class="full-length tabgridwrap">
-                        <div class="tabgridcontent">
-							<% for(var v=0;v < arrvids.length;v++){ %>
-								<% 
-									var splitfile = arrvids[v].split(".") 
-									var tipeFile = splitfile[splitfile.length-1]
-								%>
-                            <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
-								<div style="width: 100%; padding: 10px; text-align: center;">
-									<% if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){ %>
-										<img src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" alt="" style="height: 520px;">
-									<% }else{ %>
-									<video id="videoplayer" width="100%" height="520" controls style="margin-top: 30px">
-										<source src="http://survey.kadence.co.id:5000/videos/<%= task[0].tipe %>/<%= task[0].id_sub_branch+'/'+arrvids[v] %>" type="video/mp4">
-										  Your browser does not support the video tag.
-									</video>
-									<% } %>
-                                </div>
-							</div>
-							<% } %>
-                        </div>
-                    </div>
-				</div>
-				<% } %>
-                <!-- Tabgrid -->
-			</div>
-			<% } %>
+			
             <!-- <div class="cols-12">
                 <div class="full-length containt" style="margin-top: 20px;">
                     <div class="tabgrid full-length">

@@ -186,7 +186,7 @@ exports.getDetailVideo = async function (req, res) {
     subbranch: req.session.subbranch,
   };
   db.query(
-    `SELECT * FROM task WHERE id=${id}`,
+    `SELECT * FROM taskstatus WHERE task=${id} ORDER BY id DESC`,
     [tipe, id],
     (err, task) => {
       db.query("SELECT * FROM note WHERE task=?", id, (errnote, notess) => {
@@ -195,6 +195,7 @@ exports.getDetailVideo = async function (req, res) {
           moment: moment,
           login: login,
           notes: notess,
+          countfiles:task.length
         });
       });
     }

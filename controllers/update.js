@@ -8,11 +8,13 @@ exports.updateSkenarioByTask = async function(req,res){
     // console.log(task)
     for (let i = 0; i < task.length; i++) {
         var taskstatus = await getTaskStatusByArray(task[i].id)
-        if(taskstatus[0].state === 200){
-            var update = await updateSkenarioByidCabang(task[i].codecabang, task[i].skenario, task[i].status);
-            if(update){
-                count++;
-                updated.push(task[i]);
+        for (let x = 0; x < taskstatus.length; x++) {
+            if(taskstatus[x].state === 200){
+                var update = await updateSkenarioByidCabang(task[i].codecabang, task[i].skenario, task[i].status);
+                if(update){
+                    count++;
+                    updated.push(task[i]);
+                }
             }
         }
     }
