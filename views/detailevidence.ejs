@@ -76,8 +76,11 @@
                 <div class="full-length containt" style="margin-top: 20px;">
                     <div class="tabgrid full-length">
                         <ul>
-							<% for(var i=0;i < task.length;i++){
+							<% 
+							var notab = 0;
+							for(var i=0;i < task.length;i++){
 								if(task[i].state == 200){
+									notab++
 							%>
 								<% 
 									var splitfile = task[i].filename.split(".") 
@@ -89,9 +92,9 @@
 									}
 								%>
 								<% if(i == 0){ %>
-								<li class="thistab delay active" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= task[i].id %></li>
+								<li class="thistab delay active" data="video<%= notab %>" data-target="<%= notab - 1 %>"><%= tabname %> <%= notab %></li>
 								<% }else{ %>
-								<li class="thistab delay" data="video<%= i+1 %>" data-target="<%= i %>"><%= tabname %> <%= task[i].id %></li>
+								<li class="thistab delay" data="video<%= notab %>" data-target="<%= notab - 1 %>"><%= tabname %> <%= notab %></li>
 								<% } %>
 							<% } } %>
                         </ul>
@@ -100,8 +103,10 @@
                     <div class="full-length tabgridwrap">
                         <div class="tabgridcontent">
 							<% 
+							var nogrid = 0;
 							for(var v=0;v < task.length;v++){
 								if(task[v].state == 200){
+									nogrid++
 							%>
 								<% 
 									var splitfile = task[v].filename.split(".") 
@@ -113,8 +118,9 @@
 										showfilename = `${task[v].filename}`;
 									}
 								%>
-                            <div class="gridcontent active delay" id="video<%= v+1 %>" data="<%= v+1 %>">
+                            <div class="gridcontent active delay" id="video<%= nogrid %>" data="<%= nogrid %>">
 								<div style="width: 100%; padding: 10px; text-align: center;">
+									<%= task[v].state %>
 									<% if(tipeFile=="jpg" || tipeFile=="jpeg" || tipeFile=="png"){ %>
 										<img src="http://apps.kadence.co.id/kepo/files/<%= task[v].task+'/'+showfilename %>" alt="" style="height: 520px;">
 									<% }else{ %>

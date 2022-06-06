@@ -186,7 +186,7 @@ exports.getDetailVideo = async function (req, res) {
     subbranch: req.session.subbranch,
   };
   db.query(
-    `SELECT * FROM taskstatus WHERE task=${id} ORDER BY id DESC`,
+    `SELECT * FROM taskstatus WHERE task=${id} ORDER BY id ASC`,
     [tipe, id],
     (err, task) => {
       db.query("SELECT * FROM note WHERE task=?", id, (errnote, notess) => {
