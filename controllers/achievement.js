@@ -176,23 +176,28 @@ exports.getAchievementAjax = async function (req, res) {
   var collocation = 0; //randomIntFromInterval(0, 25);
   for (let i = 0; i < skenarioData.length; i++) {
     const taskStatus = await getTaskStatusByArray(skenarioData[i].id);
-    if (skenarioData[i].skenario === "gadai" && taskStatus[0].state === 200) {
-      gadai++;
-    }
-    if (skenarioData[i].skenario === "phone" && taskStatus[0].state === 200) {
-      telepon++;
-    }
-    if (skenarioData[i].skenario === "lunas" && taskStatus[0].state === 200) {
-      lunas++;
-    }
-    if (skenarioData[i].status === "cabang" && taskStatus[0].state === 200) {
-      cabang++;
-    }
-    if (skenarioData[i].status === "collocation" && taskStatus[0].state === 200) {
-      collocation++;
-    }
-    if (skenarioData[i].status === "upc" && taskStatus[0].state === 200) {
-      upc++;
+    for (let x = 0; x < taskStatus.length; x++) {
+      if(taskStatus[x].state === 200){
+        if (skenarioData[i].skenario === "gadai") {
+          gadai++;
+        }
+        if (skenarioData[i].skenario === "phone") {
+          telepon++;
+        }
+        if (skenarioData[i].skenario === "lunas") {
+          lunas++;
+        }
+        if (skenarioData[i].status === "cabang") {
+          cabang++;
+        }
+        if (skenarioData[i].status === "collocation") {
+          collocation++;
+        }
+        if (skenarioData[i].status === "upc") {
+          upc++;
+        }
+        break;
+      }
     }
   }
   var skenario = [
