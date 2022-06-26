@@ -94,7 +94,7 @@ exports.getDetail = async function (req, res) {
 
 function getTopSkenarioByArray(array) {
   return new Promise((resolve) => {
-    var sql = "SELECT * FROM skenario WHERE id_sub_branch IN(" + array + ")";
+    var sql = "SELECT * FROM newskenario WHERE id_sub_branch IN(" + array + ")";
     db.query(sql, async function (err, result) {
       resolve(result);
     });
@@ -138,13 +138,13 @@ exports.getDetailContent = async function (req, res) {
   for (let i = 0; i < skenario.length; i++) {
     var kanwilbyid = await getKanwilById(skenario[i].id_region);
     var areabyid = await getAreaById(skenario[i].id_area);
-    if (skenario[i].Total_Kebersihan_KONDISI_1 != null) {
-      var kebersihan = skenario[i].Total_Kebersihan_KONDISI_1.toFixed(2);
+    if (skenario[i].total_kebersihan != null) {
+      var kebersihan = skenario[i].total_kebersihan.toFixed(2);
     } else {
       var kebersihan = "N/A";
     }
-    if (skenario[i].Total_RO_KONDISI_1 != null) {
-      var total_RO = skenario[i].Total_RO_KONDISI_1.toFixed(2);
+    if (skenario[i].total_ro != null) {
+      var total_RO = skenario[i].total_ro.toFixed(2);
     } else {
       var total_RO = "N/A";
     }
@@ -154,19 +154,19 @@ exports.getDetailContent = async function (req, res) {
       id_cabang: skenario[i].id_sub_branch,
       region: kanwilbyid[0].region.replace("KANWIL ", ""),
       area: areabyid[0].area_name.replace("AREA ", ""),
-      cabang: skenario[i].CABANG,
+      cabang: skenario[i].sub_branch_name,
       status: arrStatus[randomIntFromInterval(0, 2)],
-      total_skor: skenario[i].Total_Skor_2,
-      totalSatpam: Math.round(skenario[i].Total_Satpam_KONDISI_1 * 100) / 100,
+      total_skor: skenario[i].total_skor,
+      totalSatpam: Math.round(skenario[i].total_satpam * 100) / 100,
       totalPenaksir:
-        Math.round(skenario[i].Total_Penaksir_KONDISI_1 * 100) / 100,
-      totalKasir: Math.round(skenario[i].Total_Kasir_KONDISI_1 * 100) / 100,
+        Math.round(skenario[i].total_penaksir * 100) / 100,
+      totalKasir: Math.round(skenario[i].total_kasir * 100) / 100,
       totalKebersihan: kebersihan,
       totalNewNormal:
-        Math.round(skenario[i].Total_New_Normal_KONDISI_1 * 100) / 100,
+        Math.round(skenario[i].total_prokes * 100) / 100,
       totalPengelolaAgunan:
-        Math.round(skenario[i].Total_Pengelola_Agunan_KONDISI_1 * 100) / 100,
-      totalFrontliner: Math.round(skenario[i].Total_Frontliner * 100) / 100,
+        Math.round(skenario[i].total_pengelola_agunan * 100) / 100,
+      totalFrontliner: Math.round(skenario[i].total_frontliner * 100) / 100,
       totalRO: total_RO,
     });
   }

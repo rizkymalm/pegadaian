@@ -246,7 +246,7 @@ exports.getReportAjax = async function (req, res) {
   }
   dataExport.push(jsonkanwil);
   dataExport.push(jsonaspek);
-  console.log(dataExport[1].length);
+  console.log(dataExport);
   res.send(dataExport);
 };
 

@@ -76,9 +76,9 @@ global.getBranchByKanwil = async function (id, type) {
   });
 };
 
-global.getTopSkenarioByArray = async function (array) {
+global.getTopSkenarioByArray2 = async function (array) {
   return new Promise((resolve) => {
-    var sql = "SELECT * FROM skenario WHERE id_sub_branch IN(" + array + ")";
+    var sql = "SELECT * FROM newskenario WHERE id_sub_branch IN(" + array + ")";
     db.query(sql, async function (err, result) {
       resolve(result);
     });

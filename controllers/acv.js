@@ -115,26 +115,23 @@ function avgSkenario(kanwil, type, skenario) {
       var sql =
         "SELECT AVG(" +
         skenario +
-        ") AS avg FROM skenario WHERE id_region=" +
-        kanwil +
-        " AND tahun=2020";
+        ") AS avg FROM newskenario WHERE id_region=" +
+        kanwil
     } else if (type == "area") {
       var sql =
         "SELECT AVG(" +
         skenario +
-        ") AS avg FROM skenario WHERE id_area=" +
-        kanwil +
-        " AND tahun=2020";
+        ") AS avg FROM newskenario WHERE id_area=" +
+        kanwil
     } else if (type == "subbranch") {
       var sql =
         "SELECT AVG(" +
         skenario +
-        ") AS avg FROM skenario WHERE id_sub_branch=" +
-        kanwil +
-        " AND tahun=2020";
+        ") AS avg FROM newskenario WHERE id_sub_branch=" +
+        kanwil
     } else if (type == "year") {
       var sql =
-        "SELECT AVG(Total_Skor_) AS avg FROM skenario WHERE id_region=" +
+        "SELECT AVG(Total_Skor_) AS avg FROM newskenario WHERE id_region=" +
         kanwil +
         " AND tahun=" +
         skenario +
@@ -202,7 +199,7 @@ exports.getAcvAjax = async function (req, res) {
   if (aspek == 9) {
     for (var i = 0; i < skenario.length; i++) {
       var rand = await randomNumber(1, 100);
-      var arrskenario = ["Total_Skor_2"];
+      var arrskenario = ["total_skor"];
       if (typesql == "region") {
         var total = 0;
         for (let x = 0; x < arrskenario.length; x++) {
@@ -263,14 +260,14 @@ exports.getAcvAjax = async function (req, res) {
     }
   } else {
     var arraspek = [
-      ["Total_Frontliner"],
-      ["Total_Kasir_KONDISI_1"],
-      ["Total_Kebersihan_KONDISI_1"],
-      ["Total_New_Normal_KONDISI_1"],
-      ["Total_Penaksir_KONDISI_1"],
-      ["Total_Pengelola_Agunan_KONDISI_1"],
-      ["Total_RO_KONDISI_1"],
-      ["Total_Satpam_KONDISI_1"],
+      ["total_satpam"],
+      ["total_penaksir"],
+      ["total_kasir"],
+      ["total_pengelola_agunan"],
+      ["total_ro"],
+      ["total_prokes"],
+      ["total_kebersihan"],
+      ["total_frontliner"],
     ];
     for (let a = 0; a < skenario.length; a++) {
       if (typesql == "region") {
@@ -472,9 +469,9 @@ function getBranchByKanwil(id, type) {
 function getTopSkenarioByArray(array, aspek, sort) {
   return new Promise((resolve) => {
     var sql =
-      "SELECT CABANG AS cabang, " +
+      "SELECT sub_branch_name AS cabang, " +
       aspek +
-      " AS total FROM skenario WHERE id_sub_branch IN(" +
+      " AS total FROM newskenario WHERE id_sub_branch IN(" +
       array +
       ") AND " +
       aspek +
@@ -516,70 +513,65 @@ exports.getTopContent = async function (req, res) {
   }
   if (aspek == "all") {
     var typeaspek = "ASPEK";
-    var getAspek = "Total_Skor_";
+    var getAspek = "total_skor";
   } else if (aspek != "all" && element == "all") {
     var typeaspek = "ELEMENT";
     var arraspek = [
-      "Total_Frontliner",
-      "Total_Kasir_KONDISI_1",
-      "Total_Kebersihan_KONDISI_1",
-      "Total_New_Normal_KONDISI_1",
-      "Total_Penaksir_KONDISI_1",
-      "Total_Pengelola_Agunan_KONDISI_1",
-      "Total_RO_KONDISI_1",
-      "Total_Satpam_KONDISI_1",
+      "total_satpam",
+      "total_penaksir",
+      "total_kasir",
+      "total_pengelola_agunan",
+      "total_ro",
+      "total_prokes",
+      "total_kebersihan",
+      "total_frontliner",
     ];
     var getAspek = arraspek[aspek - 1];
   } else if (aspek != "all" && element != "all") {
     var typeaspek = "ELEMENT";
     var arrelement = [
-      "Total_Frontliner",
-      "Kegiatan_Frontliner_Lainnya",
-      "Sikap_Frontliner_Dalam_Menerima_Panggilan_Telepon",
-      "Sikap_Frontliner_Dalam_Mengakhiri_Panggilan_Telepon",
-      "Total_Kasir_KONDISI_1",
-      "Kegiatan_Kasir_Lainnya",
-      "Penampilan_Kasir",
-      "Sikap_Kasir_dalam_Melayani_Nasabah",
-      "Sikap_Kasir_Saat_Mengakhiri_Pelayanan",
-      "Sikap_Kasir_Saat_Menyambut_Nasabah_Datang",
-      "Skill_Kasir",
-      "Total_Kebersihan_KONDISI_1",
-      "Eksterior_Kantor_Cabang",
-      "Interior_Kantor_Cabang",
-      "Total_New_Normal_KONDISI_1",
-      "Fasilitas_Prasarana_dan_Sarana",
-      "Total_Penaksir_KONDISI_1",
-      "Penampilan_Penaksir",
-      "Kegiatan_Penaksir_Lainnya",
-      "Sikap_Penaksir_dalam_Melayani_Nasabah",
-      "Sikap_Penaksir_Saat_Mengakhiri_Pelayanan",
-      "Sikap_Penaksir_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_Saat_Melayani_di_Telepon_dan_Handling_Complaint",
-      "Skill_Penaksir",
-      "Total_Pengelola_Agunan_KONDISI_1",
-      "Kegiatan_Pegelola_Agunan_Lainnya",
-      "Penampilan_Pengelola_Agunan",
-      "Sikap_Pengelola_Agunan_dalam_Melayani_Nasabah",
-      "Sikap_Pengelola_Agunan_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_yang_Dilakukan_Pengelola_Agunan_Saat_Mengakhiri_Layanan",
-      "Skill_Pengelola_Agunan",
-      "Total_RO_KONDISI_1",
-      "Penampilan_RO",
-      "Kegiatan_RO_Lainnya",
-      "Sikap_RO_Saat_Melayani_Nasabah",
-      "Sikap_RO_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_yang_Dilakukan_RO_Saat_Mengakhiri_Layanan",
-      "Skill_RO",
-      "Total_Satpam_KONDISI_1",
-      "Total_Keberadaan_Satpam",
-      "Kegiatan_Satpam_Lainnya",
-      "Pelayanan_dan_Pencegahan_oleh_Satpam",
-      "Pelayanan_dan_Pencegahan_oleh_Karyawan",
-      "Penampilan_Satpam",
-      "Sikap_Satpam_Saat_Melayani_Nasabah",
-      "Sikap_Satpam_Saat_Melayani_Nasabah",
-      "Sikap_Satpam_Saat_Nasabah_Keluar",
+      "total_satpam",
+      "keberadaan_satpam",
+      "sikap_satpam_menyambut",
+      "sikap_satpam_melayani",
+      "sikap_satpam_saat_nasabah_keluar",
+      "penampilan_satpam",
+      "total_penaksir",
+      "sikap_penaksir_menyambut",
+      "penampilan_penaksir",
+      "sikap_penaksir_melayani",
+      "skill_penaksir",
+      "sikap_penaksir_mengakhiri_pelayanan",
+      "total_kasir",
+      "sikap_kasir_menyambut",
+      "penampilan_kasir",
+      "sikap_kasir_melayani",
+      "skill_kasir",
+      "sikap_kasir_mengakhiri_pelayanan",
+      "total_pengelola_agunan",
+      "sikap_pa_menyambut_nasabah",
+      "penampilan_pa",
+      "sikap_pa_Melayani_nasabah",
+      "skill_pa",
+      "sikap_pa_mengakhiri_pelayanan",
+      "total_ro",
+      "sikap_ro_menyambut_nasabah",
+      "penampilan_ro",
+      "sikap_ro",
+      "skill_ro",
+      "sikap_ro_mengakhiri_pelayanan",
+      "total_prokes",
+      "prokes_satpam",
+      "fasilitas_prokes",
+      "prokes_karyawan",
+      "total_kebersihan",
+      "eksterior",
+      "interior",
+      "total_telpon",
+      "total_frontliner",
+      "sikap_frontliner_menerima_telepon",
+      "sikap_frontliner_handling_complaint",
+      "sikap_frontliner_mengakhiri_telepon",
     ];
     var getAspek = arrelement[element - 1];
   }
@@ -660,42 +652,37 @@ exports.getTopPegadaianContent = async function (req, res) {
       "Sikap_Kasir_Saat_Mengakhiri_Pelayanan",
       "Sikap_Kasir_Saat_Menyambut_Nasabah_Datang",
       "Skill_Kasir",
-      "Total_Kebersihan_KONDISI_1",
-      "Eksterior_Kantor_Cabang",
-      "Interior_Kantor_Cabang",
-      "Total_New_Normal_KONDISI_1",
-      "Fasilitas_Prasarana_dan_Sarana",
-      "Total_Penaksir_KONDISI_1",
-      "Penampilan_Penaksir",
-      "Kegiatan_Penaksir_Lainnya",
-      "Sikap_Penaksir_dalam_Melayani_Nasabah",
-      "Sikap_Penaksir_Saat_Mengakhiri_Pelayanan",
-      "Sikap_Penaksir_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_Saat_Melayani_di_Telepon_dan_Handling_Complaint",
-      "Skill_Penaksir",
-      "Total_Pengelola_Agunan_KONDISI_1",
-      "Kegiatan_Pegelola_Agunan_Lainnya",
-      "Penampilan_Pengelola_Agunan",
-      "Sikap_Pengelola_Agunan_dalam_Melayani_Nasabah",
-      "Sikap_Pengelola_Agunan_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_yang_Dilakukan_Pengelola_Agunan_Saat_Mengakhiri_Layanan",
-      "Skill_Pengelola_Agunan",
-      "Total_RO_KONDISI_1",
-      "Penampilan_RO",
-      "Kegiatan_RO_Lainnya",
-      "Sikap_RO_Saat_Melayani_Nasabah",
-      "Sikap_RO_Saat_Menyambut_Nasabah_Datang",
-      "Sikap_yang_Dilakukan_RO_Saat_Mengakhiri_Layanan",
-      "Skill_RO",
-      "Total_Satpam_KONDISI_1",
-      "Total_Keberadaan_Satpam",
-      "Kegiatan_Satpam_Lainnya",
-      "Pelayanan_dan_Pencegahan_oleh_Satpam",
-      "Pelayanan_dan_Pencegahan_oleh_Karyawan",
-      "Penampilan_Satpam",
-      "Sikap_Satpam_Saat_Melayani_Nasabah",
-      "Sikap_Satpam_Saat_Melayani_Nasabah",
-      "Sikap_Satpam_Saat_Nasabah_Keluar",
+      "total_kebersihan",
+      "eksterior",
+      "interior",
+      "total_prokes",
+      "prokes_satpam",
+      "fasilitas_prokes",
+      "prokes_karyawan",
+      "total_penaksir",
+      "sikap_penaksir_menyambut",
+      "penampilan_penaksir",
+      "sikap_penaksir_melayani",
+      "skill_penaksir",
+      "sikap_penaksir_mengakhiri_pelayanan",
+      "total_pengelola_agunan",
+      "sikap_pa_menyambut_nasabah",
+      "penampilan_pa",
+      "sikap_pa_Melayani_nasabah",
+      "skill_pa",
+      "sikap_pa_mengakhiri_pelayanan",
+      "total_ro",
+      "sikap_ro_menyambut_nasabah",
+      "penampilan_ro",
+      "sikap_ro",
+      "skill_ro",
+      "sikap_ro_mengakhiri_pelayanan",
+      "total_satpam",
+      "keberadaan_satpam",
+      "sikap_satpam_menyambut",
+      "sikap_satpam_melayani",
+      "sikap_satpam_saat_nasabah_keluar",
+      "penampilan_satpam",
     ];
     var getAspek = arrelement[element - 1];
   }
