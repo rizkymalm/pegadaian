@@ -173,6 +173,7 @@ exports.getReportAjax = async function (req, res) {
   var area = req.query.area;
   var cabang = req.query.cabang;
   var aspek = req.query.aspek;
+  console.log(kanwil)
   // var element = req.query.element
   if (kanwil == "all" && area == "all" && cabang == "all") {
     var typesql = "region";

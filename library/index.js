@@ -57,6 +57,17 @@ global.getCabang = async function () {
   });
 };
 
+global.getCabangByID = async function (id) {
+  return new Promise((resolve) => {
+    db.query(
+      `SELECT * FROM sub_branch where id_sub_branch=${id}`,
+      function (err, result) {
+        resolve(result);
+      }
+    );
+  });
+};
+
 global.getBranchByKanwil = async function (id, type) {
   return new Promise((resolve) => {
     if (type == "kanwil") {

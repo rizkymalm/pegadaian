@@ -138,6 +138,7 @@ exports.getDetailContent = async function (req, res) {
   for (let i = 0; i < skenario.length; i++) {
     var kanwilbyid = await getKanwilById(skenario[i].id_region);
     var areabyid = await getAreaById(skenario[i].id_area);
+    var cabangbyid = await getCabangByID(skenario[i].id_sub_branch);
     if (skenario[i].total_kebersihan != null) {
       var kebersihan = skenario[i].total_kebersihan.toFixed(2);
     } else {
@@ -149,9 +150,22 @@ exports.getDetailContent = async function (req, res) {
       var total_RO = "N/A";
     }
     var arrStatus = ["UPC", "CABANG", "COLOCATION"];
+    var getTaskGadai = await getTaskByIdCabang(skenario[i].id_sub_branch, 'gadai', skenario[i].status);
+    if(getTaskGadai.length > 0){
+      var linkGadai = getTaskGadai[0].id;
+    }
+    var getTaskLunas = await getTaskByIdCabang(skenario[i].id_sub_branch, 'lunas', skenario[i].status);
+    if(getTaskLunas.length > 0){
+      var linkLunas = getTaskLunas[0].id;
+    }
+    var getTaskPhone = await getTaskByIdCabang(skenario[i].id_sub_branch, 'phone', skenario[i].status);
+    if(getTaskPhone.length > 0){
+      var linkPhone = getTaskPhone[0].id;
+    }
     jsonres.push({
       id_skenario: skenario[i].id_skenario,
       id_cabang: skenario[i].id_sub_branch,
+      outlet: cabangbyid[0].code_outlet,
       region: kanwilbyid[0].region.replace("KANWIL ", ""),
       area: areabyid[0].area_name.replace("AREA ", ""),
       cabang: skenario[i].sub_branch_name,
@@ -168,6 +182,10 @@ exports.getDetailContent = async function (req, res) {
         Math.round(skenario[i].total_pengelola_agunan * 100) / 100,
       totalFrontliner: Math.round(skenario[i].total_frontliner * 100) / 100,
       totalRO: total_RO,
+      kategori: skenario[i].total_skor <= 60 ? 'Copper' : skenario[i].total_skor > 60 && skenario[i].total_skor <= 70 ? 'Bronze' : skenario[i].total_skor > 70 && skenario[i].total_skor <= 80 ? 'Silver' : skenario[i].total_skor > 80 && skenario[i].total_skor <= 90 ? 'Gold' : skenario[i].total_skor > 90 ? 'Diamond' : '',
+      linkGadai: linkGadai,
+      linkLunas: linkLunas,
+      linkPhone: linkPhone
     });
   }
   res.render("partials/detailContent", {

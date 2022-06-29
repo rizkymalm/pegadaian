@@ -20,11 +20,12 @@
 <form id="count-checked">
     <table class="size-std full-tables">
         <tr>
-            <th style="text-align: left; cursor: pointer;" ng-click="sort('id_cabang')">No Unit <div ng-class="sortClass('id_cabang')"></div></th>
+            <th style="text-align: left; cursor: pointer;" ng-click="sort('outlet')">Kode Outlet <div ng-class="sortClass('outlet')"></div></th>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('region')">Kanwil <div ng-class="sortClass('region')"></div></th>
             <th style="text-align: left; cursor: pointer;" ng-click="sort('area')">Area <div ng-class="sortClass('area')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Cabang <div ng-class="sortClass('cabang')"></div></th>
             <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('cabang')">Status <div ng-class="sortClass('cabang')"></div></th>
+            <th style="text-align: left; width: 200px; cursor: pointer;" ng-click="sort('kategori')">Kategori <div ng-class="sortClass('kategori')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('total_skor')">Total Skor <div ng-class="sortClass('total_skor')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalFrontliner')">TELEPON <div ng-class="sortClass('totalFrontliner')"></div></th>
             <th style="cursor: pointer;" ng-click="sort('totalSatpam')">SATPAM <div ng-class="sortClass('totalSatpam')"></div></th>
@@ -40,11 +41,12 @@
         </tr>
 
         <tr dir-paginate="req in skenario | orderBy:sortKey:reverse | filter: search | itemsPerPage:20">
-            <td>{{req.id_cabang}}</td>
+            <td>{{req.outlet}}</td>
             <td>{{req.region}}</td>
             <td>{{req.area}}</td>
             <td>{{req.cabang}}</td>
             <td>{{req.status}}</td>
+            <td>{{req.kategori}}</td>
             <td align="center">{{req.total_skor}}</td>
             <td align="center">{{req.totalFrontliner}}</td>
             <td align="center">{{req.totalSatpam}}</td>
@@ -54,9 +56,9 @@
             <td align="center">{{req.totalNewNormal}}</td>
             <td align="center">{{req.totalPengelolaAgunan}}</td>
             <td align="center" style="color: {{req.totalRO === 'N/A' ? 'red' : '#73879C'}}">{{req.totalRO}}</td>
-            <td align="center"><a href="gadai/{{req.id_cabang}}" target="_blank">View</a></td>
-            <td align="center"><a href="lunas/{{req.id_cabang}}" target="_blank">View</a></td>
-            <td align="center"><a href="telp/{{req.id_cabang}}" target="_blank">View</a></td>
+            <td align="center"><a href="gadai/{{req.linkGadai}}" target="_blank">View</a></td>
+            <td align="center"><a href="lunas/{{req.linkLunas}}" target="_blank">View</a></td>
+            <td align="center"><a href="telp/{{req.linkPhone}}" target="_blank">View</a></td>
         </tr>
     </table>
     <dir-pagination-controls direction-links="true" boundary-links="true" class="size-std"></dir-pagination-controls>
