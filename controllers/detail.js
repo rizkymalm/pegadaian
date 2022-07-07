@@ -149,7 +149,7 @@ exports.getDetailContent = async function (req, res) {
     } else {
       var total_RO = "N/A";
     }
-    var arrStatus = ["UPC", "CABANG", "COLOCATION"];
+    var arrStatus = ["UPC", "CABANG", "COLLOCATION"];
     var getTaskGadai = await getTaskByIdCabang(skenario[i].id_sub_branch, 'gadai', skenario[i].status);
     if(getTaskGadai.length > 0){
       var linkGadai = getTaskGadai[0].id;
@@ -169,7 +169,7 @@ exports.getDetailContent = async function (req, res) {
       region: kanwilbyid[0].region.replace("KANWIL ", ""),
       area: areabyid[0].area_name.replace("AREA ", ""),
       cabang: skenario[i].sub_branch_name,
-      status: arrStatus[randomIntFromInterval(0, 2)],
+      status: skenario[i].status,
       total_skor: skenario[i].total_skor,
       totalSatpam: Math.round(skenario[i].total_satpam * 100) / 100,
       totalPenaksir:
