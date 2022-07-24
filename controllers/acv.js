@@ -326,7 +326,7 @@ exports.getAcvAjax = async function (req, res) {
 
 exports.getAreaByKanwil = (req, res) => {
   if (req.params.kanwil != "all") {
-    var sql = "SELECT * FROM area WHERE id_region=" + req.params.kanwil;
+    var sql = `SELECT * FROM area WHERE id_region=${req.params.kanwil}`;
   } else {
     var sql = "SELECT * FROM area";
   }
@@ -343,7 +343,7 @@ exports.getAreaByKanwil = (req, res) => {
 
 exports.getBranchByArea = (req, res) => {
   if (req.params.area != "all") {
-    var sql = "SELECT * FROM sub_branch WHERE id_area=" + req.params.area;
+    var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area} AND wave=${req.params.wave}`;
   } else {
     var sql = "SELECT * FROM sub_branch";
   }

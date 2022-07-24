@@ -56,21 +56,22 @@ exports.getAchievementDetailConent = async function (req, res) {
     emailses: req.session.email,
     subbranch: req.session.subbranch,
   };
+  var wave = req.query.wave;
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var cabang = req.query.cabang;
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, wave);
   } else if (kanwil != "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, wave);
   } else if (kanwil != "all" && area != "all" && cabang == "all") {
     var typesql = "area";
-    var selectBranch = await getBranchByKanwil(area, typesql);
+    var selectBranch = await getBranchByKanwil(area, typesql, wave);
   } else if (kanwil != "all" && area != "all" && cabang != "all") {
     var typesql = "cabang";
-    var selectBranch = await getBranchByKanwil(cabang, typesql);
+    var selectBranch = await getBranchByKanwil(cabang, typesql, wave);
   }
   var arrbranch = "";
   for (let i = 0; i < selectBranch.length; i++) {
@@ -96,6 +97,7 @@ exports.getAchievementDetailConent = async function (req, res) {
       linkLunas = getTaskLunas[0].id;
     }
     var linkPhone = 0
+
     var getTaskPhone = await getTaskByIdCabang(skenario[i].id_sub_branch, 'phone', skenario[i].status);
     if(getTaskPhone.length > 0){
       linkPhone = getTaskPhone[0].id;
@@ -117,45 +119,30 @@ exports.getAchievementDetailConent = async function (req, res) {
       linkPhone: linkPhone
     });
   }
-  // for (let i = 0; i < taskFilter.length; i++) {
-  //   jsonres.push({
-  //     id_skenario: taskFilter[i].id,
-  //     id_cabang: taskFilter[i].codecabang,
-  //     region: taskFilter[0].kanwil.replace("KANWIL ", ""),
-  //     area: taskFilter[0].area.replace("AREA ", ""),
-  //     cabang: taskFilter[i].cabang,
-  //     status: taskFilter[i].status,
-  //     acvGadai: skenario[i].gadai > 0 ? "Y" : "N",
-  //     acvPelunasan: skenario[i].lunas > 0 ? "Y" : "N",
-  //     acvTelepon: skenario[i].phone > 0 ? "Y" : "N",
-  //     linkGadai: "",
-  //     linkLunas: "",
-  //     linkPhone: ""
-  //   });
-  // }
   res.render("partials/DetailContentAchievement", {
     jsonres: jsonres,
   });
 };
 
 exports.getAchievementAjax = async function (req, res) {
-  var date = req.query.date;
-  var aspek = req.query.aspek;
+  // var date = req.query.date;
+  // var aspek = req.query.aspek;
+  var wave = req.query.wave;
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var cabang = req.query.cabang;
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, wave);
   } else if (kanwil != "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, wave);
   } else if (kanwil != "all" && area != "all" && cabang == "all") {
     var typesql = "area";
-    var selectBranch = await getBranchByKanwil(area, typesql);
+    var selectBranch = await getBranchByKanwil(area, typesql, wave);
   } else if (kanwil != "all" && area != "all" && cabang != "all") {
     var typesql = "cabang";
-    var selectBranch = await getBranchByKanwil(cabang, typesql);
+    var selectBranch = await getBranchByKanwil(cabang, typesql, wave);
   }
   var arrbranch = "";
   for (let i = 0; i < selectBranch.length; i++) {
@@ -167,7 +154,6 @@ exports.getAchievementAjax = async function (req, res) {
   }
   const skenarioData = await getTaskByArray(arrbranch);
   // var codeverified = [];
-
   var gadai = 0;
   var telepon = 0;
   var lunas = 0;

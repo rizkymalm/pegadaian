@@ -64,3 +64,29 @@ exports.updateExcelData = async function(req,res){
     }
     res.send(data);
 }
+
+exports.updateCheck = async function(req,res){
+    var task = await selectAllTask();
+    var data = [];
+    for (let i = 0; i < task.length; i++) {
+        var taskstatus = await checkStatusByTask(task[i].id);
+        if(taskstatus.length > 0){
+            var counttask = 0
+            for (let x = 0; x < taskstatus.length; x++) {
+                if(taskstatus[x].state === 200){
+                    counttask++
+                }
+            }
+            if(counttask===0){
+                data.push({
+                    id: task[i].id,
+                    count: counttask
+                })
+            }
+        }else{
+            console.log(task[i].id)
+        }
+
+    }
+    res.send(data)
+}

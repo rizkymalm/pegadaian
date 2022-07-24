@@ -31,10 +31,11 @@ function getAreaByKanwil(){
 }
 
 function getBranchByArea(){
+    var wave = $('#wave').val()
     var area = $('#area').val()
     $.ajax({
         cache: true,
-        url: "<%= baseurl() %>acv/branchbyarea/"+area,
+        url: "<%= baseurl() %>acv/branchbyarea/"+area+"/"+wave,
         success: function(select){
             $('#cabang').html(select);
         }

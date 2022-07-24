@@ -84,6 +84,13 @@
                 <form class="control">
                     <div class="list-control" style="border-bottom: none;">
                         <div class="list-control-box spc-rl">
+                            <!-- <span class="size-std">Show By Wave</span><br /> -->
+                            <select name="" id="wave" class="size-std" onchange="getBranchByArea(this)">
+                                <option value="1">Wave 1</option>
+                                <option value="2">Wave 2</option>
+                            </select>
+                        </div>
+                        <div class="list-control-box spc-rl">
                             <span class="size-std">Show By Kanwil</span>
                             <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
                                 <option value="all">-- Select Kanwil --</option>
@@ -165,11 +172,11 @@ $(document).ready(function(){
 		}
     })    
     $(".control").submit(function(){
+        var wave = $('#wave').val()
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var cabang = $('#cabang').val()
-        var data = "kanwil="+kanwil+"&area="+area+"&cabang="+cabang
-        console.log(data)
+        var data = `wave=${wave}&kanwil=${kanwil}&area=${area}&cabang=${cabang}&sort=DESC`
         $.ajax({
             url: "<%= baseurl() %>achievement/content/",
             type: "GET",
@@ -197,7 +204,6 @@ $(document).ready(function(){
                     var fontSize = 16
                 }
                 $('.loader').hide()
-                console.log(data)
                 CanvasJS.addColorSet("flexmonsterStyle",
                 [//colorSet Array
 

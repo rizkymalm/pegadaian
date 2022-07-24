@@ -81,7 +81,14 @@
                     <form class="control">
                         <div class="list-control" style="border-bottom: none;">
                             <div class="list-control-box spc-rl">
-                                <span class="size-std">Show By Kanwil</span>
+                                <!-- <span class="size-std">Show By Wave</span><br /> -->
+                                <select name="" id="wave" class="size-std" onchange="getBranchByArea(this)">
+                                    <option value="1">Wave 1</option>
+                                    <option value="2">Wave 2</option>
+                                </select>
+                            </div>
+                            <div class="list-control-box spc-rl">
+                                <!-- <span class="size-std">Show By Kanwil</span><br /> -->
                                 <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
                                     <option value="all">-- Select Kanwil --</option>
                                     <% for(var i=0; i < kanwil.length; i++){ %>
@@ -90,19 +97,19 @@
                                 </select>
                             </div>
                             <div class="list-control-box spc-rl">
-                                <span class="size-std">Show By Area</span>
+                                <!-- <span class="size-std">Show By Area</span><br /> -->
                                 <select name="" id="area" class="size-std" onchange="getBranchByArea(this)">
-                                    <option value="all">-- All --</option>
+                                    <option value="all">-- All Area --</option>
                                 </select>
                             </div>
                             <div class="list-control-box spc-rl">
-                                <span class="size-std">Show By Cabang</span>
+                                <!-- <span class="size-std">Show By Cabang</span><br /> -->
                                 <select name="" id="cabang" class="size-std">
-                                    <option value="all">-- All --</option>
+                                    <option value="all">-- All Branch --</option>
                                 </select>
                             </div>
                             <div class="list-control-box spc-rl" style="display: none;">
-                                <span class="size-std">Show By Aspek</span>
+                                <!-- <span class="size-std">Show By Aspek</span> -->
                                 <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
                                     <option value="all">-- All --</option>
                                     <% for(var i=0; i < aspek.length; i++){ %>
@@ -111,7 +118,7 @@
                                 </select>
                             </div>
                             <div class="list-control-box spc-rl" style="display: none;">
-                                <span class="size-std">Show By Element</span>
+                                <!-- <span class="size-std">Show By Element</span> -->
                                 <select name="" id="element" class="size-std">
                                     <option value="all">-- All --</option>
                                 </select>
@@ -145,12 +152,14 @@
 <script>
 $(document).ready(function(){
     $(".control").submit(function(){
+        var wave = $('#wave').val()
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var cabang = $('#cabang').val()
         var aspek = $('#aspek').val()
         var element = $('#element').val()
-        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC&cabang="+cabang
+        var data = `wave=${wave}&kanwil=${kanwil}&area=${area}&cabang=${cabang}&sort=DESC`
+        // var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC&cabang="+cabang
         $.ajax({
             url: "detail/content/",
             type: "GET",

@@ -68,18 +68,18 @@ global.getCabangByID = async function (id) {
   });
 };
 
-global.getBranchByKanwil = async function (id, type) {
+global.getBranchByKanwil = async function (id, type, wave) {
   return new Promise((resolve) => {
     if (type == "kanwil") {
       if (id == "all") {
-        var sql = "SELECT * FROM sub_branch";
+        var sql = `SELECT * FROM sub_branch WHERE wave=${wave}`;
       } else {
-        var sql = "SELECT * FROM sub_branch WHERE id_region=" + id;
+        var sql = `SELECT * FROM sub_branch WHERE id_region=${id} AND wave=${wave}`;
       }
     } else if (type == "area") {
-      var sql = "SELECT * FROM sub_branch WHERE id_area=" + id;
+      var sql = `SELECT * FROM sub_branch WHERE id_area=${id} AND wave=${wave}`;
     } else if (type == "cabang") {
-      var sql = "SELECT * FROM sub_branch WHERE id_sub_branch=" + id;
+      var sql = `SELECT * FROM sub_branch WHERE id_sub_branch=${id} AND wave=${wave}`;
     }
     db.query(sql, async function (err, result) {
       resolve(result);

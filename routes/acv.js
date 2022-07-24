@@ -5,7 +5,7 @@ const db = require("../models/db");
 Router.get("/", acvController.getAcv);
 Router.get("/pegadaian-internal", acvController.getAcvPegadaian);
 Router.get("/areabykanwil/:kanwil", acvController.getAreaByKanwil);
-Router.get("/branchbyarea/:area", acvController.getBranchByArea);
+Router.get("/branchbyarea/:area/:wave", acvController.getBranchByArea);
 Router.get("/content", acvController.getAcvAjax);
 Router.get("/top/content/", acvController.getTopContent);
 Router.get("/top", acvController.getTop);
