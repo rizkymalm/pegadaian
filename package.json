@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name pegadaian",
+    "start": "nodemon index.js",
     "stop": "pm2 stop index.js --name pegadaian",
     "restart": "pm2 restart index.js --name pegadaian"
   },
@@ -26,7 +26,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "flexmonster": "^2.9.20",
+    "flexmonster": "^2.9.35",
     "fs": "^0.0.1-security",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",

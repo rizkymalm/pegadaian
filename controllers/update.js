@@ -8,7 +8,9 @@ exports.updateSkenarioByTask = async function(req,res){
     // console.log(task)
     for (let i = 0; i < task.length; i++) {
         var taskstatus = await getTaskStatusByArray(task[i].id)
+        console.log('taskid', task[i].id);
         for (let x = 0; x < taskstatus.length; x++) {
+            console.log('status', taskstatus[x].state)
             if(taskstatus[x].state === 200){
                 var update = await updateSkenarioByidCabang(task[i].codecabang, task[i].skenario, task[i].status);
                 if(update){

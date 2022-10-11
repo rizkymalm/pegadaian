@@ -62,12 +62,12 @@ function getBranchByKanwil(id, type) {
       if (id == "all") {
         var sql = "SELECT * FROM sub_branch";
       } else {
-        var sql = "SELECT * FROM sub_branch WHERE id_region=" + id;
+        var sql = `SELECT * FROM sub_branch WHERE id_region=${id}`;
       }
     } else if (type == "area") {
-      var sql = "SELECT * FROM sub_branch WHERE id_area=" + id;
+      var sql = `SELECT * FROM sub_branch WHERE id_area=${id}`;
     } else if (type == "cabang") {
-      var sql = "SELECT * FROM sub_branch WHERE id_sub_branch=" + id;
+      var sql = `SELECT * FROM sub_branch WHERE id_sub_branch=${id}`;
     }
     db.query(sql, async function (err, result) {
       resolve(result);
@@ -136,6 +136,7 @@ exports.getDetailContent = async function (req, res) {
   var jsonres = [];
   var skenario = await getTopSkenarioByArray(arrbranch);
   for (let i = 0; i < skenario.length; i++) {
+    console.log(skenario[i].id_skenario)
     var kanwilbyid = await getKanwilById(skenario[i].id_region);
     var areabyid = await getAreaById(skenario[i].id_area);
     var cabangbyid = await getCabangByID(skenario[i].id_sub_branch);
@@ -162,6 +163,7 @@ exports.getDetailContent = async function (req, res) {
     if(getTaskPhone.length > 0){
       var linkPhone = getTaskPhone[0].id;
     }
+    console.log(skenario[i].sub_branch_name, areabyid[0].area_name)
     jsonres.push({
       id_skenario: skenario[i].id_skenario,
       id_cabang: skenario[i].id_sub_branch,

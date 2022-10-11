@@ -70,9 +70,9 @@
 		#fm-pivot-view #fm-charts-view #fm-chart-legend{
 			display: none;
 		}
-		.fm-data-label:last-child{
+		/* .fm-data-label:last-child{
 			display: none !important;
-		}
+		} */
 		.legendtext li{
 			float: left;
 			position: relative;
@@ -212,7 +212,7 @@
 						<li><div></div> FRONTLINER</li>
 						<li><div></div> KASIR</li>
 						<li><div></div> KEBERSIHAN</li>
-						<li><div></div> NEW NORMAL</li>
+						<li><div></div> PROTOKOL KESEHATAN</li>
 						<li><div></div> PENAKSIR</li>
 						<li><div></div> PENGELOLA AGUNAN</li>
 						<li><div></div> RO</li>
@@ -235,7 +235,7 @@ $(document).ready(function(){
 					height: "100%",
 					report: {
 						dataSource: {
-							filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+							filename: "<%= baseurl() %>rawdatacsv/detail_performance_2022.csv"
 						},
 						"slice": {
 							"reportFilters": [
@@ -256,7 +256,7 @@ $(document).ready(function(){
 										"frontliner",
 										"kasir",
 										"kebersihan",
-										"new normal",
+										"protokol kesehatan",
 										"penaksir",
 										"pengelola agunan",
 										"ro",
@@ -271,7 +271,7 @@ $(document).ready(function(){
 											"element.[frontliner]",
 											"element.[kasir]",
 											"element.[kebersihan]",
-											"element.[new normal]",
+											"element.[protokol kesehatan]",
 											"element.[penaksir]",
 											"element.[pengelola agunan]",
 											"element.[ro]",
@@ -315,12 +315,12 @@ $(document).ready(function(){
 							}
 						],
 					},
-					licenseKey: "Z7V7-XD6J6E-554F19-1D6J2E"
+					licenseKey: "Z70Q-XA3J4O-2C3U45-066V0Y"
 				});
 				var html = ""
 				html +="<style>"
 				html += "rect:nth-child(9){"
-				html += "display: none !important;"
+				// html += "display: none !important;"
 				html += "}"
 				html +="</style>"
 				$("body").after(html)
@@ -396,7 +396,7 @@ $(document).ready(function(){
 				var html = ""
 				html +="<style>"
 				html += "rect:nth-child("+childlen+"){"
-				html += "display: none !important;"
+				// html += "display: none !important;"
 				html += "}"
 				html +="</style>"
 				$("body").after(html)
@@ -408,7 +408,7 @@ $(document).ready(function(){
 						height: "100%",
 						report: {
 							dataSource: {
-								filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+								filename: "<%= baseurl() %>rawdatacsv/detail_performance_2022.csv"
 							},
 							"slice": {
 								"reportFilters": [
@@ -463,7 +463,7 @@ $(document).ready(function(){
 								}
 							],
 						},
-						licenseKey: "Z7V7-XD6J6E-554F19-1D6J2E"
+						licenseKey: "Z70Q-XA3J4O-2C3U45-066V0Y"
 					});
 				}else{
 					var pivot = new Flexmonster({
@@ -472,7 +472,7 @@ $(document).ready(function(){
 						height: "100%",
 						report: {
 							dataSource: {
-								filename: "<%= baseurl() %>rawdatacsv/gadai/detail_performance_new.csv"
+								filename: "<%= baseurl() %>rawdatacsv/detail_performance_2022.csv"
 							},
 							"slice": {
 								"reportFilters": [
@@ -543,7 +543,7 @@ $(document).ready(function(){
 								}
 							],
 						},
-						licenseKey: "Z7V7-XD6J6E-554F19-1D6J2E"
+						licenseKey: "Z70Q-XA3J4O-2C3U45-066V0Y"
 					});
 				}
             }

@@ -113,22 +113,13 @@ function avgSkenario(kanwil, type, skenario) {
   return new Promise((resolve) => {
     if (type == "region") {
       var sql =
-        "SELECT AVG(" +
-        skenario +
-        ") AS avg FROM newskenario WHERE id_region=" +
-        kanwil
+        `SELECT AVG(${skenario}) AS avg FROM newskenario WHERE id_region=${kanwil}`
     } else if (type == "area") {
       var sql =
-        "SELECT AVG(" +
-        skenario +
-        ") AS avg FROM newskenario WHERE id_area=" +
-        kanwil
+        `SELECT AVG(${skenario}) AS avg FROM newskenario WHERE id_area=${kanwil}`
     } else if (type == "subbranch") {
       var sql =
-        "SELECT AVG(" +
-        skenario +
-        ") AS avg FROM newskenario WHERE id_sub_branch=" +
-        kanwil
+        `SELECT AVG(${skenario}) AS avg FROM newskenario WHERE id_sub_branch=${kanwil}`
     } else if (type == "year") {
       var sql =
         "SELECT AVG(Total_Skor_) AS avg FROM newskenario WHERE id_region=" +
@@ -224,6 +215,7 @@ exports.getAcvAjax = async function (req, res) {
             typesql,
             arrskenario[x]
           );
+          console.log(arrskenario[x])
           total = total + searchAvg;
         }
         var average = total;
