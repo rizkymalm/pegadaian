@@ -152,7 +152,12 @@ exports.getAchievementAjax = async function (req, res) {
       arrbranch += selectBranch[i].id_sub_branch + ",";
     }
   }
+  var splitarrbranch = arrbranch.split(',');
   const skenarioData = await getTaskByArray(arrbranch);
+  for (let a = 0; a < splitarrbranch.length; a++) {
+    const skenarioData2 = await getTaskByArray(splitarrbranch[a]);
+    console.log(skenarioData2)
+  }
   // var codeverified = [];
   var gadai = 0;
   var telepon = 0;

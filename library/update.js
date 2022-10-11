@@ -23,7 +23,7 @@ global.selectAllSkenario = async function () {
   global.selectAllTaskNotNull = async function () {
     return new Promise((resolve) => {
       var sql =
-        "SELECT * FROM task WHERE filename NOT IN('NULL')";
+        "SELECT * FROM task WHERE wave=2 AND filename NOT IN('NULL')";
       db.query(sql, async function (err, result) {
         resolve(result);
       });
