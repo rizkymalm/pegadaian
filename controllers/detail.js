@@ -145,7 +145,8 @@ exports.getDetailContent = async function (req, res) {
     } else {
       var kebersihan = "N/A";
     }
-    if (skenario[i].total_ro != null) {
+    if (skenario[i].total_ro != null && skenario[i].total_ro != 0) {
+      console.log(skenario[i].total_ro)
       var total_RO = skenario[i].total_ro.toFixed(2);
     } else {
       var total_RO = "N/A";
@@ -163,7 +164,6 @@ exports.getDetailContent = async function (req, res) {
     if(getTaskPhone.length > 0){
       var linkPhone = getTaskPhone[0].id;
     }
-    console.log(skenario[i].sub_branch_name, areabyid[0].area_name)
     jsonres.push({
       id_skenario: skenario[i].id_skenario,
       id_cabang: skenario[i].id_sub_branch,
