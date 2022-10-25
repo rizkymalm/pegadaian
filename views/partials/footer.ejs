@@ -19,6 +19,7 @@ $(document).ready(function(){
         "height" : $('.square').width() +"px"
     })
 })
+
 function getAreaByKanwil(){
     var kanwil = $('#kanwil').val()
     $.ajax({
@@ -33,9 +34,11 @@ function getAreaByKanwil(){
 function getBranchByArea(){
     var wave = $('#wave').val()
     var area = $('#area').val()
+    var kategori = $('#kategori').val()
+    console.log(wave)
     $.ajax({
         cache: true,
-        url: "<%= baseurl() %>acv/branchbyarea/"+area+"/"+wave,
+        url: "<%= baseurl() %>acv/branchbyarea/"+area+"/"+wave+"/"+kategori,
         success: function(select){
             $('#cabang').html(select);
         }

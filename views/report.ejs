@@ -73,14 +73,17 @@
 		/* .fm-data-label:last-child{
 			display: none !important;
 		} */
+		.legendtext{
+			display: flex;
+		}
 		.legendtext li{
 			float: left;
 			position: relative;
 			padding: 0 18px;
-			max-width: 15%;
+			/* max-width: 10%; */
 			text-transform: uppercase;
 			font-weight: bold;
-			font-size: 16px;
+			font-size: 14px;
 			display: inline-table;
 		}
 		.legendtext li:nth-child(1) div{
@@ -106,6 +109,9 @@
 		}
 		.legendtext li:nth-child(8) div{
 			background-color: #D4A900;
+		}
+		.legendtext li:nth-child(9) div{
+			background-color: #0CA7C4;
 		}
 		.legendtext li div{
 			position: absolute;
@@ -152,7 +158,17 @@
                 <form class="control">
                     <div class="list-control" style="border-bottom: none;">
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Kanwil</span>
+                            <span class="size-std">Show By Category</span><br/>
+                            <select name="kategori" id="kategori" class="size-std" onchange="getAreaByKanwil(this)">
+                                <option value="all">-- All --</option>
+                                <option value="cabang">Cabang</option>
+								<option value="upc">Unit</option>
+								<option value="collocation">Collocation</option>
+								<option value="cabang,upc">Cabang & Unit</option>
+                            </select>
+                        </div>
+						<div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Kanwil</span><br/>
                             <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
                                 <option value="all">-- Select Kanwil --</option>
                                 <% for(var i=0; i < kanwil.length; i++){ %>
@@ -161,19 +177,19 @@
                             </select>
                         </div>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Area</span>
+                            <span class="size-std">Show By Area</span><br/>
                             <select name="" id="area" class="size-std" onchange="getBranchByArea(this)">
                                 <option value="all">-- All --</option>
                             </select>
 						</div>
 						<div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Cabang</span>
+                            <span class="size-std">Show By Cabang</span><br/>
                             <select name="" id="cabang" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
 						</div>
 						<div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Aspek</span>
+                            <span class="size-std">Show By Aspek</span><br/>
                             <select name="" id="aspek" class="size-std">
                                 <option value="9">-- All --</option>
                                 <% for(var i=0; i < aspek.length; i++){ %>
@@ -207,16 +223,17 @@
 				<div style="width: 100%; height: 700px;" class="chartContainer"  id="chartContainer">
 					<div id="pivotContainer" style="padding-bottom: 30px;"></div>
 				</div>
-				<div style="display: table; margin: 0 auto; max-width: 80%;">
+				<div style="display: table; margin: auto;">
 					<ul class="legendtext">
-						<li><div></div> FRONTLINER</li>
-						<li><div></div> KASIR</li>
-						<li><div></div> KEBERSIHAN</li>
-						<li><div></div> PROTOKOL KESEHATAN</li>
+						<li><div></div> TOTAL</li>
+						<li><div></div> SATPAM</li>
 						<li><div></div> PENAKSIR</li>
+						<li><div></div> KASIR</li>
 						<li><div></div> PENGELOLA AGUNAN</li>
 						<li><div></div> RO</li>
-						<li><div></div> SATPAM</li>
+						<li><div></div> PROTOKOL KESEHATAN</li>
+						<li><div></div> KEBERSIHAN</li>
+						<li><div></div> FRONTLINER</li>
 					</ul>
 				</div>
 			</div>
@@ -253,14 +270,14 @@ $(document).ready(function(){
 								{
 									"uniqueName": "ASPEK",
 									"sortOrder": [
-										"frontliner",
-										"kasir",
-										"kebersihan",
-										"protokol kesehatan",
+										"satpam",
 										"penaksir",
+										"kasir",
 										"pengelola agunan",
 										"ro",
-										"satpam",
+										"protokol kesehatan",
+										"kebersihan",
+										"frontliner",
 										"OTHER"
 									]
 								},
@@ -268,6 +285,7 @@ $(document).ready(function(){
 									"uniqueName": "ELEMENT",
 									"filter": {
 										"members": [
+											"element.[total score]",
 											"element.[frontliner]",
 											"element.[kasir]",
 											"element.[kebersihan]",
@@ -325,7 +343,8 @@ $(document).ready(function(){
 				html +="</style>"
 				$("body").after(html)
 	$(".control").change(function(){
-        var kanwil = $('#kanwil').val()
+        var kategori = $('#kategori').val()
+		var kanwil = $('#kanwil').val()
 		var area = $('#area').val()
 		var cabang = $('#cabang').val()
 		var aspek = $('#aspek').val()
@@ -373,7 +392,12 @@ $(document).ready(function(){
 				if(data[0][0].label=="BRANCH"){
 					var rowss = [{"uniqueName": "CABANG","filter": {"members": branchFilter}}]
 				}
-
+				var splitKategori = kategori.split(',');
+				var kategoriStatus=[];
+				for (let i = 0; i < splitKategori.length; i++) {
+					kategoriStatus.push(`kategori.[${splitKategori[i]}]`)
+				}
+				console.log(kategoriStatus)
 				var legendText = ""
 				var sortOrderElement = []
 				for (let x = 0; x < data[1].length; x++) {
@@ -389,8 +413,8 @@ $(document).ready(function(){
 					sortOrderElement.push(data[1][x].nama)
 				}
 				$(".legendtext").html(legendText)
-				var lengthData = data[1].length-1
-				$(".legendtext li").css({"width": 100/lengthData +"%", "max-width" : 100/lengthData +"%"})
+				// var lengthData = data[1].length-1
+				// $(".legendtext li").css({"width": 100/lengthData +"%", "max-width" : 100/lengthData +"%"})
 				var childlen = data[1].length
 				$("style:last-child").remove()
 				var html = ""
@@ -422,6 +446,12 @@ $(document).ready(function(){
 										"uniqueName": "CABANG",
 										"filter": {
 											"members": branchFilter
+										}
+									},
+									{
+										"uniqueName": "KATEGORI",
+										"filter": {
+											"members": kategoriStatus
 										}
 									}
 								],
@@ -487,6 +517,12 @@ $(document).ready(function(){
 										"filter": {
 											"members": branchFilter
 										}
+									},
+									{
+										"uniqueName": "KATEGORI",
+										"filter": {
+											"members": kategoriStatus
+										}
 									}
 								],
 								"columns": [
@@ -499,14 +535,14 @@ $(document).ready(function(){
 											"members": aspekFilter
 										},
 										"sortOrder": [
-											"FRONTLINER",
-											"KASIR",
-											"KEBERSIHAN",
-											"NEW NORMAL",
-											"PENAKSIR",
-											"PENGELOLA AGUNAN",
-											"RO",
-											"SATPAM",
+											"satpam",
+											"penaksir",
+											"kasir",
+											"pengelola agunan",
+											"ro",
+											"protokol kesehatan",
+											"kebersihan",
+											"frontliner",
 											"OTHER"
 										]
 									},

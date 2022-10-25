@@ -215,7 +215,6 @@ exports.getAcvAjax = async function (req, res) {
             typesql,
             arrskenario[x]
           );
-          console.log(arrskenario[x])
           total = total + searchAvg;
         }
         var average = total;
@@ -334,10 +333,36 @@ exports.getAreaByKanwil = (req, res) => {
 };
 
 exports.getBranchByArea = (req, res) => {
+  const kategori = req.params.kategori
+  var splitKategori = kategori.split(',');
+  var kategoriStatus='';
+  for (let i = 0; i < splitKategori.length; i++) {
+    if(i === splitKategori.length - 1){
+      kategoriStatus+=`'${splitKategori[i]}'`
+    }else{
+      kategoriStatus+=`'${splitKategori[i]}',`
+    }
+  }
   if (req.params.area != "all") {
-    var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area} AND wave=${req.params.wave}`;
+    if(req.params.wave === 'undefined'){
+      if(req.params.kategori === 'all' || req.params.kategori === 'undefined'){
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area}`;
+      }else{
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area} AND status IN(${kategoriStatus})`;
+      }
+    }else{
+      if(req.params.kategori === 'all' || req.params.kategori === 'undefined'){
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area} AND wave=${req.params.wave}`;
+      }else{
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${req.params.area} AND wave=${req.params.wave} AND status IN(${kategoriStatus})`;
+      }
+    }
   } else {
-    var sql = "SELECT * FROM sub_branch";
+    if(req.params.kategori === 'all' || req.params.kategori === 'undefined'){
+      var sql = `SELECT * FROM sub_branch WHERE status IN(${kategoriStatus})`;
+    }else{
+      var sql = `SELECT * FROM sub_branch`;
+    }
   }
   db.query(sql, (err, results) => {
     if (err) {

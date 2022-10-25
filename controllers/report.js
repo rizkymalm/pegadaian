@@ -95,9 +95,9 @@ function getAspekById(id) {
 function getElementByIdAspek(id) {
   return new Promise((resolve) => {
     if (id != "all" && id != "") {
-      var sql = "SELECT * FROM element WHERE id_aspek=" + id;
+      var sql = `SELECT * FROM element WHERE id_aspek=${id}`;
     } else {
-      var sql = "SELECT * FROM element";
+      var sql = `SELECT * FROM element`;
     }
     db.query(sql, function (err, result) {
       resolve(result);
@@ -119,9 +119,9 @@ function getElementByIdElement(id) {
 }
 
 exports.getReport = async function (req, res) {
-  if (req.session.email == undefined) {
-    res.redirect("../login");
-  } else {
+  // if (req.session.email == undefined) {
+    // res.redirect("../login");
+  // } else {
     var login = {
       idses: req.session.id,
       nameses: req.session.name,
@@ -143,7 +143,7 @@ exports.getReport = async function (req, res) {
         });
       }
     );
-  }
+  // }
 };
 
 function getSkenario(kanwil, area, type) {
@@ -173,7 +173,6 @@ exports.getReportAjax = async function (req, res) {
   var area = req.query.area;
   var cabang = req.query.cabang;
   var aspek = req.query.aspek;
-  console.log(kanwil)
   // var element = req.query.element
   if (kanwil == "all" && area == "all" && cabang == "all") {
     var typesql = "region";
@@ -193,7 +192,7 @@ exports.getReportAjax = async function (req, res) {
   }
   if (aspek == 9) {
     var typeaspek = "ASPEK";
-    var skenarioAspek = await getElementByIdAspek(9);
+    var skenarioAspek = await getAspek();
   } else {
     var typeaspek = "ELEMENT";
     var skenarioAspek = await getElementByIdAspek(aspek);
@@ -225,7 +224,7 @@ exports.getReportAjax = async function (req, res) {
   }
   for (var i = 0; i < skenarioAspek.length; i++) {
     if (typeaspek == "ASPEK") {
-      jsonaspek.push({ nama: skenarioAspek[i].label_element, label: "ASPEK" });
+      jsonaspek.push({ nama: skenarioAspek[i].label_aspek, label: "ASPEK" });
     } else if (typeaspek == "ELEMENT") {
       jsonaspek.push({
         nama: skenarioAspek[i].label_element,
@@ -247,7 +246,6 @@ exports.getReportAjax = async function (req, res) {
   }
   dataExport.push(jsonkanwil);
   dataExport.push(jsonaspek);
-  console.log(dataExport);
   res.send(dataExport);
 };
 
