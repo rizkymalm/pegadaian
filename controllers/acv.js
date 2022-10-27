@@ -74,22 +74,19 @@ function randomNumber(min, max) {
   });
 }
 
-function getSkenario(kanwil, area, type) {
+function getSkenario(kanwil, area, type, kategori) {
   return new Promise((resolve) => {
     if (type == "region") {
-      var sql = "SELECT * FROM region";
+      var sql = `SELECT * FROM region`;
     } else if (type == "area") {
-      var sql = "SELECT * FROM area WHERE id_region=" + kanwil;
+      var sql = `SELECT * FROM area WHERE id_region=${kanwil}`;
     } else if (type == "subbranch") {
       var sql =
-        "SELECT * FROM sub_branch WHERE id_region=" +
-        kanwil +
-        " AND id_area='" +
-        area +
-        "'";
+        `SELECT * FROM sub_branch WHERE id_region=${kanwil} AND id_area='${area}'` 
     } else if (type == "year") {
       var sql = "SELECT * FROM region";
     }
+    console.log(sql)
     db.query(sql, async function (err, result) {
       resolve(result);
     });
@@ -170,6 +167,7 @@ function getSkenarioByRegion(skenario, region) {
 }
 
 exports.getAcvAjax = async function (req, res) {
+  var kategori = req.query.kategori;
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var date = req.query.date;
@@ -466,17 +464,30 @@ exports.getBottomPegadaian = async function (req, res) {
   }
 };
 
-function getBranchByKanwil(id, type) {
+function getBranchByKanwil(id, type, kategori) {
   return new Promise((resolve) => {
     if (type == "kanwil") {
       if (id == "all") {
-        var sql = "SELECT * FROM sub_branch";
+        if(kategori !== 'all'){
+          var sql = `SELECT * FROM sub_branch WHERE status='${kategori}'`;
+        }else{
+          var sql = `SELECT * FROM sub_branch`;
+        }
       } else {
-        var sql = "SELECT * FROM sub_branch WHERE id_region=" + id;
+        if(kategori !== 'all'){
+          var sql = `SELECT * FROM sub_branch WHERE id_region=${id} AND status='${kategori}'`;
+        }else{
+          var sql = `SELECT * FROM sub_branch WHERE id_region=${id}`;
+        }
       }
     } else if (type == "area") {
-      var sql = "SELECT * FROM sub_branch WHERE id_area=" + id;
+      if(kategori !== 'all'){
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${id} AND status='${kategori}'`;
+      }else{
+        var sql = `SELECT * FROM sub_branch WHERE id_area=${id}`;
+      }
     }
+    console.log(sql)
     db.query(sql, async function (err, result) {
       resolve(result);
     });
@@ -504,6 +515,7 @@ function getTopSkenarioByArray(array, aspek, sort) {
 }
 
 exports.getTopContent = async function (req, res) {
+  var kategori = req.query.kategori;
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var aspek = req.query.aspek;
@@ -511,13 +523,13 @@ exports.getTopContent = async function (req, res) {
   var sort = req.query.sortby;
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, kategori);
   } else if (kanwil != "all" && area == "all") {
     var typesql = "kanwil";
-    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+    var selectBranch = await getBranchByKanwil(kanwil, typesql, kategori);
   } else if (kanwil != "all" && area != "all") {
     var typesql = "area";
-    var selectBranch = await getBranchByKanwil(area, typesql);
+    var selectBranch = await getBranchByKanwil(area, typesql, kategori);
   }
   var jsonres = [];
   var arrbranch = "";
