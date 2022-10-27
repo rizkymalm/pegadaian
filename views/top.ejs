@@ -84,7 +84,16 @@
                 <form class="control">
                     <div class="list-control" style="border-bottom: none;">
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Kanwil</span>
+                            <span class="size-std">Show By Status</span><br />
+                            <select name="kategori" id="kategori" class="size-std" onchange="getAreaByKanwil(this)">
+                                <option value="all">-- All --</option>
+                                <option value="cabang">Cabang</option>
+                                <option value="upc">UPC</option>
+                                <option value="collocation">Colocation</option>
+                            </select>
+						</div>
+                        <div class="list-control-box spc-rl">
+                            <span class="size-std">Show By Kanwil</span><br />
                             <select name="" id="kanwil" class="size-std" onchange="getAreaByKanwil(this)">
                                 <option value="all">-- Select Kanwil --</option>
                                 <% for(var i=0; i < kanwil.length; i++){ %>
@@ -93,13 +102,13 @@
                             </select>
                         </div>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Area</span>
+                            <span class="size-std">Show By Area</span><br />
                             <select name="" id="area" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
-                        </div><br><br><br><br>
+                        </div>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Aspek</span>
+                            <span class="size-std">Show By Aspek</span><br />
                             <select name="" id="aspek" class="size-std" onchange="getElementByAspek(this)">
                                 <option value="all">-- All --</option>
                                 <% for(var i=0; i < aspek.length; i++){ %>
@@ -108,20 +117,12 @@
                             </select>
                         </div>
                         <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Element</span>
+                            <span class="size-std">Show By Element</span><br />
                             <select name="" id="element" class="size-std">
                                 <option value="all">-- All --</option>
                             </select>
 						</div>
-                        <div class="list-control-box spc-rl">
-                            <span class="size-std">Show By Status</span>
-                            <select name="" id="status" class="size-std">
-                                <option value="all">-- All --</option>
-                                <option value="all">Cabang</option>
-                                <option value="all">UPC</option>
-                                <option value="all">Colocation</option>
-                            </select>
-						</div>
+                        
                         <div class="list-control-box size-std spc-rl">
                             <button type="submit" class="myButton-submit">Show</button>
                             <button type="reset" class="myButton-submit">Clear</button>
@@ -179,11 +180,12 @@ $(document).ready(function(){
         }
     })
     $(".control").submit(function(){
+        var kategori = $('#kategori').val()
         var kanwil = $('#kanwil').val()
         var area = $('#area').val()
         var aspek = $('#aspek').val()
         var element = $('#element').val()
-        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC"
+        var data = "kanwil="+kanwil+"&date=2020&area="+area+"&aspek="+aspek+"&element="+element+"&sortby=DESC&kategori="+kategori
         console.log(data)
         $.ajax({
             url: "<%= baseurl() %>acv/top/content/",

@@ -54,13 +54,13 @@
 			font-size: 19px !important;
 			font-weight: bold !important;
 		}
-		#fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
+		/* #fm-pivot-view #fm-charts-view #fm-header-toolbar #fm-charts-filters-container .fm-ui-btn{
 			display: none !important;
 		}
 		#fm-pivot-view .fm-axis text{
 			font-size: 18px !important;
 			font-weight: bold !important;
-		}
+		} */
 		/* rect{
 			display: none !important;
 		} */
@@ -377,7 +377,7 @@ $(document).ready(function(){
 				var areaFilter = []
 				var branchFilter = []
 				var aspekFilter = []
-				var elementFilter = []
+				var elementFilter = ["element.[total score]"]
 				for (let i = 0; i < data[0].length; i++) {
 					if(data[0][0].label=="AREA"){
 						areaFilter.push("AREA.["+data[0][i].nama+"]")
@@ -398,7 +398,7 @@ $(document).ready(function(){
 					kategoriStatus.push(`kategori.[${splitKategori[i]}]`)
 				}
 				console.log(kategoriStatus)
-				var legendText = ""
+				var legendText = "<li><div></div> TOTAL</li>"
 				var sortOrderElement = []
 				for (let x = 0; x < data[1].length; x++) {
 					if(data[1][0].label=="ASPEK"){
@@ -412,6 +412,7 @@ $(document).ready(function(){
 					}
 					sortOrderElement.push(data[1][x].nama)
 				}
+				console.log(elementFilter)
 				$(".legendtext").html(legendText)
 				// var lengthData = data[1].length-1
 				// $(".legendtext li").css({"width": 100/lengthData +"%", "max-width" : 100/lengthData +"%"})
