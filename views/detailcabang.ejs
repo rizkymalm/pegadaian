@@ -263,9 +263,16 @@
       });
     });
     $("#frm-export").click(function () {
+      var kanwil = $("#kanwil").val();
+      var area = $("#area").val();
+      var cabang = $("#cabang").val();
+      var aspek = $("#aspek").val();
+      var element = $("#element").val();
+      var data = `kanwil=${kanwil}&area=${area}&cabang=${cabang}`
       $.ajax({
         type: "GET",
         url: "<%= baseurl() %>detail/export",
+        data: data,
         cache: false,
         beforeSend: function () {
           $(".blur").show();

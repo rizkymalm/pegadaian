@@ -311,20 +311,19 @@ exports.getDetailContentInternal = async function (req, res) {
 };
 
 exports.getDetailExport = async function (req, res) {
-  var datefrom = req.body.date_from;
-  var dateto = req.body.date_to;
-  var type = req.body.type;
-  var a = moment(dateto);
-  var b = moment(datefrom);
-  var newfilename = `report_ms_kadence.xlsx`;
-  var isifile = [];
+  var kanwil = req.query.kanwil;
+  var area = req.query.area;
+  var cabang = req.query.cabang;
+  const date = moment().valueOf();
+  var newfilename = `report_ms_kadence_${date}.xlsx`;
   var header = [
     [
-      "No Unit",
-      "kanwil",
+      "Kode Outlet",
+      "Kanwil",
       "Area",
-      "cabang",
+      "Cabang",
       "Status",
+      "Kategori",
       "Total Skor",
       "Telepon",
       "Satpam",
@@ -336,6 +335,62 @@ exports.getDetailExport = async function (req, res) {
       "RO"
     ],
   ];
+  if (kanwil == "all" && area == "all") {
+    var typesql = "kanwil";
+    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+  } else if (kanwil != "all" && area == "all") {
+    var typesql = "kanwil";
+    var selectBranch = await getBranchByKanwil(kanwil, typesql);
+  } else if (kanwil != "all" && area != "all" && cabang == "all") {
+    var typesql = "area";
+    var selectBranch = await getBranchByKanwil(area, typesql);
+  } else if (kanwil != "all" && area != "all" && cabang != "all") {
+    var typesql = "cabang";
+    var selectBranch = await getBranchByKanwil(cabang, typesql);
+  }
+  var arrbranch = "";
+  for (let i = 0; i < selectBranch.length; i++) {
+    if (i == selectBranch.length - 1) {
+      arrbranch += selectBranch[i].id_sub_branch;
+    } else {
+      arrbranch += selectBranch[i].id_sub_branch + ",";
+    }
+  }
+  var isifile = [];
+  var skenario = await getTopSkenarioByArray(arrbranch);
+  for (let i = 0; i < skenario.length; i++) {
+    var kanwilbyid = await getKanwilById(skenario[i].id_region);
+    var areabyid = await getAreaById(skenario[i].id_area);
+    var cabangbyid = await getCabangByID(skenario[i].id_sub_branch);
+    if (skenario[i].total_kebersihan != null) {
+      var kebersihan = skenario[i].total_kebersihan.toFixed(2);
+    } else {
+      var kebersihan = "N/A";
+    }
+    if (skenario[i].total_ro != null && skenario[i].total_ro != 0) {
+      var total_RO = skenario[i].total_ro.toFixed(2);
+    } else {
+      var total_RO = "N/A";
+    }
+    isifile.push([
+      cabangbyid[0].code_outlet,
+      kanwilbyid[0].region.replace("KANWIL ", ""),
+      areabyid[0].area_name.replace("AREA ", ""),
+      skenario[i].sub_branch_name,
+      skenario[i].status,
+      skenario[i].total_skor <= 60 ? 'Copper' : skenario[i].total_skor > 60 && skenario[i].total_skor <= 70 ? 'Bronze' : skenario[i].total_skor > 70 && skenario[i].total_skor <= 80 ? 'Silver' : skenario[i].total_skor > 80 && skenario[i].total_skor <= 90 ? 'Gold' : skenario[i].total_skor > 90 ? 'Diamond' : '',
+      skenario[i].total_skor,
+      Math.round(skenario[i].total_satpam * 100) / 100,
+      Math.round(skenario[i].total_penaksir * 100) / 100,
+      Math.round(skenario[i].total_kasir * 100) / 100,
+      kebersihan,
+      Math.round(skenario[i].total_prokes * 100) / 100,
+      Math.round(skenario[i].total_pengelola_agunan * 100) / 100,
+      Math.round(skenario[i].total_frontliner * 100) / 100,
+      total_RO,
+    ]);
+  }
+  // var isifile = [];
   var createfile = header.concat(isifile);
   const progress = xlsx.build([{ name: "Data", data: createfile }]);
   fs.writeFile(
