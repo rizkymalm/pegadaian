@@ -114,6 +114,30 @@ global.getSkenarioByArray = async function (array) {
   });
 };
 
+global.getSkenarioByArrayCount = async function (array) {
+  return new Promise((resolve) => {
+    var sql =
+      "SELECT COUNT(id_skenario) AS NumberOfSkenario FROM skenario2 WHERE id_sub_branch IN(" +
+      array +
+      ")";
+    db.query(sql, async function (err, result) {
+      console.log(result)
+      resolve(result);
+    });
+  });
+};
+
+global.getSkenarioByArrayPagination = async function (array, page, perPage) {
+  return new Promise((resolve) => {
+    var sql = `SELECT * FROM skenario2 WHERE id_sub_branch IN(${array}) LIMIT ${
+      page * perPage
+    }, ${perPage}`;
+    db.query(sql, async function (err, result) {
+      resolve(result);
+    });
+  });
+};
+
 global.getTaskByArray = async function (array) {
   return new Promise((resolve) => {
     var sql =
@@ -126,8 +150,7 @@ global.getTaskByArray = async function (array) {
 
 global.getTaskStatusByArray = async function (array) {
   return new Promise((resolve) => {
-    var sql =
-      "SELECT * FROM taskstatus WHERE task IN(" + array + ")";
+    var sql = "SELECT * FROM taskstatus WHERE task IN(" + array + ")";
     db.query(sql, async function (err, result) {
       resolve(result);
     });

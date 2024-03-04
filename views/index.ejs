@@ -39,7 +39,7 @@
 </body>
 <script>
     window.onload = function () {
-	
+
 	CanvasJS.addColorSet("flexmonsterStyle",
             [//colorSet Array
             "#EE232C",
@@ -54,7 +54,7 @@
 
     var options = {
 	title: {
-		text: "Overall Performance (2019-2022)"              
+		text: "Overall Performance (2019-2022)"
 	},
 	colorSet: "flexmonsterStyle",
     exportEnabled: true,
@@ -68,7 +68,7 @@
         labelFontSize: 16,
         labelWrap: true
     },
-	data: [              
+	data: [
 	{
 		type: "column",
 		indexLabel: "{y}",
@@ -118,7 +118,7 @@
     };
     $("#achievement_2").CanvasJSChart(achievement_2);
 
-    
+
     function toogleDataSeries(e){
         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
             e.dataSeries.visible = false;
@@ -127,7 +127,7 @@
         }
         e.chart.render();
     }
-    
+
     }
     </script>
 <%- include ('./partials/footer') %>

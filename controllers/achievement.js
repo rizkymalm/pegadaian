@@ -131,6 +131,7 @@ exports.getAchievementAjax = async function (req, res) {
   var kanwil = req.query.kanwil;
   var area = req.query.area;
   var cabang = req.query.cabang;
+  console.log(wave, kanwil, area, cabang)
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
     var selectBranch = await getBranchByKanwil(kanwil, typesql, wave);
@@ -156,7 +157,7 @@ exports.getAchievementAjax = async function (req, res) {
   const skenarioData = await getTaskByArray(arrbranch);
   for (let a = 0; a < splitarrbranch.length; a++) {
     const skenarioData2 = await getTaskByArray(splitarrbranch[a]);
-    console.log(skenarioData2)
+    // console.log(skenarioData2)
   }
   // var codeverified = [];
   var gadai = 0;

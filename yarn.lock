@@ -853,10 +853,10 @@ finalhandler@~1.1.2:
     statuses "~1.5.0"
     unpipe "~1.0.0"
 
-flexmonster@^2.9.35:
-  version "2.9.35"
-  resolved "https://registry.yarnpkg.com/flexmonster/-/flexmonster-2.9.35.tgz#8f29cf42d068f3f2c98ccdeea68bc6423c76f827"
-  integrity sha512-numh3uLHeqv1HvSSzejSL7Tv9AYW5Mq9j5rwFs+ma8uV+gNYZQAEWfGum1wemHMpXw/mvSwQIODhjHvq/ocBmg==
+flexmonster@^2.9.71:
+  version "2.9.71"
+  resolved "https://registry.yarnpkg.com/flexmonster/-/flexmonster-2.9.71.tgz#ee0caee70b4f54bfbec502bab2f4ee4e2a54759c"
+  integrity sha512-hRemOlHBK8JPxaAQQzqT+ojeZi9TVhI3bhpPYTmFMunhAnZduYYVJQ5D59PaR7mL8zdvfxw8jxGTmreJBQRfwg==
 
 follow-redirects@^1.14.0, follow-redirects@^1.14.8:
   version "1.14.9"

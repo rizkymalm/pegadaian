@@ -13,6 +13,8 @@ const evidenceRoutes = require("./routes/evidence");
 const acvRoutes = require("./routes/acv");
 const achievementRoutes = require("./routes/achievement");
 const detailRoutes = require("./routes/detail");
+const filterRoutes = require("./routes/filter");
+
 
 global.baseurl = function(){
 	var url = `${process.env.URL}:${process.env.PORT}/`;
@@ -38,6 +40,7 @@ app.use("/achievement", achievementRoutes)
 app.use("/report", reportRoutes)
 app.use("/evidence", evidenceRoutes)
 app.use("/detail", detailRoutes)
+app.use("/filters", filterRoutes)
 app.get("/logout", function(req,res) {
     var login = ({emailses: req.session.email, nameses: req.session.salesname, idses: req.session.idsales, typeses: req.session.type})
         req.session.destroy();
@@ -45,5 +48,5 @@ app.get("/logout", function(req,res) {
 })
 
 app.listen(process.env.PORT, (req,res) => {
-    
+
 })

@@ -82,7 +82,7 @@ function getSkenario(kanwil, area, type, kategori) {
       var sql = `SELECT * FROM area WHERE id_region=${kanwil}`;
     } else if (type == "subbranch") {
       var sql =
-        `SELECT * FROM sub_branch WHERE id_region=${kanwil} AND id_area='${area}'` 
+        `SELECT * FROM sub_branch WHERE id_region=${kanwil} AND id_area='${area}'`
     } else if (type == "year") {
       var sql = "SELECT * FROM region";
     }
@@ -332,6 +332,7 @@ exports.getAreaByKanwil = (req, res) => {
 
 exports.getBranchByArea = (req, res) => {
   const kategori = req.params.kategori
+  console.log(req.params.kategori, req.params.area, req.params.wave)
   var splitKategori = kategori.split(',');
   var kategoriStatus='';
   for (let i = 0; i < splitKategori.length; i++) {
@@ -521,6 +522,7 @@ exports.getTopContent = async function (req, res) {
   var aspek = req.query.aspek;
   var element = req.query.element;
   var sort = req.query.sortby;
+  console.log(kategori, kanwil, area, element, aspek)
   if (kanwil == "all" && area == "all") {
     var typesql = "kanwil";
     var selectBranch = await getBranchByKanwil(kanwil, typesql, kategori);
@@ -622,6 +624,7 @@ exports.getTopContent = async function (req, res) {
       });
     }
   }
+  console.log(jsonres)
   res.send(jsonres);
 };
 
